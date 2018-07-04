@@ -1,22 +1,32 @@
 <style lang="less">
   .topScroll{
     width: 750rpx;
-    height: 360rpx;
-    padding-top: 20rpx;
-    padding-bottom: 20rpx;
+    height: 400rpx;
     background-color: #80dfe6;
   }
 
-  .scrollItem{
-    width: 710rpx;
-    height: 400rpx;
+  .scrollNav{
     position: relative;
-    left: 20rpx;
+    padding-top: 20rpx;
+    padding-bottom: 20rpx;
   }
 
   .scrollImg{
-    width: 710rpx;
-    height: 400rpx;
+    width: 750rpx;
+    height: 360rpx;
+  }
+
+  .scrollTitle{
+    width: 750rpx;
+    font-size: 35rpx;
+    padding: 0 40rpx;
+    position: absolute;
+    bottom: 60rpx;
+    z-index: 10;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .updateMessages{
@@ -56,7 +66,7 @@
   .itemDetails{
     width: 570rpx;
     height: 160rpx;
-    padding: 20rpx 0;
+    padding: 20rpx 40rpx 20rpx 0;
     vertical-align: top;
     display: inline-block;
     border-bottom: 1px solid #a5a5a5;
@@ -64,36 +74,44 @@
   }
 
   .userItem-tag{
-    font-size: 40rpx;
+    width: 530rpx;
+    font-size: 37rpx;
     line-height: 60rpx;
   }
 
-  .userItem-name{
-    font-size: 37rpx;
+  .userItem-detail{
+    width: 530rpx;
+    font-size: 33rpx;
     line-height: 60rpx;
-    margin-right: 20rpx;
     display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .userItem-desc{
-    font-size: 37rpx;
+    font-size: 33rpx;
     line-height: 60rpx;
     color: #999999;
+    margin-left: 20rpx;
     display: inline-block;
   }
 </style>
 <template>
   <view class="container">
-    <swiper indicator-dots="true" autoplay="true" interval="5000" duration="1000" 
+    <swiper indicator-dots="true" autoplay="true" interval="3000" duration="800" circular="true"
             class="topScroll">
-      <swiper-item class="scrollItem">
-        <image src="" mode="scaleToFill" class="scrollImg">
+      <swiper-item class="scrollItem" wx:for="{{scroll}}">
+        <navigator url="{{item.url}}" class="scrollNav">
+          <image src="{{item.imgUrl}}" mode="scaleToFill" class="scrollImg">
+          <view class="scrollTitle">{{item.desc}}</view>
+        </navigator>
       </swiper-item>
     </swiper>
 
-    <view class="updateMessages">
+    <navigator class="updateMessages">
       <text>> 5分钟前 woo 更新了标签 装逼</text>
-    </view>
+    </navigator>
 
     <view class="index-recommand">
       <view class="recommand-title">标签推荐</view>
@@ -102,8 +120,7 @@
           <image src="{{item.imgUrl}}" class="userItem-img">
           <view class="itemDetails">
             <view class="userItem-tag">{{item.tag}}</view>
-            <view class="userItem-name">{{item.name}}</view>
-            <view class="userItem-desc">{{item.description}}</view>
+            <view class="userItem-detail">{{item.name}}<view class="userItem-desc">{{item.description}}</view></view>
           </view>
         </navigator>
       </block>
@@ -140,6 +157,19 @@
     mixins = [testMixin]
 
     data = {
+      scroll: [{
+        url: "",
+        imgUrl: "",
+        desc: "linux与Unix shell编程指南南南南南南南南南南"
+      }, {
+        url: "",
+        imgUrl: "",
+        desc: "linux与Unix shell编程指南南南南南南南南南南"
+      }, {
+        url: "",
+        imgUrl: "",
+        desc: "linux与Unix shell编程指南南南南南南南南南南"
+      }],
       recommandUsers: [{
         id: 0,
         name: "王小明",
@@ -148,6 +178,24 @@
         description: "武大计院"
       }, {
         id: 1,
+        name: "王小明明明明明明明明明明明明",
+        imgUrl: "",
+        tag: "Material",
+        description: "武大计院"
+      }, {
+        id: 2,
+        name: "王小明",
+        imgUrl: "",
+        tag: "Material",
+        description: "武大计院院院院院院院院院院院院"
+      }, {
+        id: 3,
+        name: "王小明",
+        imgUrl: "",
+        tag: "Material",
+        description: "武大计院"
+      }, {
+        id: 4,
         name: "王小明",
         imgUrl: "",
         tag: "Material",
