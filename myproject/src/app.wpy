@@ -1,4 +1,4 @@
-<style lang="less">
+<style lang='less'>
 .container {
   height: 100%;
   display: flex;
@@ -17,14 +17,46 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index'
+      'pages/index',
+      'pages/category',
+      'pages/myLabel',
+      'pages/message',
+      'pages/me'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    }
+    },
+    tabBar: {
+      color: '#888888',
+      selectedColor: '#f48787',
+      borderStyle: 'white',
+      backgroundColor: '#f7f7fa',
+      list: [{
+        pagePath: 'pages/index',
+        // iconPath:'images/shangyingicon_2.png',
+        // selectedIconPath:'images/shangyingicon_1.png',
+        text: '赏樱'
+    }, {
+        pagePath: 'pages/category',
+        
+        text: '景点攻略'
+    }, {
+        pagePath: 'pages/myLabel',
+        
+        text: '武大简介'
+    }, {
+        pagePath: 'pages/message',
+     
+        text: '发现'
+    }, {
+        pagePath: 'pages/me',
+        
+        text: '发现'
+    }]
+  }
   }
 
   globalData = {
