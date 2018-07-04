@@ -17,11 +17,11 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index',
-      'pages/category',
-      'pages/myLabel',
-      'pages/message',
-      'pages/me'
+      'pages/index/index',
+      'pages/category/category',
+      'pages/myLabel/myLabel',
+      'pages/message/message',
+      'pages/me/me'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -35,24 +35,24 @@ export default class extends wepy.app {
       borderStyle: 'white',
       backgroundColor: '#f7f7fa',
       list: [{
-        pagePath: 'pages/index',
+        pagePath: 'pages/index/index',
         // iconPath:'images/shangyingicon_2.png',
         // selectedIconPath:'images/shangyingicon_1.png',
         text: '赏樱'
     }, {
-        pagePath: 'pages/category',
+        pagePath: 'pages/category/category',
         
         text: '景点攻略'
     }, {
-        pagePath: 'pages/myLabel',
+        pagePath: 'pages/myLabel/myLabel',
         
         text: '武大简介'
     }, {
-        pagePath: 'pages/message',
+        pagePath: 'pages/message/message',
      
         text: '发现'
     }, {
-        pagePath: 'pages/me',
+        pagePath: 'pages/me/me',
         
         text: '发现'
     }]
