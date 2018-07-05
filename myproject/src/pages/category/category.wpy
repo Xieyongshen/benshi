@@ -1,87 +1,22 @@
 <style lang="less">
-  /*总体主盒子*/  
-  .container {  
-    position: relative;  
-    width: 100%;  
-    height: 100%;  
-    background-color: #fff;  
-    color: #939393;  
-  }
-  /*左侧栏主盒子*/  
-  .nav_left{  
-    /*设置行内块级元素（没使用定位）*/  
-    display: inline-block;  
-    width: 25%;  
-    height: 100%;  
-    /*主盒子设置背景色为灰色*/  
-    background: #f5f5f5;  
-    text-align: center;  
-  }  
-  /*左侧栏list的item*/  
-  .nav_left .nav_left_items{  
-    /*每个高30px*/  
-    height: 40px;  
-    /*垂直居中*/  
-    line-height: 40px;  
-    /*再设上下padding增加高度，总高42px*/  
-    padding: 6px 0;  
-    /*只设下边线*/  
-    border-bottom: 1px solid #dedede;  
-    /*文字14px*/  
-    font-size: 14px; 
-  }  
-  /*左侧栏list的item被选中时*/  
-  .nav_left .nav_left_items.active{  
-    /*背景色变成白色*/  
-    background: #fff;  
-    color: #f0145a; 
-  }  
-  /*右侧栏主盒子*/  
-  .nav_right{  
-    /*右侧盒子使用了绝对定位*/  
-    position: absolute;  
-    top: 0;  
-    right: 0;  
-    flex: 1;  
-    /*宽度75%，高度占满，并使用百分比布局*/  
-    width: 75%;  
-    height: 1000px;  
-    padding: 10px;  
-    box-sizing: border-box;  
-    background: #fff;  
-  }  
-  /*右侧栏list的item*/  
-  .nav_right .nav_right_items{  
-    /*浮动向左*/  
-    float: left;  
-    /*每个item设置宽度是33.33%*/  
-    width: 33.33%;  
-    height: 120px;  
-    text-align: center;  
-  }  
-  .nav_right .nav_right_items image{  
-    /*被图片设置宽高*/  
-    width: 60px;  
-    height: 60px;  
-    margin-top: 15px;  
-  }  
-  .nav_right .nav_right_items text{  
-    /*给text设成块级元素*/  
-    display: block;  
-    margin-top: 15px;  
-    font-size: 14px;  
-    color: black;
-    /*设置文字溢出部分为...*/  
-    overflow: hidden;  
-    white-space: nowrap;  
-    text-overflow: ellipsis;  
-  } 
-  .nodata_text
-  {
-    color: black;
-    font-size: 14px;  
-    text-align: center;  
-  }
+
+
+//小米商城类型
+ page, .main{
+    height: 100%;
+    overflow: hidden;
+} 
+.category-left{
+    float: left;
+    width: 150rpx;
+    height: 100%;
+    border-right:1px solid #ddd;
+    box-sizing: border-box;
+}
+.category-left .cate-list.on {
+    color: rgb(219, 29, 29);
+    transform: scale(1.3)
+}
 .category-left .cate-list {
     font-size: 28rpx;
     text-align: center;
@@ -181,34 +116,34 @@
 
 
 <template>
-<!--主盒子-->
-<view class="container">
-  <!--左侧栏-->
-  <view class="nav_left">
-    <block wx:for="{{cateItems}}">
-      <!--当前项的id等于item项的id，那个就是当前状态-->
-      <!--用data-index记录这个数据在数组的下标位置，使用data-id设置每个item的id值，供打开2级页面使用-->
-      <view class="nav_left_items {{curNav == item.cate_id ? 'active' : ''}}" bindtap="switchRightTab" data-index="{{index}}" data-id="{{item.cate_id}}">{{item.cate_name}}</view>
-    </block>
-  </view>
-  <!--右侧栏-->
-  <view class="nav_right">
-    <!--如果有数据，才遍历项-->
-    <view wx:if="{{cateItems[curIndex].ishaveChild}}">
-      <block wx:for="{{cateItems[curIndex].children}}">
-        <view class="nav_right_items">
-        <!--界面跳转 -->
-          <navigator url="../../detail/detail}}">
-            <image src="{{item.image}}">
+
+<view>
+  <view class="main">
+    <scroll-view class="category-left" scroll-y="true">
+        <view class="cate-list {{curIndex===index?'on':''}}" wx:for="{{category}}" wx:key="{{item.id}}" data-id="{{item.id}}" data-index="{{index}}" @tap="switchCategory">
             <text>{{item.name}}</text>
-          </navigator>
         </view>
-      </block>
-    </view>
-    <!--如果无数据，则显示数据-->
-    <view class="nodata_text" wx:else>该分类暂无数据</view>
+    </scroll-view>
+  </view>
+
+
+  <view class="category-right">
+    <scroll-view scroll-y="true" class="category-right" scroll-into-view="{{toView}}">
+        <block wx:for="{{detail}}" wx:key="{{item.id}}" >
+            <view class="cat-title {{item.Ttitle == null ? 'element' : 'category'}}" id="{{item.id}}">
+                <!-- <view class="Ttitle">{{item.Ttitle}}</view> -->
+                {{item.Ttitle}}
+                <view class="product" @tap="toDetail" data-index="{{index}}">
+                    <view class="pro-desc">  
+                        <text class="pro-desc1">{{item.title}}</text>
+                    </view>
+                </view>
+            </view>
+        </block>
+    </scroll-view>
   </view>
 </view>
+
 </template>
 
 <script> 
