@@ -21,7 +21,8 @@ export default class extends wepy.app {
       'pages/category/category',
       'pages/myLabel/myLabel',
       'pages/message/message',
-      'pages/me/me'
+      'pages/me/me',
+      'pages/search'
     ],
     window: {
       navigationStyle: 'custom'
