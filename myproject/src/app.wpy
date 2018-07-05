@@ -24,16 +24,13 @@ export default class extends wepy.app {
       'pages/me/me'
     ],
     window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationStyle: 'custom'
     },
     tabBar: {
-      color: '#888888',
-      selectedColor: '#f48787',
+      color: '#434343',
+      selectedColor: '#b28850',
       borderStyle: 'white',
-      backgroundColor: '#f7f7fa',
+      backgroundColor: '#eeeeee',
       list: [{
         pagePath: 'pages/index/index',
         // iconPath:'images/shangyingicon_2.png',
