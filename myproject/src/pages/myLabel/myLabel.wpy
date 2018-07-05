@@ -1,80 +1,113 @@
 <style lang="less">
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  page{
+    background: #fafafa;
+  }
+
+  .navBar{
+    width: 750rpx;
+    height: 150rpx;
+    font-size: 45rpx;
+    line-height: 110rpx;
+    background-color: #d1c0a5;
+    color: #ffffff;
+    padding-top: 40rpx;
+    padding-left: 40rpx;
+    box-sizing: border-box;
   }
 
   .myLabel{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     width:690rpx;
-    height: 280rpx;
     margin-top: 30rpx;
   }
 
+  .myLabelItem{
+    width: 690rpx;
+    height: 280rpx;
+    margin-bottom: 30rpx;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
+    background: #ffffff;
+  }
+
   .myLabel-class {
-    display: flex;
+    display: inline-block;
     width: 80rpx;
     height: 100%;
-    border-right-style: solid;
-    border-right-width: 2rpx;
-    border-right-color: #cfa972;
     font-size: 40rpx;
-    color: #b28850
+    color: #b28850;
+    writing-mode:vertical-lr;
+    text-align: center;
+    vertical-align: top;
+    box-sizing: border-box;
+    border-right: 2rpx solid #cfa972;
   }
 
   .myLabel-class-text{
     width: 50%;
-    align-self: center;
+    height: auto;
+    margin: auto;
+    vertical-align: middle;
+    display: inline-block;
   }
 
   .myLabel-detail{
+    width: 610rpx;
     height: 100%;
+    padding: 30rpx 0 30rpx 30rpx;
+    box-sizing: border-box;
+    display: inline-block;
   }
 
   .myLabel-title {
-    margin-left: 30rpx;
-    margin-top: 40rpx;
     width: 500rpx;
     font-family: 'MicrosoftYaHei';
     font-size: 40rpx;
+    line-height: 40rpx;
   }
 
   .myLabel-description {
-    margin: 30rpx;
     width: 500rpx;
     font-family: 'MicrosoftYaHei';
-    font-size:36rpx;
+    font-size: 33rpx;
+    line-height: 50rpx;
+    margin-top: 20rpx;
+    height:150rpx;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
   }
 
- .btnViewMore {
-    width:24rpx;
-    height: 24rpx;
-    align-self: center;
-
+ .myLabel-more {
+    width: 80rpx;
+    height: 100%;
+    color: #b28850;
+    float: right;
+    text-align: center;
+    font-weight: 700;
+    line-height: 200rpx;
   }
   
 </style>
 
 <template>
   <view class="container">
-
+    <view class="navBar">
+      <view class="nav-title">我的标签</view>
+    </view>
     <view class="myLabel">
-      <view wx:for="{{myLabelArray}}" class="myLabel">
+      <navigator wx:for="{{myLabelArray}}" class="myLabelItem">
 
         <view class="myLabel-class">
           <text class="myLabel-class-text">{{item.class}}</text>
         </view>
 
         <view class="myLabel-detail">
+          <view class="myLabel-more">></view>
           <view class="myLabel-title">{{item.title}}</view>
           <view class="myLabel-description">{{item.description}}</view>
         </view>
 
-        <button class="btnViewMore">more</button>
-      </view>
+      </navigator>
     </view>
 
   </view>
@@ -96,9 +129,7 @@
 
   export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: '我的标签',
-      // todo backgroundColor ?
-      backgroundColor: '#fafafa'
+
     }
     components = {
       panel: Panel,
@@ -111,13 +142,13 @@
       myLabelArray:[
         {
           id:0,
-          class:"摄影",
+          class:"摄 影",
           title:"摄影",
           description:"从初中开始接触摄影的非专业风景取景爱好者，准确快门专家\n装备：佳能70D，佳能定焦、变焦镜头若干"
         },
         {
           id:1,
-          class:"烹饪",
+          class:"烹 饪",
           title:"烹饪",
           description:"资深吃货，爱好川湘菜，爱吃更爱做，非典型性甜点品尝家，小龙虾克星，多次蝉联幼儿园烹饪比赛冠军"
         }
@@ -145,7 +176,6 @@
     }
 
     onLoad() {
-      
     }
   }
 </script>
