@@ -38,23 +38,23 @@ export default class extends wepy.app {
         pagePath: 'pages/index/index',
         // iconPath:'images/shangyingicon_2.png',
         // selectedIconPath:'images/shangyingicon_1.png',
-        text: '赏樱'
+        text: '首页'
     }, {
         pagePath: 'pages/category/category',
         
-        text: '景点攻略'
+        text: '分类'
     }, {
         pagePath: 'pages/myLabel/myLabel',
         
-        text: '武大简介'
+        text: ''
     }, {
         pagePath: 'pages/message/message',
      
-        text: '发现'
+        text: '消息'
     }, {
         pagePath: 'pages/me/me',
         
-        text: '发现'
+        text: '我的'
     }]
   }
   }
