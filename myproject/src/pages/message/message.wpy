@@ -66,6 +66,63 @@
     font-weight: 700;
     display: inline-block;
   }
+
+  .message-list{
+    width: 100%;
+    height: auto;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
+  }
+
+  .message-title{
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    padding: 0 40rpx;
+  }
+
+  .message-item{
+    width: 100%;
+    height: 160rpx;
+  }
+
+  .message-avatar{
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    margin: 30rpx 40rpx;
+    box-sizing: border-box;
+    background: #80dfe6;
+  }
+
+  .message-detail{
+    width: 570rpx;
+    height: 160rpx;
+    padding: 20rpx 40rpx 20rpx 0;
+    vertical-align: top;
+    display: inline-block;
+    border-bottom: 1px solid #a5a5a5;
+    box-sizing: border-box;
+  }
+
+  .message-name{
+    width: 530rpx;
+    font-size: 37rpx;
+    line-height: 60rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .message-desc{
+    width: 530rpx;
+    color: #999999;
+    font-size: 33rpx;
+    line-height: 60rpx;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>
 <template>
   <view class="container">
@@ -80,6 +137,16 @@
       </view>
       <view class="system-more">></view>
     </navigator>
+    <view class="message-list">
+      <view class="message-title">消息列表</view>
+      <navigator wx:for="{{messages}}" class="message-item">
+          <image src="{{item.avatarUrl}}" class="message-avatar">
+          <view class="message-detail">
+            <view class="message-name">{{item.name}}</view>
+            <view class="message-desc">{{item.desc}}</view>
+          </view>
+      </navigator>
+    </view>
   </view>
 </template>
 
@@ -102,7 +169,23 @@
     mixins = [testMixin]
 
     data = {
-
+      messages: [{
+        avatarUrl: "",
+        name: "Clarenceyang",
+        desc: "好的"
+      }, {
+        avatarUrl: "",
+        name: "松鹅",
+        desc: "请问python [:-1]为什么能达到去除最后一行的效果呢"
+      }, {
+        avatarUrl: "",
+        name: "白鞋带",
+        desc: "[05.30更新]做一份完美的芝士汉堡需要…"
+      }, {
+        avatarUrl: "",
+        name: "Gao Hao",
+        desc: "weibo.com/cardimpression"
+      }]
     }
 
     computed = {

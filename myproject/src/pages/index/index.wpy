@@ -49,7 +49,7 @@
     box-sizing: border-box;
   }
 
-  .recommandItems{
+  .recommand-items{
     width: 100%;
     height: 160rpx;
   }
@@ -63,7 +63,7 @@
     background: #80dfe6;
   }
 
-  .itemDetails{
+  .userItem-details{
     width: 570rpx;
     height: 160rpx;
     padding: 20rpx 40rpx 20rpx 0;
@@ -77,6 +77,9 @@
     width: 530rpx;
     font-size: 37rpx;
     line-height: 60rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .userItem-detail{
@@ -116,9 +119,9 @@
     <view class="index-recommand">
       <view class="recommand-title">标签推荐</view>
       <block wx:for="{{recommandUsers}}" wx:key="recommandUsers">
-        <navigator class="recommandItems">
+        <navigator class="recommand-items">
           <image src="{{item.imgUrl}}" class="userItem-img">
-          <view class="itemDetails">
+          <view class="userItem-details">
             <view class="userItem-tag">{{item.tag}}</view>
             <view class="userItem-detail">{{item.name}}<view class="userItem-desc">{{item.description}}</view></view>
           </view>
@@ -143,7 +146,7 @@
 
   export default class Index extends wepy.page {
     config = {
-      
+
     }
     components = {
       panel: Panel,
