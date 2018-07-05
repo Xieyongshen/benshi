@@ -175,121 +175,189 @@
     mixins = [testMixin]
 
     data = {
-      cateItems: [
-        {
-          cate_id: 1,
-          cate_name: "护肤",
-          ishaveChild: true,
-          children:
-          [
-            {
-              child_id: 1,
-              name: '洁面皂',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161208/148117972563.jpg"
-            },
-            {
-              child_id: 2,
-              name: '卸妆',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161207/148110444480.jpg"
-            },
-            {
-              child_id: 3,
-              name: '洁面乳',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161208/148117973270.jpg"
-            },
-            {
-              child_id: 4,
-              name: '面部祛角质',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161208/148117981591.jpg"
-            }
-          ]
-        },
-        {
-          cate_id: 2,
-          cate_name: "彩妆",
-          ishaveChild: true,
-          children:
-          [
-            {
-              child_id: 1,
-              name: '气垫bb',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161212/14815381301.jpg"
-            },
-            {
-              child_id: 2,
-              name: '修容/高光',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161212/14815381411.jpg"
-            },
-            {
-              child_id: 3,
-              name: '遮瑕',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153815181.jpg"
-            },
-            {
-              child_id: 4,
-              name: '腮红',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153815759.jpg"
-            },
-            {
-              child_id: 5,
-              name: '粉饼',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153816983.jpg"
-            },
-            {
-              child_id: 6,
-              name: '粉底',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153817721.jpg"
-            },
-            {
-              child_id: 7,
-              name: '蜜粉/散粉',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153819354.jpg"
-            },
-            {
-              child_id: 8,
-              name: '隔离霜',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161215/148179053369.jpg"
-            }
-          ]
-        },
-        {
-          cate_id: 3,
-          cate_name: "香水/香氛",
-          ishaveChild: true,
-          children:
-          [
-            {
-              child_id: 1,
-              name: '淡香水EDT',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161213/14815978910.jpg"
-            },
-            {
-              child_id: 2,
-              name: '浓香水EDP',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161213/148159789883.jpg"
-            },
-            {
-              child_id: 3,
-              name: '香体走珠',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161213/14815979307.jpg"
-            },
-            {
-              child_id: 4,
-              name: '古龙香水男士的最爱',
-              image: "http://mz.djmall.xmisp.cn/files/logo/20161213/148159765589.jpg"
-            }
-          ]
-        },
-        {
-          cate_id: 4,
-          cate_name: "个人护理",
-          ishaveChild: false,
-          children: []
-        }
+      
+
+      category:[
+        {name:'热门分类',id:'hot'},
+        {name:'外语类',id:'foreign'},
+        {name:'才艺类',id:'talent'},
+        {name:'生活技能',id:'skill'},
+        {name:'专业知识',id:'kown'},
+        {name:'经验分享',id:'exp'},
+        {name:'美工类',id:'artist'},
+        {name:'生活服务',id:'life'},
       ],
-      curNav: 2,
-      curIndex: 0
-    }
+      detail:[
+
+        {Ttitle: "热门分类", id: "hot"},
+        {title: "小米MIX", image: "https://i8.mifile.cn/b2c-mimall-media/7cfda850fe30368fd720dbae659ce169.jpg?w=1212&h=716 ", desc: "小米MIX 2S 卡缅后2000万，拍人更美", desc1: "小米MIX 2S", selected: false},
+        {title: "黑鲨游戏手机", image: "https://i8.mifile.cn/b2c-mimall-media/29764b23954479f8c156086a5156509e.jpg", desc: "黑鲨游戏手机 为游戏而生", desc1: "黑鲨游戏手机", selected: false},
+        {title: "红米5S", image: "https://i8.mifile.cn/b2c-mimall-media/5cd5d1591f66069a1e48a98f4b24e406.jpg?w=1212&h=716", desc: "红米5S 卡缅后2000万，拍人更美", selected: false, price: 1799},
+{Ttitle: "电视", id: "diansi"},
+{title: "小米55寸曲面电视", image: "https://i8.mifile.cn/b2c-mimall-media/f498b42f19e289d33a7ff09915e72d5d.jpg?w=1212&h=716", desc: "55寸曲面 64位四核处理器，人工智能系统", selected: false, price: 2799},
+{title: "小米55寸 4X电视", image: "https://i8.mifile.cn/b2c-mimall-media/809dc670952f679139fbc986185a431a.jpg?w=1212&h=716", desc: "55寸 4X 4K HDR，人工智能语音系统", selected: false, price: 2399},
+
+{title: "小米32寸 4C", image: "https://i8.mifile.cn/b2c-mimall-media/0feba857062316b4b116866c8ccf762c.jpg?w=1212&h=716", desc: "32寸 4C电视 超薄机身，无边框设计", selected: false, price: 2599},
+
+{Ttitle: "电脑", id: "diannao"},
+
+{title: "小米15.6游戏本", image: "https://i8.mifile.cn/b2c-mimall-media/c1bd4b3affc9c7af5b2844776049759c.jpg", desc: "15.6游戏本 电竞级性能怪兽", selected: false, price: 5799},
+
+{title: "小米笔记本Air13.3增强本", image: "https://i8.mifile.cn/b2c-mimall-media/a20dc22f36750ae93eb51dfb579cd7bd.jpg?w=1212&h=716", desc: "13.3增强本 带独立显卡的轻薄本", selected: false, price: 5599},
+
+{title: "小米笔记本Air12.5", image: "https://i8.mifile.cn/b2c-mimall-media/e3c8f48d3d9ca478a70917ec33bbb608.jpg", desc: "12.5office版 轻薄全金属超长续航", selected: false, price: 4599},
+
+{Ttitle: "家电", id: "jiadian"},
+
+{title: "小米电饭煲", image: "https://i8.mifile.cn/b2c-mimall-media/ae476e43fdf872448d9e2a5e5b788970.jpg?w=1212&h=716", desc: "电饭煲 省电节能", selected: false, price: 199},
+
+{title: "小米净水器", image: "https://i8.mifile.cn/b2c-mimall-media/d74f483bf42678358df51a7a3a8d8169.jpg?w=1212&h=716", desc: "净水器 健康首选", selected: false, price: 2399},
+
+{title: "小米净化器", image: "https://i8.mifile.cn/b2c-mimall-media/fb9fc0f45533935beba6a7d884159bd3.jpg?w=1212&h=716 ", desc: "净化器 让空气更清新", selected: false, price: 2599},
+
+{Ttitle: "路由", id: "luyou"},
+
+{title: "虾米路由4", image: "https://i8.mifile.cn/b2c-mimall-media/88184ecbbf289180ef3ffb1abe7ec8b7.jpg?w=1212&h=716", desc: "虾米路由4 网络更快更稳", selected: false, price: 419},
+
+{title: "小米路由3A", image: "https://i8.mifile.cn/b2c-mimall-media/6920ef747573ca14ef1c662c8e10737c.jpg?w=1212&h=716", desc: "路由3A 网络更快更稳", selected: false, price: 359},
+
+{title: "小米路由3G", image: "https://i8.mifile.cn/b2c-mimall-media/f49bdc8faade883204ff79b29be0e6c0.jpg?w=1212&h=716", desc: "路由3G 网络更快更稳", selected: false, price: 399},
+
+{Ttitle: "智能", id: "zhineng"},
+
+{title: "小米智能摄像机", image: "https://i8.mifile.cn/b2c-mimall-media/327b126304119a9d11b18defb36456ca.jpg?w=1212&h=716", desc: "小米摄像机，这一刻更清晰", selected: false, price: 1599},
+
+      {title: "小米智能剃须刀", image: " https://i8.mifile.cn/b2c-mimall-media/649cbea6456877aa7d4eb9dc82e779a1.jpg?w=1212&h=716", desc: "小米剃须刀，让颜值重回巅峰", selected: false, price: 199},
+
+      {title: "小米圈铁耳机", image: "https://i8.mifile.cn/b2c-mimall-media/2026bb2471b772bf9712c71829a8dcac.jpg?w=1212&h=716", desc: "圈铁耳机，让声音更清晰", selected: false, price: 199}
+
+
+      ],
+      toView:'shouji',
+      curIndex:0
+
+
+
+
+    //   cateItems: [
+    //   {
+    //     cate_id: 1,
+    //     cate_name: "护肤",
+    //     ishaveChild: true,
+    //     children:
+    //     [
+    //       {
+    //         child_id: 1,
+    //         name: '洁面皂',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161208/148117972563.jpg"
+    //       },
+    //       {
+    //         child_id: 2,
+    //         name: '卸妆',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161207/148110444480.jpg"
+    //       },
+    //       {
+    //         child_id: 3,
+    //         name: '洁面乳',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161208/148117973270.jpg"
+    //       },
+    //       {
+    //         child_id: 4,
+    //         name: '面部祛角质',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161208/148117981591.jpg"
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     cate_id: 2,
+    //     cate_name: "彩妆",
+    //     ishaveChild: true,
+    //     children:
+    //     [
+    //       {
+    //         child_id: 1,
+    //         name: '气垫bb',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161212/14815381301.jpg"
+    //       },
+    //       {
+    //         child_id: 2,
+    //         name: '修容/高光',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161212/14815381411.jpg"
+    //       },
+    //       {
+    //         child_id: 3,
+    //         name: '遮瑕',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153815181.jpg"
+    //       },
+    //       {
+    //         child_id: 4,
+    //         name: '腮红',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153815759.jpg"
+    //       },
+    //       {
+    //         child_id: 5,
+    //         name: '粉饼',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153816983.jpg"
+    //       },
+    //       {
+    //         child_id: 6,
+    //         name: '粉底',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153817721.jpg"
+    //       },
+    //       {
+    //         child_id: 7,
+    //         name: '蜜粉/散粉',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161212/148153819354.jpg"
+    //       },
+    //       {
+    //         child_id: 8,
+    //         name: '隔离霜',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161215/148179053369.jpg"
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     cate_id: 3,
+    //     cate_name: "香水/香氛",
+    //     ishaveChild: true,
+    //     children:
+    //     [
+    //       {
+    //         child_id: 1,
+    //         name: '淡香水EDT',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161213/14815978910.jpg"
+    //       },
+    //       {
+    //         child_id: 2,
+    //         name: '浓香水EDP',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161213/148159789883.jpg"
+    //       },
+    //       {
+    //         child_id: 3,
+    //         name: '香体走珠',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161213/14815979307.jpg"
+    //       },
+    //       {
+    //         child_id: 4,
+    //         name: '古龙香水男士的最爱',
+    //         image: "http://mz.djmall.xmisp.cn/files/logo/20161213/148159765589.jpg"
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     cate_id: 4,
+    //     cate_name: "个人护理",
+    //     ishaveChild: false,
+    //     children: []
+    //   }
+    // ],
+    // curNav: 2,
+    // curIndex: 1
+  }
+
+  
+
+    
 
     
     computed = {
@@ -300,16 +368,36 @@
 
     methods = {
       //事件处理函数  
-    switchRightTab: function (e) {
-    // 获取item项的id，和数组的下标值  
-      let id = e.target.dataset.id,
-      index = parseInt(e.target.dataset.index);
-    // 把点击到的某一项，设为当前index  
-      this.setData({
-      curNav: id,
-      curIndex: index
-        })
+      switchRightTab: function (e) {
+      // 获取item项的id，和数组的下标值  
+        let id = e.target.dataset.id,
+        index = parseInt(e.target.dataset.index);
+      // 把点击到的某一项，设为当前index  
+
+        var newNav = this.curNav;
+        var newIndex = this.curIndex;
+        this.curNav = id;
+        this.curIndex = index;
+      },
+
+      switchCategory: function (e) {
+        this.toView = e.target.dataset.id;
+        this.curIndex = e.currentTarget.dataset.index?e.currentTarget.dataset.index: 0;
+      },
+
+      toDetail: function (e) {
+
       }
+
+
+
+    }
+
+    events = {
+      // 'index-emit': (...args) => {
+      //   let $event = args[args.length - 1]
+      //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
+      // }
     }
 
     onLoad() {
