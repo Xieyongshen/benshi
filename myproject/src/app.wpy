@@ -27,11 +27,7 @@ export default class extends wepy.app {
       navigationStyle: 'custom'
     },
     tabBar: {
-<<<<<<< HEAD
-      color: '#535353',
-=======
       color: '#434343',
->>>>>>> e19ee0e54fb8a1743c8bf905c81bbf4d7ad82309
       selectedColor: '#b28850',
       borderStyle: 'white',
       backgroundColor: '#eeeeee',
