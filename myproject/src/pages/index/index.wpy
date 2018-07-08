@@ -58,21 +58,20 @@
 
 .scrollNav {
     position: relative;
-    padding-top: 20rpx;
-    padding-bottom: 20rpx;
 }
 
 .scrollImg {
     width: 750rpx;
-    height: 360rpx;
+    height: 400rpx;
 }
 
 .scrollTitle {
     width: 750rpx;
+    color: #ffffff;
     font-size: 35rpx;
     padding: 0 40rpx;
     position: absolute;
-    bottom: 60rpx;
+    bottom: 70rpx;
     z-index: 10;
     box-sizing: border-box;
     overflow: hidden;
@@ -161,7 +160,7 @@
             <icon type="search" size="15" class="search-icon" />
             <view class="search_input">搜索感兴趣的内容</view>
         </navigator>
-        <swiper indicator-dots="true" autoplay="true" interval="3000" duration="800" circular="true" class="topScroll">
+        <swiper indicator-dots="true" indicator-active-color="#ffffff" autoplay="true" interval="5000" duration="1000" circular="true" class="topScroll">
             <swiper-item class="scrollItem" wx:for="{{scroll}}">
                 <navigator url="{{item.url}}" class="scrollNav">
                     <image src="{{item.imgUrl}}" mode="scaleToFill" class="scrollImg">
@@ -220,55 +219,55 @@ export default class Index extends wepy.page {
         scroll: [
             {
                 url: '',
-                imgUrl: '',
+                imgUrl: '/icons/assets/pic_1.jpg',
                 desc: '银河猎人：专访星空摄影师Will Chou'
             },
             {
                 url: '',
-                imgUrl: '',
-                desc: 'linux与Unix shell编程指南'
+                imgUrl: '/icons/assets/pic_2.jpg',
+                desc: '银河猎人：专访星空摄影师Will Chou'
             },
             {
                 url: '',
-                imgUrl: '',
-                desc: 'linux与Unix shell编程指南南南南南南南南南南'
+                imgUrl: '/icons/assets/pic_3.jpg',
+                desc: '银河猎人：专访星空摄影师Will Chou'
             }
         ],
         recommandUsers: [
             {
                 id: 0,
                 name: 'Clarenceyang',
-                imgUrl: '',
+                imgUrl: '/icons/assets/user_1.jpg',
                 tag: '摄影',
                 description: '爱生活，爱摄影，爱美食'
             },
             {
                 id: 1,
                 name: '松鹅',
-                imgUrl: '',
+                imgUrl: '/icons/assets/user_2.jpg',
                 tag: '用Python解决你的所有问题',
                 description: '最近在学摄影的话痨程序员'
             },
             {
                 id: 2,
-                name: '王小明',
-                imgUrl: '',
-                tag: '分享美好生活方式',
-                description: '武大计院院院院院院院院院院院院'
+                name: '温酒',
+                imgUrl: '/icons/assets/user_3.jpg',
+                tag: '编剧',
+                description: '希望做一个温柔的人，想给你讲一万个故事。'
             },
-            {
+            {w
                 id: 3,
-                name: '王小明',
-                imgUrl: '',
-                tag: 'Material',
-                description: '武大计院'
+                name: '喻以流年',
+                imgUrl: '/icons/assets/user_4.jpg',
+                tag: '历史',
+                description: '在《资治通鉴》里，探寻当下与未来。'
             },
             {
                 id: 4,
-                name: '王小明',
-                imgUrl: '',
-                tag: 'Material',
-                description: '武大计院'
+                name: '范臻',
+                imgUrl: '/icons/assets/user_5.jpg',
+                tag: '三国杀',
+                description: '奇策火攻，酒杀不闪。'
             }
         ]
     };

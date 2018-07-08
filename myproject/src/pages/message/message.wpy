@@ -141,7 +141,7 @@ page {
             <view class="nav-title">消息</view>
         </view>
         <navigator class="message-system">
-            <image class="system-img">
+            <image class="system-img" src="/icons/ic_notice.png">
                 <view class="system-detail">
                     <view class="system-title">系统消息</view>
                     <view class="system-desc">好友通知：李华请求添加您为好友</view>
@@ -183,22 +183,22 @@ export default class Index extends wepy.page {
     data = {
         messages: [
             {
-                avatarUrl: '',
+                avatarUrl: '/icons/assets/user_1.jpg',
                 name: 'Clarenceyang',
                 desc: '好的'
             },
             {
-                avatarUrl: '',
+                avatarUrl: '/icons/assets/user_2.jpg',
                 name: '松鹅',
                 desc: '请问python [:-1]为什么能达到去除最后一行的效果呢'
             },
             {
-                avatarUrl: '',
+                avatarUrl: '/icons/assets/user_3.jpg',
                 name: '白鞋带',
                 desc: '[05.30更新]做一份完美的芝士汉堡需要…'
             },
             {
-                avatarUrl: '',
+                avatarUrl: '/icons/assets/user_4.jpg',
                 name: 'Gao Hao',
                 desc: 'weibo.com/cardimpression'
             }
