@@ -1,6 +1,6 @@
 <style lang="less">
 page {
-    background-color: #fafafa;
+    background: #fafafa;
 }
 
 .navBar {
@@ -21,7 +21,7 @@ page {
     padding: 0 30rpx;
     color: #8c877e;
     text-align: left;
-    background-color: #ffffff;
+    background: #ffffff;
     opacity: 0.5;
     border-radius: 52rpx;
     box-sizing: border-box;
@@ -53,6 +53,7 @@ page {
     height: auto;
     box-sizing: border-box;
     position: absolute;
+    background: #ffffff;
 }
 .category-left .cate-list {
     width: 150rpx;
@@ -68,6 +69,7 @@ page {
 .category-left .cate-list.on {
     color: #d28850;
     border-right: none;
+    background-color: #fafafa;
 }
 
 ::-webkit-scrollbar {
@@ -103,6 +105,7 @@ page {
     border: 1rpx solid #d1c0a5;
     border-radius: 30rpx;
     margin-right: 20rpx;
+    background: #ffffff;
     display: inline-block;
 }
 
