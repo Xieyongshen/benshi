@@ -30,13 +30,13 @@ page {
 
 .myLabel {
     width: 690rpx;
-    margin-top: 30rpx;
+    margin-top: 40rpx;
 }
 
 .myLabelItem {
     width: 690rpx;
     height: 280rpx;
-    margin-bottom: 30rpx;
+    margin-bottom: 40rpx;
     box-shadow: 0 1rpx 1rpx #a8a7a7;
     background: #ffffff;
 }
