@@ -174,7 +174,7 @@ export default class Index extends wepy.page {
     mixins = [testMixin];
 
     data = {
-        hasUserInfo: true
+        hasUserInfo: false
     };
 
     async onGotUserInfo(e) {

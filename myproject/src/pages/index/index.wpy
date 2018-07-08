@@ -200,17 +200,10 @@ import {
 } from '@/utils/constant';
 import testMixin from '../../mixins/test';
 
-console.log('moduleA ignored: ', moduleA); // => moduleA ignored: {}
-
 export default class Index extends wepy.page {
     config = {};
     components = {
-        panel: Panel,
-        counter1: Counter,
-        counter2: Counter,
-        list: List,
-        group: Group,
-        toast: Toast
+        
     };
 
     mixins = [testMixin];
@@ -255,7 +248,7 @@ export default class Index extends wepy.page {
                 tag: '编剧',
                 description: '希望做一个温柔的人，想给你讲一万个故事。'
             },
-            {w
+            {
                 id: 3,
                 name: '喻以流年',
                 imgUrl: '/icons/assets/user_4.jpg',
