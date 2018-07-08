@@ -9,22 +9,34 @@ page {
     font-size: 35rpx;
     line-height: 100rpx;
     background-color: #ffffff;
-    color: #d28850;
+    color: #b28850;
     padding-top: 50rpx;
     padding-left: 40rpx;
     border-bottom: 1rpx solid #d2d2d2;
     box-sizing: border-box;
 }
 
+.myLabel-add {
+    position: fixed;
+    right: 30rpx;
+    bottom: 30rpx;
+    border-radius: 50%;
+}
+
+.add-img {
+    width: 120rpx;
+    height: 120rpx;
+}
+
 .myLabel {
     width: 690rpx;
-    margin-top: 30rpx;
+    margin-top: 40rpx;
 }
 
 .myLabelItem {
     width: 690rpx;
     height: 280rpx;
-    margin-bottom: 30rpx;
+    margin-bottom: 40rpx;
     box-shadow: 0 1rpx 1rpx #a8a7a7;
     background: #ffffff;
 }
@@ -61,7 +73,7 @@ page {
 .myLabel-title {
     width: 500rpx;
     font-family: 'MicrosoftYaHei';
-    font-size: 40rpx;
+    font-size: 35rpx;
     line-height: 40rpx;
 }
 
@@ -90,27 +102,30 @@ page {
 </style>
 
 <template>
-  <view class="container">
-    <view class="navBar">
-      <view class="nav-title">我的标签</view>
-    </view>
-    <view class="myLabel">
-      <navigator wx:for="{{myLabelArray}}" class="myLabelItem">
+    <view class="container">
+        <view class="navBar">
+            <view class="nav-title">我的标签</view>
+        </view>
+        <navigator class="myLabel-add">
+            <image class="add-img" src="/icons/ic_plus.png">
+        </navigator>
+        <view class="myLabel">
+            <navigator wx:for="{{myLabelArray}}" class="myLabelItem">
 
-        <view class="myLabel-class">
-          <text class="myLabel-class-text">{{item.class}}</text>
+                <view class="myLabel-class">
+                    <text class="myLabel-class-text">{{item.class}}</text>
+                </view>
+
+                <view class="myLabel-detail">
+                    <view class="myLabel-more">></view>
+                    <view class="myLabel-title">{{item.title}}</view>
+                    <view class="myLabel-description">{{item.description}}</view>
+                </view>
+
+            </navigator>
         </view>
 
-        <view class="myLabel-detail">
-          <view class="myLabel-more">></view>
-          <view class="myLabel-title">{{item.title}}</view>
-          <view class="myLabel-description">{{item.description}}</view>
-        </view>
-
-      </navigator>
     </view>
-
-  </view>
 
 </template>
 
