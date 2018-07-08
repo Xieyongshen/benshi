@@ -3,6 +3,12 @@ page {
     background: #fafafa;
 }
 
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+}
+
 .navBar {
     width: 750rpx;
     height: 150rpx;
@@ -71,6 +77,7 @@ page {
 .message-list {
     width: 100%;
     height: auto;
+    background: #ffffff;
     box-shadow: 0 1rpx 1rpx #a8a7a7;
 }
 
@@ -101,13 +108,16 @@ page {
     padding: 20rpx 40rpx 20rpx 0;
     vertical-align: top;
     display: inline-block;
-    border-bottom: 1px solid #a5a5a5;
     box-sizing: border-box;
+}
+
+.message-item:not(:first-child) .message-detail{
+    border-top: 1px solid #a5a5a5;
 }
 
 .message-name {
     width: 530rpx;
-    font-size: 37rpx;
+    font-size: 35rpx;
     line-height: 60rpx;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -117,7 +127,7 @@ page {
 .message-desc {
     width: 530rpx;
     color: #999999;
-    font-size: 33rpx;
+    font-size: 32rpx;
     line-height: 60rpx;
     display: inline-block;
     overflow: hidden;
@@ -126,29 +136,31 @@ page {
 }
 </style>
 <template>
-  <view class="container">
-    <view class="navBar">
-      <view class="nav-title">消息</view>
-    </view>
-    <navigator class="message-system">
-      <image class="system-img">
-        <view class="system-detail">
-          <view class="system-title">系统消息</view>
-          <view class="system-desc">好友通知：李华请求添加您为好友</view>
+    <view class="container">
+        <view class="navBar">
+            <view class="nav-title">消息</view>
         </view>
-        <view class="system-more">></view>
-    </navigator>
-    <view class="message-list">
-      <view class="message-title">消息列表</view>
-      <navigator wx:for="{{messages}}" class="message-item">
-        <image src="{{item.avatarUrl}}" class="message-avatar">
-          <view class="message-detail">
-            <view class="message-name">{{item.name}}</view>
-            <view class="message-desc">{{item.desc}}</view>
-          </view>
-      </navigator>
+        <navigator class="message-system">
+            <image class="system-img">
+                <view class="system-detail">
+                    <view class="system-title">系统消息</view>
+                    <view class="system-desc">好友通知：李华请求添加您为好友</view>
+                </view>
+                <view class="system-more">></view>
+        </navigator>
+        <view class="message-list">
+            <view class="message-title">消息列表</view>
+            <view class="message-items">
+                <navigator wx:for="{{messages}}" class="message-item">
+                    <image src="{{item.avatarUrl}}" class="message-avatar">
+                        <view class="message-detail">
+                            <view class="message-name">{{item.name}}</view>
+                            <view class="message-desc">{{item.desc}}</view>
+                        </view>
+                </navigator>
+            </view>
+        </view>
     </view>
-  </view>
 </template>
 
 <script>

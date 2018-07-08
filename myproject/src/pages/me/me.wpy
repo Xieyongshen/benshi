@@ -23,6 +23,7 @@ page {
     text-align: center;
     background: #ffffff;
     box-sizing: border-box;
+    border-bottom: 1rpx solid #d2d2d2;
 }
 
 .userinfo-avatar {
@@ -62,8 +63,7 @@ page {
     margin: none;
     padding: 10rpx 0;
     margin-left: 20rpx;
-    border: none;
-    background: #ffffff;
+    background-color: #ffffff;
     display: inline-block;
 }
 
@@ -123,9 +123,9 @@ page {
         <image class="userinfo-avatar" src="/icons/logo.png">
           <text class="userinfo-nickname">王小明</text>
           <text class="userinfo-desc">一只萌新</text>
-          <button class="userinfo-edit">
+          <navigator class="userinfo-edit">
             <image src="/icons/ic_edit.png">
-          </button>
+          </navigator>
       </block>
     </view>
     <view class="user-items">
