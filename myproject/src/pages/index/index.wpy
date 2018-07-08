@@ -255,7 +255,7 @@ export default class Index extends wepy.page {
                 tag: '编剧',
                 description: '希望做一个温柔的人，想给你讲一万个故事。'
             },
-            {w
+            {
                 id: 3,
                 name: '喻以流年',
                 imgUrl: '/icons/assets/user_4.jpg',

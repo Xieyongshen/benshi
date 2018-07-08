@@ -9,13 +9,7 @@
         </view>
 
 
-
-    <scroll-view class="category-scroll" 
-      scroll-into-view="{{scrollInTo}}" 
-      bindscroll="scrolling" 
-      scroll-with-animation="true" scroll-y="true">
-      <view style="display: flex">
-        <view class="cs-fix">
+    <view class="cs-fix">
           <view>
             <repeat for="{{categories}}" key="index">
               <view class="cate {{currentCategory==index?'selected':''}}" 
@@ -24,6 +18,22 @@
             </repeat>
           </view>
         </view>
+
+
+    <scroll-view class="category-scroll" 
+      scroll-into-view="{{scrollInTo}}" 
+      bindscroll="scrolling" 
+      scroll-with-animation="true" scroll-y="true">
+      <view style="display: flex">
+        <!-- <view class="cs-fix">
+          <view>
+            <repeat for="{{categories}}" key="index">
+              <view class="cate {{currentCategory==index?'selected':''}}" 
+                @tap.stop="clickScrollInTo" 
+                data-id="{{item.id}}">{{item.name}}</view>
+            </repeat>
+          </view>
+        </view> -->
         
         <view class="products" id="prds">
           <repeat for="{{categories}}" key="index" item="item" index="index">
@@ -182,10 +192,46 @@ page {
 }
 
 
+.cs-fix {
+    width: 25%;
+    height: 720rpx;
+    // position: fixed;
+    // top: 0;
+    // left: 0;
+    position: sticky;
+    position: --webkit-sticky;
+    top: 0rpx;
+    left: 0rpx;
+    view {
+      width: 100%;
+      height: 100%;
+      line-height: 60rpx;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-around;
+      background-color: #fff;
+      font-size: 30rpx;
+      text-align: center;
+    //   border-right: 1px solid #bfbfbf;
+      border-bottom: 1px solid #bfbfbf;
+      box-sizing: border-box;
+      .cate {
+        text-align: center;
+        font-size: 26rpx;
+        border-right: 1px solid #bfbfbf;
+      }
+      .selected {
+        color: #d28850;
+        border-right: none;
+        background-color: #fafafa;
+      }
+    }
+  }
+
 
 
 .category-scroll {
-  width: 100%;
+  width: 75%;
   height: 100vh;
 
   .cs-fixed {
@@ -229,7 +275,7 @@ page {
     }
   }
   .products {
-    width: 75%;
+    width: 100%;
     background-color: #fafafa;
     padding: 0 30rpx; 
     .product {
@@ -261,6 +307,7 @@ page {
       margin-right: 20rpx;
       background: #ffffff;
       display: inline-block;
+      font-size: 32rpx;
     }
   }
 }
