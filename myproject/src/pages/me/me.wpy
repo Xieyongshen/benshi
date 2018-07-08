@@ -119,12 +119,12 @@ page {
         <view class="userinfo-content">
             <block wx:if="{{hasUserInfo === false}}">
                 <image class="userinfo-avatar" src="/icons/logo.png">
-                    <button open-type="getUserInfo" class="userinfo-getbtn" bindtap="onGotUserInfo">获取用户信息</button>
+                    <button class="userinfo-getbtn" open-type="getUserInfo" bindgetuserinfo="getUserInfoFun">获取用户信息</button>
             </block>
             <block wx:if="{{hasUserInfo === true}}">
-                <image class="userinfo-avatar" src="/icons/logo.png">
-                    <text class="userinfo-nickname">王小明</text>
-                    <text class="userinfo-desc">一只萌新</text>
+                <image class="userinfo-avatar" src="{{userInfos.avatarUrl}}">
+                    <text class="userinfo-nickname">{{userInfos.nickName}}</text>
+                    <text class="userinfo-desc">{{userInfos.country}}</text>
                     <navigator class="userinfo-edit">
                         <image src="/icons/ic_edit.png">
                     </navigator>
@@ -157,64 +157,129 @@ page {
 
 <script>
 import wepy from 'wepy';
-import Panel from '@/components/panel'; // alias example
-import Counter from 'counter'; // alias example
-import List from '../../components/list'; // aliasFields example
-import moduleA from 'module-a'; // aliasFields ignore module example
-import Group from '../../components/group';
-import Toast from 'wepy-com-toast';
-import testMixin from '../../mixins/test';
-
-console.log('moduleA ignored: ', moduleA); // => moduleA ignored: {}
+import api from '@/api/api';
+import { SYSTEM_INFO, USER_SPECICAL_INFO, USER_INFO } from '@/utils/constant';
 
 export default class Index extends wepy.page {
     config = {};
     components = {};
 
-    mixins = [testMixin];
-
     data = {
-        hasUserInfo: false
+        hasUserInfo: false,
+        userInfos: {
+            nickName: ''
+        }
     };
 
-    async onGotUserInfo(e) {
-        // if (e.detail.errMsg == 'getUserInfo:ok') {
-        //   let res = await wepy.login();
-        //   if (res.code) {
-        //     wepy.setStorageSync(USER_INFO, e.detail.userInfo);
-        //     let systemInfo = wepy.getSystemInfoSync();
-        //     wepy.setStorageSync(SYSTEM_INFO, systemInfo);
-        //     let rlt = await api.wxJsCode2Session({
-        //       query: {
-        //         jsCode: res.code,
-        //         nickName: e.detail.userInfo.nickName
-        //       }
-        //     })
-        //   if (rlt.data.result) {
-        //       let data = rlt.data;
-        //       if (data.data.openid) {
-        //         wepy.setStorageSync(USER_SPECICAL_INFO, data.data);
-        //         wepy.switchTab({
-        //           url: '/pages/index/index'
-        //         })
-        //       }
-        //     } else {
-        //       let res = await wepy.showModal({
-        //         title: 'appid有误',
-        //         content: '授权失败'
-        //       })
-        //       if (res.confirm) {
-        //         wepy.switchTab({
-        //           url: '/pages/home'
-        //         })
-        //       }
-        //     }
+    //   async onLoad() {
+//     let res = await wepy.getSetting()
+//     //检验是否已授权
+//     if ((res.authSetting)['scope.userInfo']) {
+//       wepy.switchTab({
+//         url: '/pages/index/index'
+//       })
+//     }
+//   }
 
-        //   }
-        // }
-    }
+    methods = {
+        getUserInfoFun() {
+            // if (e.detail.errMsg == 'getUserInfo:ok') {
+            //   let res = await wepy.login();
+            //   if (res.code) {
+            //     wepy.setStorageSync(USER_INFO, e.detail.userInfo);
+            //     let systemInfo = wepy.getSystemInfoSync();
+            //     wepy.setStorageSync(SYSTEM_INFO, systemInfo);
+            //     let rlt = await api.wxJsCode2Session({
+            //       query: {
+            //         jsCode: res.code,
+            //         nickName: e.detail.userInfo.nickName
+            //       }
+            //     })
+            //   if (rlt.data.result) {
+            //       let data = rlt.data;
+            //       if (data.data.openid) {
+            //         wepy.setStorageSync(USER_SPECICAL_INFO, data.data);
+            //         wepy.switchTab({
+            //           url: '/pages/index/index'
+            //         })
+            //       }
+            //     } else {
+            //       let res = await wepy.showModal({
+            //         title: 'appid有误',
+            //         content: '授权失败'
+            //       })
+            //       if (res.confirm) {
+            //         wepy.switchTab({
+            //           url: '/pages/home'
+            //         })
+            //       }
+            //     }
 
-    methods = {};
+            //   }
+            // }
+
+            // wx.authorize({
+            //     scope: 'scope.userInfo',
+            //     success() {
+            //         let self = this;
+            //         this.$parent.getUserInfo(function(userInfo) {
+            //             if (userInfo) {
+            //                 self.userInfo = userInfo;
+            //             }
+            //             self.hasUserInfo = true;
+            //             self.$apply();
+            //         });
+            //     }
+            // });
+            let self = this;
+            wepy.showModal({
+                title: '授权',
+                content: '需要获取你的头像和昵称',
+                success: function(res) {
+                    if (res.confirm) {
+                        console.log('success');
+                        // let self = this;
+                        wepy.getUserInfo({
+                            success: function(res) {
+                                console.log('userInfo:' + res.userInfo); //do anything
+                                self.userInfos = res.userInfo;
+                                // console.log(self.userInfos.nickName);
+                                // console.log(self.userInfos.avatarUrl)
+                                self.$apply();
+                            }
+                        });
+
+                        self.hasUserInfo = true;
+                    } else if (res.cancel) {
+                        console.log('fail');
+                    }
+                }
+            });
+
+            // let self = this;
+            // wepy.getUserInfo({
+            //     success: function(res) {
+            //         console.log('userInfo:' + res.userInfo); //do anything
+            //         self.userInfos = res.userInfo;
+            //         // console.log(self.userInfos.nickName);
+            //         // console.log(self.userInfos.avatarUrl)
+            //         self.$apply();
+            //     }
+            // });
+
+            // self.hasUserInfo = true;
+            self.$apply();
+
+            // let self = this;
+            // this.$parent.getUserInfo(function(userInfo) {
+            //     if (userInfo) {
+            //         self.userInfo = userInfo;
+            //     }
+            //     self.hasUserInfo = true;
+            //     self.$apply();
+            // });
+        }
+    };
 
     events = {};
 
