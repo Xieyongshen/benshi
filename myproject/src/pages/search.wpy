@@ -117,7 +117,7 @@
 
 
 
-  export default class Index extends wepy.page {
+  export default class search extends wepy.page {
     config = {
       navigationBarTitleText: '搜索'
     }
