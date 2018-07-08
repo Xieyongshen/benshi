@@ -96,8 +96,12 @@ page {
     color: #b28850;
     float: right;
     text-align: center;
-    font-weight: 700;
-    line-height: 200rpx;
+}
+
+.path-img{
+    width: 40rpx;
+    height: 40rpx;
+    margin: 80rpx 20rpx;
 }
 </style>
 
@@ -117,7 +121,9 @@ page {
                 </view>
 
                 <view class="myLabel-detail">
-                    <view class="myLabel-more">></view>
+                    <view class="myLabel-more">
+                        <image class="path-img" src="/icons/ic_path.png">
+                    </view>
                     <view class="myLabel-title">{{item.title}}</view>
                     <view class="myLabel-description">{{item.description}}</view>
                 </view>
