@@ -1,0 +1,267 @@
+<template>
+  <view>
+    
+    <view class="navBar">
+            <navigator class="search_content" url="/pages/search">
+                <icon type="search" size="15" class="search-icon" />
+                <view class="search_input">搜索感兴趣的内容</view>
+            </navigator>
+        </view>
+
+
+
+    <scroll-view class="category-scroll" 
+      scroll-into-view="{{scrollInTo}}" 
+      bindscroll="scrolling" 
+      scroll-with-animation="true" scroll-y="true">
+      <view style="display: flex">
+        <view class="cs-fix">
+          <view>
+            <repeat for="{{categories}}" key="index">
+              <view class="cate {{currentCategory==index?'selected':''}}" 
+                @tap.stop="clickScrollInTo" 
+                data-id="{{item.id}}">{{item.name}}</view>
+            </repeat>
+          </view>
+        </view>
+        
+        <view class="products" id="prds">
+          <repeat for="{{categories}}" key="index" item="item" index="index">
+            <view class="product" id="{{item.id}}">{{item.name}}</view>
+            <view class="productBox" wx:for="{{item.lables}}" wx:for-item="itm" wx:key="idx" wx:for-index="idx">
+              {{item.lables[idx]}}
+            </view>
+          </repeat>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class categoryScroll extends wepy.page {
+  config = {
+    navigationBarTitleText: '楼层滚动'
+  }
+  components = {}
+
+  data = {
+    categories: [
+      {id: 'r', name: '热门分类', lables: ['TOEFL', 'IELTS', '围棋', '3DMax', '留学经验', '拍照摄影', '茶艺', '收纳']},
+      {id: 'w', name: '外语类', lables: ['TOEFL','IELTS','日语','德语','法语']},
+      {id: 'c', name: '才艺类', lables: ['TOEFL', 'IELTS', '围棋', '3DMax', '留学经验', '拍照摄影', '茶艺', '收纳']},
+      {id: 's', name: '生活技能', lables: ['TOEFL', 'IELTS', '围棋', '3DMax', '留学经验', '拍照摄影', '茶艺', '收纳']},
+      {id: 'z', name: '专业知识', lables: ['TOEFL', 'IELTS', '围棋', '3DMax', '留学经验', '拍照摄影', '茶艺', '收纳']},
+      {id: 'j', name: '经验分享', lables: ['TOEFL', 'IELTS', '围棋', '3DMax', '留学经验', '拍照摄影', '茶艺', '收纳']}
+
+    ],
+    // 当前分类的索引
+    currentCategory: 0,
+    // 每个分类距离顶部的高度的数组
+    productsTop: [],
+    categoryTop: 10000,
+    // 用于存储每次滚动结束之后的距离, 可用来判断滚动的方向
+    moveStartPos: 0,
+    // 点击分类的名称, 用于点击跳转
+    scrollInTo: ''
+  }
+
+  computed = {}
+
+  // onPageScroll (e) { s
+  onScrollViewScroll (e) {
+    // 当前滚动的距离
+    let scrollTop = e.scrollTop
+    // moveStartPos记录着上一次滚动完成时的位置, 用于判断滚动方向
+    // 如果现在的滚动距离大于moveStartPos说明正在往下滚动
+    if (scrollTop > this.moveStartPos) {
+      this.moveStartPos = scrollTop
+      // 遍历每个商品距离顶部的距离
+      this.productsTop.forEach((item, index) => {
+        // 如果滚动的距离大于某个商品到顶部的距离说明该商品到了顶部, 减10是为了减少触发距离
+        if (scrollTop > item.top - 10) {
+          // 当前分类的索引小于满足条件的商品索引就赋值, 跳到下一个分类
+          if (this.currentCategory < index) {
+            this.currentCategory = index
+            this.$apply()
+          }
+        }
+      })
+    // 如果现在的滚动距离小于moveStartPos说明正在往上滚动    
+    } else if (scrollTop < this.moveStartPos) {
+      this.moveStartPos = scrollTop
+      this.productsTop.forEach((item, index) => {
+        if (scrollTop < item.top - 10) {
+          if (this.currentCategory >= index) {
+            this.currentCategory = index ? index - 1 : index
+            this.$apply()
+          }
+        }
+      })
+    }
+    this.$apply()
+  }
+
+  methods = {
+    // scroll-view滚动时触发
+    scrolling (e) {
+      // 将当前的距离传入
+      this.onScrollViewScroll({scrollTop: e.detail.scrollTop})
+    },
+    // 点击分类跳转
+    clickScrollInTo (e) {
+      this.scrollInTo = e.currentTarget.dataset.id
+      this.$apply()
+    }
+  }
+
+  onReady () {
+    // 页面准备完成之后获取每个分类距离顶部的高度, 存储在数组productsTop中
+    var query = wx.createSelectorQuery()
+    this.productsTop = []
+    query.selectAll('.product').boundingClientRect((rect) => {
+      rect.forEach((item, index) => {
+        this.productsTop.push({top: item.top-150})
+      })
+      this.$apply()
+    })
+    
+    query.selectAll('.cs-fix').boundingClientRect((rect) => {
+      this.categoryTop = rect[0].top
+      this.$apply()
+    }).exec()
+  }
+}
+</script>
+<style lang="less">
+
+page {
+    background: #fafafa;
+}
+
+.navBar {
+    width: 750rpx;
+    height: 150rpx;
+    font-size: 40rpx;
+    line-height: 110rpx;
+    background-color: #d1c0a5;
+    color: #ffffff;
+    padding-top: 40rpx;
+    box-sizing: border-box;
+}
+
+.search_content {
+    width: 600rpx;
+    height: 70rpx;
+    margin: 20rpx auto;
+    padding: 0 30rpx;
+    color: #8c877e;
+    text-align: left;
+    background: #ffffff;
+    opacity: 0.5;
+    border-radius: 52rpx;
+    box-sizing: border-box;
+}
+
+.search-icon {
+    height: 70rpx;
+    line-height: 70rpx;
+    padding: 20rpx 0;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.search_input {
+    font-size: 32rpx;
+    line-height: 70rpx;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 50rpx;
+}
+
+
+
+
+.category-scroll {
+  width: 100%;
+  height: 100vh;
+
+  .cs-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  .cs-fix {
+    width: 25%;
+    height: 720rpx;
+    // position: fixed;
+    // top: 0;
+    // left: 0;
+    position: sticky;
+    position: --webkit-sticky;
+    top: 0rpx;
+    left: 0rpx;
+    view {
+      width: 100%;
+      height: 100%;
+      line-height: 60rpx;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-around;
+      background-color: #fff;
+      font-size: 30rpx;
+      text-align: center;
+    //   border-right: 1px solid #bfbfbf;
+      border-bottom: 1px solid #bfbfbf;
+      box-sizing: border-box;
+      .cate {
+        text-align: center;
+        font-size: 26rpx;
+        border-right: 1px solid #bfbfbf;
+      }
+      .selected {
+        color: #d28850;
+        border-right: none;
+        background-color: #fafafa;
+      }
+    }
+  }
+  .products {
+    width: 75%;
+    background-color: #fafafa;
+    padding: 0 30rpx; 
+    .product {
+      height: 60rpx;
+      box-sizing: border-box;
+    //   display: flex;
+    //   flex-direction: row;
+      width: 100%;
+      margin-top: 30rpx;
+      font-size: 32rpx;
+      line-height: 60rpx;
+      display: block;
+      justify-content: center;
+      align-items: center;
+      // color: #a8a1a1;
+    }
+    .productBox {
+    //   width: 100%;
+    //   height: 100rpx;
+    //   line-height: 100rpx;
+    //   text-align: center;
+    //   color: #a8a1a1;
+
+      width: auto;
+      margin: 10rpx 0;
+      padding: 0 20rpx;
+      border: 1rpx solid #d1c0a5;
+      border-radius: 30rpx;
+      margin-right: 20rpx;
+      background: #ffffff;
+      display: inline-block;
+    }
+  }
+}
+</style>

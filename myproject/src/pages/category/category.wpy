@@ -164,15 +164,15 @@ page {
         </view>
 
         <view class="category-main">
-            <scroll-view class="category-left" scroll-y="true">
+            <scroll-view class="category-left" scroll-y="{{yes}}" bindscroll="scroll">
                 <view class="cate-list {{curIndex===index?'on':''}}" wx:for="{{category}}" wx:key="{{item.id}}" data-id="{{item.id}}" data-index="{{index}}" @tap="switchCategory">
                     <text>{{item.name}}</text>
                 </view>
             </scroll-view>
-            <scroll-view scroll-y="true" class="category-right" scroll-into-view="{{toView}}">
+            <view>
+            <scroll-view scroll-y="{{yes}}" class="category-right" scroll-into-view="{{toView}}" scroll-with-animation="{{yes}}" bindscroll="scroll">
                 <block wx:for="{{detail}}" wx:key="{{item.id}}">
                     <view class="cat-title {{item.Ttitle == null ? 'element' : 'category'}}" id="{{item.id}}">
-                        <!-- <view class="Ttitle">{{item.Ttitle}}</view> -->
                         {{item.Ttitle}}
                         <view class="product" @tap="toDetail" data-index="{{index}}">
                             <view class="pro-desc">
@@ -182,6 +182,7 @@ page {
                     </view>
                 </block>
             </scroll-view>
+            </view>
         </view>
 
     </view>
@@ -203,12 +204,7 @@ console.log('moduleB ignored: ', moduleA); // => moduleA ignored: {}
 export default class Catrgoty extends wepy.page {
     config = {};
     components = {
-        // panel: Panel,
-        // counter1: Counter,
-        // counter2: Counter,
-        // list: List,
-        // group: Group,
-        // toast: Toast,
+
     };
     mixins = [testMixin];
 
@@ -249,7 +245,7 @@ export default class Catrgoty extends wepy.page {
                 selected: false,
                 price: 1799
             },
-            { Ttitle: '电视', id: 'diansi' },
+            { Ttitle: '外语类', id: 'foreign' },
             {
                 title: '小米55寸曲面电视',
                 image:
@@ -276,7 +272,7 @@ export default class Catrgoty extends wepy.page {
                 price: 2599
             },
 
-            { Ttitle: '电脑', id: 'diannao' },
+            { Ttitle: '才艺类', id: 'talent' },
 
             {
                 title: '小米15.6游戏本',
@@ -305,7 +301,7 @@ export default class Catrgoty extends wepy.page {
                 price: 4599
             },
 
-            { Ttitle: '家电', id: 'jiadian' },
+            { Ttitle: '生活技能', id: 'skill' },
 
             {
                 title: '小米电饭煲',
@@ -334,7 +330,7 @@ export default class Catrgoty extends wepy.page {
                 price: 2599
             },
 
-            { Ttitle: '路由', id: 'luyou' },
+            { Ttitle: '专业知识', id: 'kown' },
 
             {
                 title: '虾米路由4',
@@ -363,7 +359,7 @@ export default class Catrgoty extends wepy.page {
                 price: 399
             },
 
-            { Ttitle: '智能', id: 'zhineng' },
+            { Ttitle: '经验分享', id: 'exp' },
 
             {
                 title: '小米智能摄像机',
@@ -392,8 +388,9 @@ export default class Catrgoty extends wepy.page {
                 price: 199
             }
         ],
-        toView: 'shouji',
-        curIndex: 0
+        toView: 'hot',
+        curIndex: 0,
+        yes: true
     };
 
     // computed = {
@@ -417,20 +414,20 @@ export default class Catrgoty extends wepy.page {
         },
 
         switchCategory: function(e) {
-            this.toView = e.target.dataset.id;
+            this.toView = e.target.dataset.id
+            console.log(e.target.dataset.id)
             this.curIndex = e.currentTarget.dataset.index
                 ? e.currentTarget.dataset.index
-                : 0;
+                : 0
+            console.log(this.curIndex)
+            this.$apply()
         },
 
         toDetail: function(e) {}
     };
 
     events = {
-        // 'index-emit': (...args) => {
-        //   let $event = args[args.length - 1]
-        //   console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
-        // }
+
     };
 
     onLoad() {}
