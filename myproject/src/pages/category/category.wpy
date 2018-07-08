@@ -1,89 +1,115 @@
 <style lang="less">
 
-.search_input {
-  width:90%;
-  background-color:#ffd;
-  margin-left:5%;
-  padding-left:20rpx;
-  margin-top:20rpx;
-  margin-bottom:10px;
-  border-radius:52rpx;
-  font-size:29rpx;
-  padding-top:10rpx;
-  padding-bottom:10rpx;
+    page{
+        background-color: #fafafa;
+    }
 
+  .navBar{
+    width: 750rpx;
+    height: 150rpx;
+    font-size: 40rpx;
+    line-height: 110rpx;
+    background-color: #d1c0a5;
+    color: #ffffff;
+    padding-top: 40rpx;
+    box-sizing: border-box;
+  }
+
+.search_content {
+    width: 600rpx;
+    height:70rpx;
+    margin: 20rpx auto;
+    padding: 0 30rpx;
+    color: #8c877e;
+    text-align: left;
+    background-color: #ffffff;
+    opacity: 0.5;
+    border-radius:52rpx;
+    box-sizing: border-box;
+}
+
+.search-icon{
+    height: 70rpx;
+    line-height: 70rpx;
+    padding: 20rpx 0;
+    box-sizing:border-box;
+    vertical-align:top;
+}
+
+.search_input{
+    font-size: 32rpx;
+    line-height: 70rpx;
+    display: inline-block;
+    vertical-align:top;
+    margin-left: 50rpx;
 }
 
 //小米商城类型
- page, .main{
-    height: 100%;
+.category-main{
+    position: relative;
     overflow: hidden;
 } 
 .category-left{
-    float: left;
     width: 150rpx;
-    height: 100%;
-    border-right:1px solid #ddd;
+    height: auto;
     box-sizing: border-box;
-}
-.category-left .cate-list.on {
-    color: rgb(219, 29, 29);
-    transform: scale(1.3)
+    position: absolute;
 }
 .category-left .cate-list {
-    font-size: 28rpx;
+    width: 150rpx;
+    height: 120rpx;
+    font-size: 30rpx;
     text-align: center;
-    line-height: 86rpx;
-} 
+    line-height: 120rpx;
+    border-right: 1px solid #bfbfbf;
+    border-bottom: 1px solid #bfbfbf;
+    box-sizing: border-box;
+}
+
+.category-left .cate-list.on {
+    color: #d28850;
+    border-right: none;
+}
+
 ::-webkit-scrollbar{
     width: 0;
     height: 0;
     color:transparent;
 }
-.category-right{
-    /* float: right; */
-    height: 100%;
-    /*  */
-    /* background: #000; */
-    margin-left: 97rpx;
-    box-sizing: border-box;
-    /* padding-left: 0rpx; */
-}
+
 .category-right{
     width: 600rpx;
-    /* display: block; */
-    position: absolute;
-    top: 35rpx;
-    /* background: #000; */
+    height: 100%;
+    margin-left: 150rpx;
+    padding: 0 30rpx;
+    box-sizing: border-box;
 }
 
+.cate-title{
+    width: 100%;
+}
 
 .category-right .cat-title.category{
-    // display: block;
-    width: 160rpx;
-    height: 40rpx;
-    
-    margin-bottom: 40rpx;
+    width: 100%;
+    margin-top: 30rpx;
+    font-size: 32rpx;
+    line-height: 60rpx;
+    display: block;
 }
 
 .category-right .cat-title.element{
-    // display: block;
-    background-color: red;
     width: auto;
-    border-radius: 16rpx;
-    float: left;
-    margin-left:10rpx;
-    margin-right:10rpx;
-    // margin-top:20rpx;
-
+    margin: 10rpx 0;
+    padding: 0 20rpx;
+    border: 1rpx solid #d1c0a5;
+    border-radius: 30rpx;
+    margin-right: 20rpx;
+    display: inline-block;
 }
 
 .category-right .cat-title{
-    // margin-left: -50rpx;
-    display: block;
-    text-align: center;
-    padding-bottom: 20rpx;
-    margin-top: 60rpx;
+    height: 60rpx;
+    box-sizing: border-box;
 }
 
 .cat-title .Ttitle{
@@ -115,11 +141,12 @@
 }
 .product .pro-desc .pro-image{
     display: block;
-    width: 100rpx;
+    width: 100%;
     height: 60rpx;
 }
 .product .pro-desc .pro-desc1{
-    font-size: 22rpx;
+    font-size: 28rpx;
+    line-height: 60rpx;
 }
 
 
@@ -131,40 +158,34 @@
 <template>
 
 <view>
-
-  <view class="top_search">
-    <view class="search_read_only">
-      <navigator class="search_content" url="/pages/search">
-        <i class="iconfont icon-search"></i>
-        <view class="search_input">搜索商品</view>
-      </navigator>
+    <view class="navBar">
+        <navigator class="search_content" url="/pages/search">
+            <icon type="search" size="15" class="search-icon"/>
+            <view class="search_input">搜索感兴趣的内容</view>
+        </navigator>
     </view>
-  </view>
 
-  <view class="main">
-    <scroll-view class="category-left" scroll-y="true">
-        <view class="cate-list {{curIndex===index?'on':''}}" wx:for="{{category}}" wx:key="{{item.id}}" data-id="{{item.id}}" data-index="{{index}}" @tap="switchCategory">
-            <text>{{item.name}}</text>
-        </view>
-    </scroll-view>
-  </view>
-
-
-  <view class="category-right">
-    <scroll-view scroll-y="true" class="category-right" scroll-into-view="{{toView}}">
-        <block wx:for="{{detail}}" wx:key="{{item.id}}" >
-            <view class="cat-title {{item.Ttitle == null ? 'element' : 'category'}}" id="{{item.id}}">
-                <!-- <view class="Ttitle">{{item.Ttitle}}</view> -->
-                {{item.Ttitle}}
-                <view class="product" @tap="toDetail" data-index="{{index}}">
-                    <view class="pro-desc">  
-                        <text class="pro-desc1">{{item.title}}</text>
+    <view class="category-main">
+        <scroll-view class="category-left" scroll-y="true">
+            <view class="cate-list {{curIndex===index?'on':''}}" wx:for="{{category}}" wx:key="{{item.id}}" data-id="{{item.id}}" data-index="{{index}}" @tap="switchCategory">
+                <text>{{item.name}}</text>
+            </view>
+        </scroll-view>
+        <scroll-view scroll-y="true" class="category-right" scroll-into-view="{{toView}}">
+            <block wx:for="{{detail}}" wx:key="{{item.id}}" >
+                <view class="cat-title {{item.Ttitle == null ? 'element' : 'category'}}" id="{{item.id}}">
+                    <!-- <view class="Ttitle">{{item.Ttitle}}</view> -->
+                    {{item.Ttitle}}
+                    <view class="product" @tap="toDetail" data-index="{{index}}">
+                        <view class="pro-desc">  
+                            <text class="pro-desc1">{{item.title}}</text>
+                        </view>
                     </view>
                 </view>
-            </view>
-        </block>
-    </scroll-view>
-  </view>
+            </block>
+        </scroll-view>
+    </view>
+
 </view>
 
 </template>
@@ -183,7 +204,7 @@
 
   export default class Catrgoty extends wepy.page {
     config = {
-      navigationBarTitleText: '分类'
+
     }
     components = {
       // panel: Panel,
@@ -266,11 +287,11 @@
     
 
     
-    computed = {
-      now () {
-        return +new Date()
-      }
-    }
+    // computed = {
+    //   now () {
+    //     return +new Date()
+    //   }
+    // }
 
     methods = {
       //事件处理函数  
