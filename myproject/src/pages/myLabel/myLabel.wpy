@@ -1,83 +1,84 @@
 <style lang="less">
-  page{
+page {
     background: #fafafa;
-  }
+}
 
-  .navBar{
+.navBar {
     width: 750rpx;
     height: 150rpx;
-    font-size: 40rpx;
-    line-height: 110rpx;
-    background-color: #d1c0a5;
-    color: #ffffff;
-    padding-top: 40rpx;
+    font-size: 35rpx;
+    line-height: 100rpx;
+    background-color: #ffffff;
+    color: #d28850;
+    padding-top: 50rpx;
     padding-left: 40rpx;
+    border-bottom: 1rpx solid #d2d2d2;
     box-sizing: border-box;
-  }
+}
 
-  .myLabel{
-    width:690rpx;
+.myLabel {
+    width: 690rpx;
     margin-top: 30rpx;
-  }
+}
 
-  .myLabelItem{
+.myLabelItem {
     width: 690rpx;
     height: 280rpx;
     margin-bottom: 30rpx;
     box-shadow: 0 1rpx 1rpx #a8a7a7;
     background: #ffffff;
-  }
+}
 
-  .myLabel-class {
+.myLabel-class {
     display: inline-block;
     width: 80rpx;
     height: 100%;
     font-size: 40rpx;
     color: #b28850;
-    writing-mode:vertical-lr;
+    writing-mode: vertical-lr;
     text-align: center;
     vertical-align: top;
     box-sizing: border-box;
     border-right: 2rpx solid #cfa972;
-  }
+}
 
-  .myLabel-class-text{
+.myLabel-class-text {
     width: 50%;
     height: auto;
     margin: auto;
     vertical-align: middle;
     display: inline-block;
-  }
+}
 
-  .myLabel-detail{
+.myLabel-detail {
     width: 610rpx;
     height: 100%;
     padding: 30rpx 0 30rpx 30rpx;
     box-sizing: border-box;
     display: inline-block;
-  }
+}
 
-  .myLabel-title {
+.myLabel-title {
     width: 500rpx;
     font-family: 'MicrosoftYaHei';
     font-size: 40rpx;
     line-height: 40rpx;
-  }
+}
 
-  .myLabel-description {
+.myLabel-description {
     width: 500rpx;
     font-family: 'MicrosoftYaHei';
     font-size: 33rpx;
     line-height: 50rpx;
     margin-top: 20rpx;
-    height:150rpx;
+    height: 150rpx;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
-  }
+}
 
- .myLabel-more {
+.myLabel-more {
     width: 80rpx;
     height: 100%;
     color: #b28850;
@@ -85,8 +86,7 @@
     text-align: center;
     font-weight: 700;
     line-height: 200rpx;
-  }
-  
+}
 </style>
 
 <template>
@@ -115,67 +115,54 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
-  import Panel from '@/components/panel' // alias example
-  import Counter from 'counter' // alias example
-  import List from '../../components/list' // aliasFields example
-  import moduleA from 'module-a' // aliasFields ignore module example
-  import Group from '../../components/group'
-  import Toast from 'wepy-com-toast'
-  import testMixin from '../../mixins/test'
+import wepy from 'wepy';
+import Panel from '@/components/panel'; // alias example
+import Counter from 'counter'; // alias example
+import List from '../../components/list'; // aliasFields example
+import moduleA from 'module-a'; // aliasFields ignore module example
+import Group from '../../components/group';
+import Toast from 'wepy-com-toast';
+import testMixin from '../../mixins/test';
 
-  console.log('moduleA ignored: ', moduleA) // => moduleA ignored: {}
+console.log('moduleA ignored: ', moduleA); // => moduleA ignored: {}
 
-
-  export default class Index extends wepy.page {
-    config = {
-
-    }
+export default class Index extends wepy.page {
+    config = {};
     components = {
-      panel: Panel,
-    }
+        panel: Panel
+    };
 
-    mixins = [testMixin]
+    mixins = [testMixin];
 
     data = {
-
-      myLabelArray:[
-        {
-          id:0,
-          class:"摄 影",
-          title:"摄影",
-          description:"从初中开始接触摄影的非专业风景取景爱好者，准确快门专家\n装备：佳能70D，佳能定焦、变焦镜头若干"
-        },
-        {
-          id:1,
-          class:"烹 饪",
-          title:"烹饪",
-          description:"资深吃货，爱好川湘菜，爱吃更爱做，非典型性甜点品尝家，小龙虾克星，多次蝉联幼儿园烹饪比赛冠军"
-        }
-
-      ]
-    
-    }
-
-
-
-
+        myLabelArray: [
+            {
+                id: 0,
+                class: '摄 影',
+                title: '摄影',
+                description:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家\n装备：佳能70D，佳能定焦、变焦镜头若干'
+            },
+            {
+                id: 1,
+                class: '烹 饪',
+                title: '烹饪',
+                description:
+                    '资深吃货，爱好川湘菜，爱吃更爱做，非典型性甜点品尝家，小龙虾克星，多次蝉联幼儿园烹饪比赛冠军'
+            }
+        ]
+    };
 
     computed = {
-      now () {
-        return +new Date()
-      }
-    }
+        now() {
+            return +new Date();
+        }
+    };
 
-    methods = {
-     
-    }
+    methods = {};
 
-    events = {
-      
-    }
+    events = {};
 
-    onLoad() {
-    }
-  }
+    onLoad() {}
+}
 </script>

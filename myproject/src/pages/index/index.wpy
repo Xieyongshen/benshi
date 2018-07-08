@@ -1,22 +1,22 @@
 <style lang="less">
-  .topScroll{
+.topScroll {
     width: 750rpx;
     height: 400rpx;
     background-color: #80dfe6;
-  }
+}
 
-  .scrollNav{
+.scrollNav {
     position: relative;
     padding-top: 20rpx;
     padding-bottom: 20rpx;
-  }
+}
 
-  .scrollImg{
+.scrollImg {
     width: 750rpx;
     height: 360rpx;
-  }
+}
 
-  .scrollTitle{
+.scrollTitle {
     width: 750rpx;
     font-size: 35rpx;
     padding: 0 40rpx;
@@ -27,43 +27,43 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
+}
 
-  .updateMessages{
+.updateMessages {
     font-size: 30rpx;
     width: 100%;
     height: 70rpx;
     padding: 15rpx 15rpx;
     box-sizing: border-box;
-  }
+}
 
-  .index-recommand{
+.index-recommand {
     width: 100%;
-  }
+}
 
-  .recommand-title{
+.recommand-title {
     font-size: 30rpx;
     width: 100%;
     height: 70rpx;
     padding: 15rpx 40rpx;
     box-sizing: border-box;
-  }
+}
 
-  .recommand-items{
+.recommand-items {
     width: 100%;
     height: 160rpx;
-  }
+}
 
-  .userItem-img{
+.userItem-img {
     width: 100rpx;
     height: 100rpx;
     border-radius: 50%;
     margin: 30rpx 40rpx;
     box-sizing: border-box;
     background: #80dfe6;
-  }
+}
 
-  .userItem-details{
+.userItem-details {
     width: 570rpx;
     height: 160rpx;
     padding: 20rpx 40rpx 20rpx 0;
@@ -71,18 +71,18 @@
     display: inline-block;
     border-bottom: 1px solid #a5a5a5;
     box-sizing: border-box;
-  }
+}
 
-  .userItem-tag{
+.userItem-tag {
     width: 530rpx;
     font-size: 37rpx;
     line-height: 60rpx;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
+}
 
-  .userItem-detail{
+.userItem-detail {
     width: 530rpx;
     font-size: 33rpx;
     line-height: 60rpx;
@@ -90,24 +90,23 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  
-  .userItem-desc{
+}
+
+.userItem-desc {
     font-size: 33rpx;
     line-height: 60rpx;
     color: #999999;
     margin-left: 20rpx;
     display: inline-block;
-  }
+}
 </style>
 <template>
   <view class="container">
-    <swiper indicator-dots="true" autoplay="true" interval="3000" duration="800" circular="true"
-            class="topScroll">
+    <swiper indicator-dots="true" autoplay="true" interval="3000" duration="800" circular="true" class="topScroll">
       <swiper-item class="scrollItem" wx:for="{{scroll}}">
         <navigator url="{{item.url}}" class="scrollNav">
           <image src="{{item.imgUrl}}" mode="scaleToFill" class="scrollImg">
-          <view class="scrollTitle">{{item.desc}}</view>
+            <view class="scrollTitle">{{item.desc}}</view>
         </navigator>
       </swiper-item>
     </swiper>
@@ -121,10 +120,12 @@
       <block wx:for="{{recommandUsers}}" wx:key="recommandUsers">
         <navigator class="recommand-items">
           <image src="{{item.imgUrl}}" class="userItem-img">
-          <view class="userItem-details">
-            <view class="userItem-tag">{{item.tag}}</view>
-            <view class="userItem-detail">{{item.name}}<view class="userItem-desc">{{item.description}}</view></view>
-          </view>
+            <view class="userItem-details">
+              <view class="userItem-tag">{{item.tag}}</view>
+              <view class="userItem-detail">{{item.name}}
+                <view class="userItem-desc">{{item.description}}</view>
+              </view>
+            </view>
         </navigator>
       </block>
     </view>
@@ -132,82 +133,87 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
-  import Panel from '@/components/panel' // alias example
-  import Counter from 'counter' // alias example
-  import List from '../../components/list' // aliasFields example
-  import moduleA from 'module-a' // aliasFields ignore module example
-  import Group from '../../components/group'
-  import Toast from 'wepy-com-toast'
-  import testMixin from '../../mixins/test'
+import wepy from 'wepy';
+import Panel from '@/components/panel'; // alias example
+import Counter from 'counter'; // alias example
+import List from '../../components/list'; // aliasFields example
+import moduleA from 'module-a'; // aliasFields ignore module example
+import Group from '../../components/group';
+import Toast from 'wepy-com-toast';
+import testMixin from '../../mixins/test';
 
-  console.log('moduleA ignored: ', moduleA) // => moduleA ignored: {}
+console.log('moduleA ignored: ', moduleA); // => moduleA ignored: {}
 
-
-  export default class Index extends wepy.page {
-    config = {
-
-    }
+export default class Index extends wepy.page {
+    config = {};
     components = {
-      panel: Panel,
-      counter1: Counter,
-      counter2: Counter,
-      list: List,
-      group: Group,
-      toast: Toast
-    }
+        panel: Panel,
+        counter1: Counter,
+        counter2: Counter,
+        list: List,
+        group: Group,
+        toast: Toast
+    };
 
-    mixins = [testMixin]
+    mixins = [testMixin];
 
     data = {
-      scroll: [{
-        url: "",
-        imgUrl: "",
-        desc: "linux与Unix shell编程指南南南南南南南南南南"
-      }, {
-        url: "",
-        imgUrl: "",
-        desc: "linux与Unix shell编程指南南南南南南南南南南"
-      }, {
-        url: "",
-        imgUrl: "",
-        desc: "linux与Unix shell编程指南南南南南南南南南南"
-      }],
-      recommandUsers: [{
-        id: 0,
-        name: "王小明",
-        imgUrl: "",
-        tag: "Material",
-        description: "武大计院"
-      }, {
-        id: 1,
-        name: "王小明明明明明明明明明明明明",
-        imgUrl: "",
-        tag: "Material",
-        description: "武大计院"
-      }, {
-        id: 2,
-        name: "王小明",
-        imgUrl: "",
-        tag: "Material",
-        description: "武大计院院院院院院院院院院院院"
-      }, {
-        id: 3,
-        name: "王小明",
-        imgUrl: "",
-        tag: "Material",
-        description: "武大计院"
-      }, {
-        id: 4,
-        name: "王小明",
-        imgUrl: "",
-        tag: "Material",
-        description: "武大计院"
-      }]
-    }
+        scroll: [
+            {
+                url: '',
+                imgUrl: '',
+                desc: 'linux与Unix shell编程指南南南南南南南南南南'
+            },
+            {
+                url: '',
+                imgUrl: '',
+                desc: 'linux与Unix shell编程指南南南南南南南南南南'
+            },
+            {
+                url: '',
+                imgUrl: '',
+                desc: 'linux与Unix shell编程指南南南南南南南南南南'
+            }
+        ],
+        recommandUsers: [
+            {
+                id: 0,
+                name: '王小明',
+                imgUrl: '',
+                tag: 'Material',
+                description: '武大计院'
+            },
+            {
+                id: 1,
+                name: '王小明明明明明明明明明明明明',
+                imgUrl: '',
+                tag: 'Material',
+                description: '武大计院'
+            },
+            {
+                id: 2,
+                name: '王小明',
+                imgUrl: '',
+                tag: 'Material',
+                description: '武大计院院院院院院院院院院院院'
+            },
+            {
+                id: 3,
+                name: '王小明',
+                imgUrl: '',
+                tag: 'Material',
+                description: '武大计院'
+            },
+            {
+                id: 4,
+                name: '王小明',
+                imgUrl: '',
+                tag: 'Material',
+                description: '武大计院'
+            }
+        ]
+    };
 
-    onLoad() {
-
-    }
-  }
+    onLoad() {}
+}
 </script>
