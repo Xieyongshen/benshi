@@ -105,7 +105,8 @@ page {
     text-align: center;
     color: #888888;
     font-size: 28rpx;
-    margin-top: 100rpx;
+    position: absolute;
+    bottom: 20rpx;
 }
 </style>
 <template>
@@ -127,10 +128,6 @@ page {
           </button>
       </block>
     </view>
-    <navigator class="user-items">
-      <text>详细资料</text>
-      <view class="user-navto">></view>
-    </navigator>
     <view class="user-items">
       <navigator class="userItem-content">
         <text>我的订单</text>
