@@ -8,7 +8,7 @@ page {
     font-size: 35rpx;
     line-height: 100rpx;
     background-color: #ffffff;
-    color: #d28850;
+    color: #b28850;
     padding-top: 50rpx;
     box-sizing: border-box;
     border-bottom: 1rpx solid #d2d2d2;
@@ -71,7 +71,7 @@ page {
 }
 
 .category-left .cate-list.on {
-    color: #d28850;
+    color: #b28850;
     border-right: none;
     background-color: #fafafa;
 }
