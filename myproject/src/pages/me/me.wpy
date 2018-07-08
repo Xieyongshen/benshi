@@ -16,68 +16,96 @@ page {
     box-sizing: border-box;
 }
 
-.userinfo-content{
-  width: 100%;
-  height: 400rpx;
-  padding-top: 20rpx;
-  text-align: center;
-  background: #ffffff;
-  box-sizing: border-box;
+.userinfo-content {
+    width: 100%;
+    height: 400rpx;
+    padding-top: 20rpx;
+    text-align: center;
+    background: #ffffff;
+    box-sizing: border-box;
 }
 
-.userinfo-avatar{
-  width: 150rpx;
-  height: 150rpx;
-  margin: 30rpx auto;
-  display: block;
+.userinfo-avatar {
+    width: 150rpx;
+    height: 150rpx;
+    margin: 30rpx auto;
+    display: block;
 }
 
-.userinfo-getbtn{
-  width: 600rpx;
-  height: 80rpx;
-  color: #d28850;
-  font-size: 32rpx;
-  line-height: 80rpx;
-  border: 1rpx solid #d1c0a5;
+.userinfo-getbtn {
+    width: 600rpx;
+    height: 80rpx;
+    color: #d28850;
+    font-size: 32rpx;
+    line-height: 80rpx;
+    border: 1rpx solid #d1c0a5;
 }
 
-.userinfo-nickname, .userinfo-desc{
-  font-size: 32rpx;
-  line-height: 60rpx;
-  display: block;
+.userinfo-nickname {
+    font-size: 33rpx;
+    line-height: 60rpx;
+    display: block;
 }
 
-.userinfo-desc{
-  color: #888888;
+.userinfo-desc {
+    height: 60rpx;
+    font-size: 33rpx;
+    line-height: 60rpx;
+    color: #888888;
+    vertical-align: top;
+    display: inline-block;
 }
 
-.user-items{
-  width: 100%;
-  background: #ffffff;
-  font-size: 32rpx;
-  line-height: 80rpx;
-  margin: 10rpx 0;
-  padding-left: 40rpx;
-  border-top: 1rpx solid #d2d2d2;
-  border-bottom: 1rpx solid #d2d2d2;
-  box-sizing: border-box;
+.userinfo-edit {
+    width: 60rpx;
+    height: 60rpx;
+    margin: none;
+    padding: 10rpx 0;
+    margin-left: 20rpx;
+    border: none;
+    background: #ffffff;
+    display: inline-block;
 }
 
-.user-navto{
-  float: right;
-  margin-right: 40rpx;
+.userinfo-edit image {
+    width: 40rpx;
+    height: 40rpx;
+    vertical-align: top;
 }
 
-.userItem-content:not(:first-child){
-  border-top: 1rpx solid #d2d2d2;
+.user-items {
+    width: 100%;
+    background: #ffffff;
+    font-size: 32rpx;
+    line-height: 80rpx;
+    margin: 10rpx 0;
+    padding-left: 40rpx;
+    border-top: 1rpx solid #d2d2d2;
+    border-bottom: 1rpx solid #d2d2d2;
+    box-sizing: border-box;
 }
 
-.teamLogo{
-  width: 100%;
-  text-align: center;
-  color: #888888;
-  font-size: 28rpx;
-  margin-top: 100rpx;
+.user-navto {
+    float: right;
+    margin-right: 40rpx;
+}
+
+.userItem-content:not(:first-child) {
+    border-top: 1rpx solid #d2d2d2;
+}
+
+.userItem-balance {
+    font-size: 30rpx;
+    color: #888888;
+    margin-left: 30rpx;
+}
+
+.teamLogo {
+    width: 100%;
+    text-align: center;
+    color: #888888;
+    font-size: 28rpx;
+    margin-top: 100rpx;
 }
 </style>
 <template>
@@ -88,12 +116,15 @@ page {
     <view class="userinfo-content">
       <block wx:if="{{hasUserInfo === false}}">
         <image class="userinfo-avatar" src="/icons/logo.png">
-        <button class="userinfo-getbtn" bindtap="getUserInfo">获取用户信息</button>
+          <button class="userinfo-getbtn" bindtap="getUserInfo">获取用户信息</button>
       </block>
       <block wx:if="{{hasUserInfo === true}}">
         <image class="userinfo-avatar" src="/icons/logo.png">
-        <text class="userinfo-nickname">王小明</text>
-        <text class="userinfo-desc">一只萌新</text>
+          <text class="userinfo-nickname">王小明</text>
+          <text class="userinfo-desc">一只萌新</text>
+          <button class="userinfo-edit">
+            <image src="/icons/ic_edit.png">
+          </button>
       </block>
     </view>
     <navigator class="user-items">
@@ -107,6 +138,7 @@ page {
       </navigator>
       <navigator class="userItem-content">
         <text>我的钱包</text>
+        <text class="userItem-balance">余额：0</text>
         <view class="user-navto">></view>
       </navigator>
       <navigator class="userItem-content">
@@ -143,12 +175,10 @@ export default class Index extends wepy.page {
     mixins = [testMixin];
 
     data = {
-      hasUserInfo: true
+        hasUserInfo: true
     };
 
-    methods = {
-
-    };
+    methods = {};
 
     events = {};
 

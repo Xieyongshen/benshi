@@ -1,9 +1,9 @@
 <style lang="less">
-  page{
+page {
     background: #fafafa;
-  }
+}
 
-  .navBar{
+.navBar {
     width: 750rpx;
     height: 150rpx;
     font-size: 35rpx;
@@ -14,40 +14,40 @@
     padding-left: 40rpx;
     border-bottom: 1rpx solid #d2d2d2;
     box-sizing: border-box;
-  }
+}
 
-  .message-system{
+.message-system {
     width: 100%;
     height: 160rpx;
     background: #ffffff;
     margin: 40rpx 0;
     box-shadow: 0 0 1rpx #a8a7a7;
-  }
+}
 
-  .system-img{
+.system-img {
     width: 100rpx;
     height: 100rpx;
     margin: 30rpx 40rpx;
     box-sizing: border-box;
     background: #80dfe6;
-  }
+}
 
-  .system-detail{
+.system-detail {
     width: 500rpx;
     height: 160rpx;
     padding: 20rpx 0;
     vertical-align: top;
     display: inline-block;
     box-sizing: border-box;
-  }
+}
 
-  .system-title{
+.system-title {
     width: 500rpx;
     font-size: 35rpx;
     line-height: 60rpx;
-  }
+}
 
-  .system-desc{
+.system-desc {
     width: 500rpx;
     color: #999999;
     font-size: 33rpx;
@@ -56,9 +56,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
+}
 
-  .system-more{
+.system-more {
     width: 70rpx;
     height: 160rpx;
     text-align: center;
@@ -66,36 +66,36 @@
     line-height: 160rpx;
     font-weight: 700;
     display: inline-block;
-  }
+}
 
-  .message-list{
+.message-list {
     width: 100%;
     height: auto;
     box-shadow: 0 1rpx 1rpx #a8a7a7;
-  }
+}
 
-  .message-title{
+.message-title {
     width: 100%;
     height: 100rpx;
     line-height: 100rpx;
     padding: 0 40rpx;
-  }
+}
 
-  .message-item{
+.message-item {
     width: 100%;
     height: 160rpx;
-  }
+}
 
-  .message-avatar{
+.message-avatar {
     width: 100rpx;
     height: 100rpx;
     border-radius: 50%;
     margin: 30rpx 40rpx;
     box-sizing: border-box;
     background: #80dfe6;
-  }
+}
 
-  .message-detail{
+.message-detail {
     width: 570rpx;
     height: 160rpx;
     padding: 20rpx 40rpx 20rpx 0;
@@ -103,18 +103,18 @@
     display: inline-block;
     border-bottom: 1px solid #a5a5a5;
     box-sizing: border-box;
-  }
+}
 
-  .message-name{
+.message-name {
     width: 530rpx;
     font-size: 37rpx;
     line-height: 60rpx;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  
-  .message-desc{
+}
+
+.message-desc {
     width: 530rpx;
     color: #999999;
     font-size: 33rpx;
@@ -123,7 +123,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
+}
 </style>
 <template>
   <view class="container">
@@ -132,16 +132,16 @@
     </view>
     <navigator class="message-system">
       <image class="system-img">
-      <view class="system-detail">
-        <view class="system-title">系统消息</view>
-        <view class="system-desc">好友通知：李华请求添加您为好友</view>
-      </view>
-      <view class="system-more">></view>
+        <view class="system-detail">
+          <view class="system-title">系统消息</view>
+          <view class="system-desc">好友通知：李华请求添加您为好友</view>
+        </view>
+        <view class="system-more">></view>
     </navigator>
     <view class="message-list">
       <view class="message-title">消息列表</view>
       <navigator wx:for="{{messages}}" class="message-item">
-          <image src="{{item.avatarUrl}}" class="message-avatar">
+        <image src="{{item.avatarUrl}}" class="message-avatar">
           <view class="message-detail">
             <view class="message-name">{{item.name}}</view>
             <view class="message-desc">{{item.desc}}</view>
@@ -152,59 +152,57 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
-  import Panel from '@/components/panel' // alias example
-  import Counter from 'counter' // alias example
-  import List from '../../components/list' // aliasFields example
-  import moduleA from 'module-a' // aliasFields ignore module example
-  import Group from '../../components/group'
-  import Toast from 'wepy-com-toast'
-  import testMixin from '../../mixins/test'
+import wepy from 'wepy';
+import Panel from '@/components/panel'; // alias example
+import Counter from 'counter'; // alias example
+import List from '../../components/list'; // aliasFields example
+import moduleA from 'module-a'; // aliasFields ignore module example
+import Group from '../../components/group';
+import Toast from 'wepy-com-toast';
+import testMixin from '../../mixins/test';
 
-
-  export default class Index extends wepy.page {
+export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: 'category'
-    }
+        navigationBarTitleText: 'category'
+    };
 
-    mixins = [testMixin]
+    mixins = [testMixin];
 
     data = {
-      messages: [{
-        avatarUrl: "",
-        name: "Clarenceyang",
-        desc: "好的"
-      }, {
-        avatarUrl: "",
-        name: "松鹅",
-        desc: "请问python [:-1]为什么能达到去除最后一行的效果呢"
-      }, {
-        avatarUrl: "",
-        name: "白鞋带",
-        desc: "[05.30更新]做一份完美的芝士汉堡需要…"
-      }, {
-        avatarUrl: "",
-        name: "Gao Hao",
-        desc: "weibo.com/cardimpression"
-      }]
-    }
+        messages: [
+            {
+                avatarUrl: '',
+                name: 'Clarenceyang',
+                desc: '好的'
+            },
+            {
+                avatarUrl: '',
+                name: '松鹅',
+                desc: '请问python [:-1]为什么能达到去除最后一行的效果呢'
+            },
+            {
+                avatarUrl: '',
+                name: '白鞋带',
+                desc: '[05.30更新]做一份完美的芝士汉堡需要…'
+            },
+            {
+                avatarUrl: '',
+                name: 'Gao Hao',
+                desc: 'weibo.com/cardimpression'
+            }
+        ]
+    };
 
     computed = {
-      now () {
-        return +new Date()
-      }
-    }
+        now() {
+            return +new Date();
+        }
+    };
 
-    methods = {
+    methods = {};
 
-    }
+    events = {};
 
-    events = {
-      
-    }
-
-    onLoad() {
-      
-    }
-  }
+    onLoad() {}
+}
 </script>

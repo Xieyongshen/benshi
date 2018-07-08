@@ -16,6 +16,17 @@ page {
     box-sizing: border-box;
 }
 
+.myLabel-add {
+    position: fixed;
+    right: 30rpx;
+    bottom: 30rpx;
+}
+
+.add-img {
+    width: 100rpx;
+    height: 100rpx;
+}
+
 .myLabel {
     width: 690rpx;
     margin-top: 30rpx;
@@ -61,7 +72,7 @@ page {
 .myLabel-title {
     width: 500rpx;
     font-family: 'MicrosoftYaHei';
-    font-size: 40rpx;
+    font-size: 35rpx;
     line-height: 40rpx;
 }
 
@@ -90,27 +101,30 @@ page {
 </style>
 
 <template>
-  <view class="container">
-    <view class="navBar">
-      <view class="nav-title">我的标签</view>
-    </view>
-    <view class="myLabel">
-      <navigator wx:for="{{myLabelArray}}" class="myLabelItem">
+    <view class="container">
+        <view class="navBar">
+            <view class="nav-title">我的标签</view>
+        </view>
+        <navigator class="myLabel-add">
+            <image class="add-img" src="/icons/ic_plus.png">
+        </navigator>
+        <view class="myLabel">
+            <navigator wx:for="{{myLabelArray}}" class="myLabelItem">
 
-        <view class="myLabel-class">
-          <text class="myLabel-class-text">{{item.class}}</text>
+                <view class="myLabel-class">
+                    <text class="myLabel-class-text">{{item.class}}</text>
+                </view>
+
+                <view class="myLabel-detail">
+                    <view class="myLabel-more">></view>
+                    <view class="myLabel-title">{{item.title}}</view>
+                    <view class="myLabel-description">{{item.description}}</view>
+                </view>
+
+            </navigator>
         </view>
 
-        <view class="myLabel-detail">
-          <view class="myLabel-more">></view>
-          <view class="myLabel-title">{{item.title}}</view>
-          <view class="myLabel-description">{{item.description}}</view>
-        </view>
-
-      </navigator>
     </view>
-
-  </view>
 
 </template>
 
