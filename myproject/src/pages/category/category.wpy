@@ -8,13 +8,13 @@
             </navigator>
         </view>
 
-        <view class="cs-fix">
+        <scroll-view class="cs-fix" scroll-y="true">
             <view>
                 <repeat for="{{categories}}" key="index">
                     <view class="cate {{currentCategory==index?'selected':''}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}">{{item.name}}</view>
                 </repeat>
             </view>
-        </view>
+        </scroll-view>
 
         <scroll-view class="category-content" scroll-into-view="{{scrollInTo}}" bindscroll="scrolling" scroll-with-animation="true" scroll-y="true">
             <view class="products" id="prds">
@@ -82,6 +82,26 @@ export default class categoryScroll extends wepy.page {
                 lables: ['烹调方法', '整理', '缝纫', '盥洗', '具体菜系']
             },
             {
+                id: 'experience1',
+                name: '经验分享1',
+                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+            },
+            {
+                id: 'experience2',
+                name: '经验分享2',
+                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+            },
+            {
+                id: 'experience3',
+                name: '经验分享3',
+                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+            },
+            {
+                id: 'experience4',
+                name: '经验分享4',
+                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+            },
+            {
                 id: 'knowledge',
                 name: '专业知识',
                 lables: [
@@ -92,14 +112,41 @@ export default class categoryScroll extends wepy.page {
                     '物理',
                     '计算机',
                     '土木工程',
+                    '临床医学',
+                    '法学',
+                    '哲学',
+                    '文学',
+                    '数学',
+                    '物理',
+                    '计算机',
+                    '土木工程',
+                    '临床医学',
+                    '法学',
+                    '哲学',
+                    '文学',
+                    '数学',
+                    '物理',
+                    '计算机',
+                    '土木工程',
+                    '临床医学',
+                    '法学',
+                    '哲学',
+                    '文学',
+                    '数学',
+                    '物理',
+                    '计算机',
+                    '土木工程',
+                    '临床医学',
+                    '法学',
+                    '哲学',
+                    '文学',
+                    '数学',
+                    '物理',
+                    '计算机',
+                    '土木工程',
                     '临床医学'
                 ]
             },
-            {
-                id: 'experience',
-                name: '经验分享',
-                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
-            }
         ],
         // 当前分类的索引
         currentCategory: 0,
@@ -167,7 +214,6 @@ export default class categoryScroll extends wepy.page {
         query.selectAll('.product').boundingClientRect(rect => {
             rect.forEach((item, index) => {
                 this.productsTop.push({ top: item.top - 108 });
-                console.log(item.top - 108);
             });
             this.$apply();
         });
@@ -240,11 +286,12 @@ page {
 
 .cs-fix {
     width: 150rpx;
-    height: auto;
-    background: #ffffff;
+    height: 100vh;
+    padding-top: 255rpx;
     box-sizing: border-box;
-    position: fixed;
-    top: 255rpx;
+    background: #ffffff;
+    position: absolute;
+    top: 0;
     left: 0;
     z-index: 10;
     .cate {
