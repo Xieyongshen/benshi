@@ -9,19 +9,6 @@ page {
     color: transparent;
 }
 
-.navBar {
-    width: 750rpx;
-    height: 150rpx;
-    font-size: 35rpx;
-    line-height: 100rpx;
-    background-color: #ffffff;
-    color: #b28850;
-    padding-top: 50rpx;
-    padding-left: 40rpx;
-    border-bottom: 1rpx solid #d2d2d2;
-    box-sizing: border-box;
-}
-
 .message-system {
     width: 100%;
     height: 160rpx;
@@ -49,14 +36,14 @@ page {
 
 .system-title {
     width: 500rpx;
-    font-size: 35rpx;
+    font-size: 36rpx;
     line-height: 60rpx;
 }
 
 .system-desc {
     width: 500rpx;
     color: #999999;
-    font-size: 33rpx;
+    font-size: 32rpx;
     line-height: 60rpx;
     display: inline-block;
     overflow: hidden;
@@ -72,6 +59,11 @@ page {
     line-height: 160rpx;
     font-weight: 700;
     display: inline-block;
+}
+
+.icon-path{
+    width: 30rpx;
+    height: 30rpx;
 }
 
 .message-list {
@@ -117,7 +109,7 @@ page {
 
 .message-name {
     width: 530rpx;
-    font-size: 35rpx;
+    font-size: 36rpx;
     line-height: 60rpx;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -137,21 +129,21 @@ page {
 </style>
 <template>
     <view class="container">
-        <view class="navBar">
-            <view class="nav-title">消息</view>
-        </view>
+        <navBar navTitle="消息"></navBar>
         <navigator class="message-system">
             <image class="system-img" src="/icons/ic_notice.png">
                 <view class="system-detail">
                     <view class="system-title">系统消息</view>
                     <view class="system-desc">好友通知：李华请求添加您为好友</view>
                 </view>
-                <view class="system-more">></view>
+                <view class="system-more">
+                    <image class="icon-path" src="/icons/ic_path.png">
+                </view>
         </navigator>
         <view class="message-list">
             <view class="message-title">消息列表</view>
             <view class="message-items">
-                <navigator wx:for="{{messages}}" class="message-item">
+                <navigator wx:for="{{messages}}" class="message-item" wx:key="name">
                     <image src="{{item.avatarUrl}}" class="message-avatar">
                         <view class="message-detail">
                             <view class="message-name">{{item.name}}</view>
@@ -165,20 +157,17 @@ page {
 
 <script>
 import wepy from 'wepy';
-import Panel from '@/components/panel'; // alias example
-import Counter from 'counter'; // alias example
-import List from '../../components/list'; // aliasFields example
-import moduleA from 'module-a'; // aliasFields ignore module example
-import Group from '../../components/group';
-import Toast from 'wepy-com-toast';
-import testMixin from '../../mixins/test';
+import NavBar from '@/components/navBar';
+// import Counter from 'counter'; 
+// import moduleA from 'module-a';
+// import Toast from 'wepy-com-toast';
+// import testMixin from '../../mixins/test';
 
 export default class Index extends wepy.page {
-    config = {
-        navigationBarTitleText: 'category'
+    config = {};
+    components = {
+        navBar: NavBar
     };
-
-    mixins = [testMixin];
 
     data = {
         messages: [

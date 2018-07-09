@@ -1,0 +1,49 @@
+<style lang="less">
+.navBar {
+    width: 750rpx;
+    height: 150rpx;
+    font-size: 36rpx;
+    line-height: 100rpx;
+    background-color: #ffffff;
+    color: #b28850;
+    padding-top: 50rpx;
+    padding-left: 40rpx;
+    border-bottom: 1rpx solid #d2d2d2;
+    box-sizing: border-box;
+}
+
+.nav-back {
+    width: 60rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    display: inline-block;
+}
+
+.nav-back image{
+    width: 30rpx;
+    height: 30rpx;
+}
+</style>
+<template>
+    <view class="navBar">
+        <block wx:if="{{isChildPage == 'y'}}">
+            <navigator open-type="navigateBack" delta="1" hover-class="none" class="nav-back">
+                <image src="/icons/ic_back.png">
+            </navigator>
+        </block>
+        <text class="nav-title">{{navTitle}}</text>
+    </view>
+</template>
+<script>
+import wepy from 'wepy';
+
+export default class navBar extends wepy.component {
+    props = {
+        navTitle: String,
+        isChildPage: {
+            type: String,
+            default: 'n'
+        }
+    };
+}
+</script>
