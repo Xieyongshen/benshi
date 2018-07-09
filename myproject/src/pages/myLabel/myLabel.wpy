@@ -3,19 +3,6 @@ page {
     background: #fafafa;
 }
 
-.navBar {
-    width: 750rpx;
-    height: 150rpx;
-    font-size: 36rpx;
-    line-height: 100rpx;
-    background-color: #ffffff;
-    color: #b28850;
-    padding-top: 50rpx;
-    padding-left: 40rpx;
-    border-bottom: 1rpx solid #d2d2d2;
-    box-sizing: border-box;
-}
-
 .myLabel-add {
     position: fixed;
     right: 30rpx;
@@ -106,14 +93,12 @@ page {
 
 <template>
     <view class="container">
-        <view class="navBar">
-            <view class="nav-title">我的标签</view>
-        </view>
+        <navBar navTitle="我的标签"></navBar>
         <navigator class="myLabel-add">
             <image class="add-img" src="/icons/ic_plus.png">
         </navigator>
         <view class="myLabel">
-            <navigator wx:for="{{myLabelArray}}" class="myLabelItem">
+            <navigator wx:for="{{myLabelArray}}" class="myLabelItem" wx:key="id">
 
                 <view class="myLabel-class">
                     <text class="myLabel-class-text">{{item.class}}</text>
@@ -136,23 +121,13 @@ page {
 
 <script>
 import wepy from 'wepy';
-import Panel from '@/components/panel'; // alias example
-import Counter from 'counter'; // alias example
-import List from '../../components/list'; // aliasFields example
-import moduleA from 'module-a'; // aliasFields ignore module example
-import Group from '../../components/group';
-import Toast from 'wepy-com-toast';
-import testMixin from '../../mixins/test';
-
-console.log('moduleA ignored: ', moduleA); // => moduleA ignored: {}
+import NavBar from '@/components/navBar';
 
 export default class Index extends wepy.page {
     config = {};
     components = {
-        panel: Panel
+        navBar: NavBar
     };
-
-    mixins = [testMixin];
 
     data = {
         myLabelArray: [

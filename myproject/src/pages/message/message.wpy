@@ -9,19 +9,6 @@ page {
     color: transparent;
 }
 
-.navBar {
-    width: 750rpx;
-    height: 150rpx;
-    font-size: 36rpx;
-    line-height: 100rpx;
-    background-color: #ffffff;
-    color: #b28850;
-    padding-top: 50rpx;
-    padding-left: 40rpx;
-    border-bottom: 1rpx solid #d2d2d2;
-    box-sizing: border-box;
-}
-
 .message-system {
     width: 100%;
     height: 160rpx;
@@ -142,9 +129,7 @@ page {
 </style>
 <template>
     <view class="container">
-        <view class="navBar">
-            <view class="nav-title">消息</view>
-        </view>
+        <navBar navTitle="消息"></navBar>
         <navigator class="message-system">
             <image class="system-img" src="/icons/ic_notice.png">
                 <view class="system-detail">
@@ -158,7 +143,7 @@ page {
         <view class="message-list">
             <view class="message-title">消息列表</view>
             <view class="message-items">
-                <navigator wx:for="{{messages}}" class="message-item">
+                <navigator wx:for="{{messages}}" class="message-item" wx:key="name">
                     <image src="{{item.avatarUrl}}" class="message-avatar">
                         <view class="message-detail">
                             <view class="message-name">{{item.name}}</view>
@@ -172,20 +157,17 @@ page {
 
 <script>
 import wepy from 'wepy';
-import Panel from '@/components/panel'; // alias example
-import Counter from 'counter'; // alias example
-import List from '../../components/list'; // aliasFields example
-import moduleA from 'module-a'; // aliasFields ignore module example
-import Group from '../../components/group';
-import Toast from 'wepy-com-toast';
-import testMixin from '../../mixins/test';
+import NavBar from '@/components/navBar';
+// import Counter from 'counter'; 
+// import moduleA from 'module-a';
+// import Toast from 'wepy-com-toast';
+// import testMixin from '../../mixins/test';
 
 export default class Index extends wepy.page {
-    config = {
-        navigationBarTitleText: 'category'
+    config = {};
+    components = {
+        navBar: NavBar
     };
-
-    mixins = [testMixin];
 
     data = {
         messages: [
