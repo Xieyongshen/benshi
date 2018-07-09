@@ -15,13 +15,21 @@
 .nav-back {
     width: 60rpx;
     height: 100rpx;
+    line-height: 100rpx;
     display: inline-block;
+}
+
+.nav-back image{
+    width: 30rpx;
+    height: 30rpx;
 }
 </style>
 <template>
     <view class="navBar">
         <block wx:if="{{isChildPage == 'y'}}">
-            <navigator open-type="navigateBack" delta="1" hover-class="none" class="nav-back">《</navigator>
+            <navigator open-type="navigateBack" delta="1" hover-class="none" class="nav-back">
+                <image src="/icons/ic_back.png">
+            </navigator>
         </block>
         <text class="nav-title">{{navTitle}}</text>
     </view>

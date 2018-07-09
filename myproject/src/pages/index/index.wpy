@@ -12,7 +12,7 @@
     margin: 20rpx auto;
     padding: 0 30rpx;
     color: #8c877e;
-    text-align: center;
+    text-align: left;
     background: #e5e5e5;
     opacity: 0.5;
     border-radius: 52rpx;
