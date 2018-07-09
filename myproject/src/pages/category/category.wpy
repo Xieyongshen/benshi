@@ -1,3 +1,200 @@
+<template>
+    <view>
+
+        <view class="navBar">
+            <view class="navBar-title">分类</view>
+        </view>
+        <view class="search-container">
+            <navigator class="search_content" url="/pages/search">
+                <icon type="search" size="15" class="search-icon" />
+                <view class="search_input">搜索感兴趣的内容</view>
+            </navigator>
+        </view>
+
+        <view class="cs-fix">
+            <view>
+                <repeat for="{{categories}}" key="index">
+                    <view class="cate {{currentCategory==index?'selected':''}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}">{{item.name}}</view>
+                </repeat>
+            </view>
+        </view>
+
+        <scroll-view class="category-content" scroll-into-view="{{scrollInTo}}" bindscroll="scrolling" scroll-with-animation="true" scroll-y="true">
+            <view class="products" id="prds">
+                <repeat for="{{categories}}" key="index" item="item" index="index">
+                    <view class="product" id="{{item.id}}">{{item.name}}</view>
+                    <view class="productBox" wx:for="{{item.lables}}" wx:for-item="itm" wx:key="idx" wx:for-index="idx">
+                        {{item.lables[idx]}}
+                    </view>
+                </repeat>
+            </view>
+        </scroll-view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+
+export default class categoryScroll extends wepy.page {
+    config = {
+        navigationBarTitleText: '楼层滚动'
+    };
+    components = {};
+
+    data = {
+        categories: [
+            {
+                id: 'hot',
+                name: '热门分类',
+                lables: [
+                    'TOEFL',
+                    'IELTS',
+                    '围棋',
+                    '3DMax',
+                    '留学经验',
+                    '拍照摄影',
+                    '茶艺',
+                    '收纳'
+                ]
+            },
+            {
+                id: 'language',
+                name: '外语类',
+                lables: ['TOEFL', 'IELTS', '日语', '德语', '法语']
+            },
+            {
+                id: 'talent',
+                name: '才艺类',
+                lables: [
+                    '象棋',
+                    '书法',
+                    '围棋',
+                    '国画',
+                    '素描',
+                    '街舞',
+                    '茶艺',
+                    '插花',
+                    '游泳',
+                    '潜水'
+                ]
+            },
+            {
+                id: 'skill',
+                name: '生活技能',
+                lables: [
+                    '烹调方法',
+                    '整理',
+                    '缝纫',
+                    '盥洗',
+                    '具体菜系'
+                ]
+            },
+            {
+                id: 'knowledge',
+                name: '专业知识',
+                lables: [
+                    '法学',
+                    '哲学',
+                    '文学',
+                    '数学',
+                    '物理',
+                    '计算机',
+                    '土木工程',
+                    '临床医学'
+                ]
+            },
+            {
+                id: 'experience',
+                name: '经验分享',
+                lables: [
+                    '留学经验',
+                    '考研经验',
+                    '创业经验',
+                    '面试经验'
+                ]
+            }
+        ],
+        // 当前分类的索引
+        currentCategory: 0,
+        // 每个分类距离顶部的高度的数组
+        productsTop: [],
+        categoryTop: 10000,
+        // 用于存储每次滚动结束之后的距离, 可用来判断滚动的方向
+        moveStartPos: 0,
+        // 点击分类的名称, 用于点击跳转
+        scrollInTo: ''
+    };
+
+    computed = {};
+
+    // onPageScroll (e) { s
+    onScrollViewScroll(e) {
+        // 当前滚动的距离
+        let scrollTop = e.scrollTop;
+        // moveStartPos记录着上一次滚动完成时的位置, 用于判断滚动方向
+        // 如果现在的滚动距离大于moveStartPos说明正在往下滚动
+        if (scrollTop > this.moveStartPos) {
+            this.moveStartPos = scrollTop;
+            // 遍历每个商品距离顶部的距离
+            this.productsTop.forEach((item, index) => {
+                // 如果滚动的距离大于某个商品到顶部的距离说明该商品到了顶部, 减10是为了减少触发距离
+                if (scrollTop > item.top - 10) {
+                    // 当前分类的索引小于满足条件的商品索引就赋值, 跳到下一个分类
+                    if (this.currentCategory < index) {
+                        this.currentCategory = index;
+                    }
+                }
+            });
+            this.$apply();
+            // 如果现在的滚动距离小于moveStartPos说明正在往上滚动
+        } else if (scrollTop < this.moveStartPos) {
+            this.moveStartPos = scrollTop;
+            this.productsTop.forEach((item, index) => {
+                if (scrollTop < item.top - 10) {
+                    if (this.currentCategory >= index) {
+                        this.currentCategory = index ? index - 1 : index;
+                    }
+                }
+            });
+            this.$apply();
+        }
+    }
+
+    methods = {
+        // scroll-view滚动时触发
+        scrolling(e) {
+            //将当前的距离传入
+            this.onScrollViewScroll({ scrollTop: e.detail.scrollTop });
+        },
+        // 点击分类跳转
+        clickScrollInTo(e) {
+            this.scrollInTo = e.currentTarget.dataset.id;
+            this.$apply();
+        }
+    };
+
+    onReady() {
+        // 页面准备完成之后获取每个分类距离顶部的高度, 存储在数组productsTop中
+        var query = wx.createSelectorQuery();
+        this.productsTop = [];
+        query.selectAll('.product').boundingClientRect(rect => {
+            rect.forEach((item, index) => {
+                this.productsTop.push({ top: item.top - 108 });
+                console.log(item.top - 108);
+            });
+            this.$apply();
+        });
+
+        query
+            .selectAll('.cs-fix')
+            .boundingClientRect(rect => {
+                this.categoryTop = rect[0].top;
+                this.$apply();
+            })
+            .exec();
+    }
+}
+</script>
 <style lang="less">
 page {
     background: #fafafa;
@@ -12,16 +209,29 @@ page {
     padding-top: 50rpx;
     box-sizing: border-box;
     border-bottom: 1rpx solid #d2d2d2;
+    position: fixed;
+    top: 0;
+    z-index: 98;
 }
 
-.navBar-title{
+.navBar-title {
     margin-left: 40rpx;
+}
+
+.search-container {
+    width: 100%;
+    padding: 20rpx 0;
+    background-color: #ffffff;
+    border-bottom: 1rpx solid #d2d2d2;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
 }
 
 .search_content {
     width: 650rpx;
     height: 70rpx;
-    margin: 20rpx auto;
+    margin: 0 auto;
     padding: 0 30rpx;
     color: #8c877e;
     text-align: center;
@@ -47,394 +257,85 @@ page {
     margin-left: 20rpx;
 }
 
-//小米商城类型
-.category-main {
-    position: relative;
-    overflow: hidden;
-}
-.category-left {
-    width: 150rpx;
-    height: auto;
-    box-sizing: border-box;
-    position: absolute;
-    background: #ffffff;
-}
-.category-left .cate-list {
-    width: 150rpx;
-    height: 120rpx;
-    font-size: 30rpx;
-    text-align: center;
-    line-height: 120rpx;
-    border-right: 1px solid #bfbfbf;
-    border-bottom: 1px solid #bfbfbf;
-    box-sizing: border-box;
-}
-
-.category-left .cate-list.on {
-    color: #b28850;
-    border-right: none;
-    background-color: #fafafa;
-}
-
 ::-webkit-scrollbar {
     width: 0;
     height: 0;
     color: transparent;
 }
 
-.category-right {
-    width: 600rpx;
-    height: 100%;
-    margin-left: 150rpx;
-    padding: 0 30rpx;
-    box-sizing: border-box;
-}
-
-.cate-title {
-    width: 100%;
-}
-
-.category-right .cat-title.category {
-    width: 100%;
-    margin-top: 30rpx;
-    font-size: 32rpx;
-    line-height: 60rpx;
-    display: block;
-}
-
-.category-right .cat-title.element {
-    width: auto;
-    margin: 10rpx 0;
-    padding: 0 20rpx;
-    border: 1rpx solid #d1c0a5;
-    border-radius: 30rpx;
-    margin-right: 20rpx;
+.cs-fix {
+    width: 150rpx;
+    height: auto;
+    // position: fixed;
+    // top: 0;
+    // left: 0;
     background: #ffffff;
-    display: inline-block;
+    box-sizing: border-box;
+    // position: sticky;
+    // position: --webkit-sticky;
+    // top: 0rpx;
+    // left: 0rpx;
+    position: fixed;
+    top: 255rpx;
+    left: 0;
+    z-index: 10;
+    .cate {
+        height: 120rpx;
+        text-align: center;
+        line-height: 120rpx;
+        font-size: 30rpx;
+        border-right: 1px solid #bfbfbf;
+        border-bottom: 1px solid #bfbfbf;
+        box-sizing: border-box;
+    }
+    .selected {
+        color: #b28850;
+        border-right: none;
+        background-color: #fafafa;
+    }
 }
 
-.category-right .cat-title {
-    height: 60rpx;
-    box-sizing: border-box;
-}
-
-.cat-title .Ttitle {
-    /* width: 100%; */
-    display: block;
-    position: relative;
+.category-content {
     width: 100%;
-}
-/* .line1,line2{
-    display: inline-block;
-    width: 100rpx;
-    height: 1px;
-    background: #000;
-} */
-.pro-desc {
-    /* display: inline-block; */
-    // margin-right: 105rpx;
-    // margin-left: -38rpx;
-    // padding-top: 70rpx;
-    // width: 133rpx;
-    // height: 140rpx;
-    // margin-top: 30rpx;
-    // margin-bottom: 30rpx;
-    /* background: #000; */
+    height: 100vh;
+    padding-top: 255rpx;
     box-sizing: border-box;
-}
-.pro-desc:nth-child(3n) {
-    margin-right: 0;
-}
-.product .pro-desc .pro-image {
-    display: block;
-    width: 100%;
-    height: 60rpx;
-}
-.product .pro-desc .pro-desc1 {
-    font-size: 28rpx;
-    line-height: 60rpx;
+    .cs-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    .products {
+        width: 600rpx;
+        height: 100%;
+        margin-left: 150rpx;
+        padding: 0 30rpx;
+        box-sizing: border-box;
+        .product {
+            width: 100%;
+            height: 60rpx;
+            box-sizing: border-box;
+            font-size: 32rpx;
+            line-height: 60rpx;
+            display: block;
+        }
+        .product:not(:first-child) {
+            margin-top: 30rpx;
+        }
+        .productBox {
+            width: auto;
+            height: 60rpx;
+            box-sizing: border-box;
+            font-size: 28rpx;
+            line-height: 60rpx;
+            margin: 10rpx 0;
+            padding: 0 20rpx;
+            border: 1rpx solid #d1c0a5;
+            border-radius: 30rpx;
+            margin-right: 20rpx;
+            background: #ffffff;
+            display: inline-block;
+        }
+    }
 }
 </style>
-
-
-<template>
-
-    <view>
-        <view class="navBar">
-            <view class="navBar-title">分类</view>
-            <navigator class="search_content" url="/pages/search">
-                <icon type="search" size="15" class="search-icon" />
-                <view class="search_input">搜索感兴趣的内容</view>
-            </navigator>
-        </view>
-
-        <view class="category-main">
-            <scroll-view class="category-left" scroll-y="{{yes}}" bindscroll="scroll">
-                <view class="cate-list {{curIndex===index?'on':''}}" wx:for="{{category}}" wx:key="{{item.id}}" data-id="{{item.id}}" data-index="{{index}}" @tap="switchCategory">
-                    <text>{{item.name}}</text>
-                </view>
-            </scroll-view>
-            <view>
-            <scroll-view scroll-y="{{yes}}" class="category-right" scroll-into-view="{{toView}}" scroll-with-animation="{{yes}}" bindscroll="scroll">
-                <block wx:for="{{detail}}" wx:key="{{item.id}}">
-                    <view class="cat-title {{item.Ttitle == null ? 'element' : 'category'}}" id="{{item.id}}">
-                        {{item.Ttitle}}
-                        <view class="product" @tap="toDetail" data-index="{{index}}">
-                            <view class="pro-desc">
-                                <text class="pro-desc1">{{item.title}}</text>
-                            </view>
-                        </view>
-                    </view>
-                </block>
-            </scroll-view>
-            </view>
-        </view>
-
-    </view>
-
-</template>
-
-<script>
-import wepy from 'wepy';
-// import Panel from '@/components/panel' // alias example
-// import Counter from 'counter' // alias example
-// import List from '../../components/list' // aliasFields example
-import moduleA from 'module-a'; // aliasFields ignore module example
-// import Group from '../../components/group'
-// import Toast from 'wepy-com-toast'
-import testMixin from '../../mixins/test';
-
-console.log('moduleB ignored: ', moduleA); // => moduleA ignored: {}
-
-export default class Catrgoty extends wepy.page {
-    config = {};
-    components = {
-
-    };
-    mixins = [testMixin];
-
-    data = {
-        category: [
-            { name: '热门分类', id: 'hot' },
-            { name: '外语类', id: 'foreign' },
-            { name: '才艺类', id: 'talent' },
-            { name: '生活技能', id: 'skill' },
-            { name: '专业知识', id: 'kown' },
-            { name: '经验分享', id: 'exp' },
-            { name: '美工类', id: 'artist' },
-            { name: '生活服务', id: 'life' }
-        ],
-        detail: [
-            { Ttitle: '热门分类', id: 'hot' },
-            {
-                title: '小米MIX',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/7cfda850fe30368fd720dbae659ce169.jpg?w=1212&h=716 ',
-                desc: '小米MIX 2S 卡缅后2000万，拍人更美',
-                desc1: '小米MIX 2S',
-                selected: false
-            },
-            {
-                title: '黑鲨游戏手机',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/29764b23954479f8c156086a5156509e.jpg',
-                desc: '黑鲨游戏手机 为游戏而生',
-                desc1: '黑鲨游戏手机',
-                selected: false
-            },
-            {
-                title: '红米5S',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/5cd5d1591f66069a1e48a98f4b24e406.jpg?w=1212&h=716',
-                desc: '红米5S 卡缅后2000万，拍人更美',
-                selected: false,
-                price: 1799
-            },
-            { Ttitle: '外语类', id: 'foreign' },
-            {
-                title: '小米55寸曲面电视',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/f498b42f19e289d33a7ff09915e72d5d.jpg?w=1212&h=716',
-                desc: '55寸曲面 64位四核处理器，人工智能系统',
-                selected: false,
-                price: 2799
-            },
-            {
-                title: '小米55寸 4X电视',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/809dc670952f679139fbc986185a431a.jpg?w=1212&h=716',
-                desc: '55寸 4X 4K HDR，人工智能语音系统',
-                selected: false,
-                price: 2399
-            },
-
-            {
-                title: '小米32寸 4C',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/0feba857062316b4b116866c8ccf762c.jpg?w=1212&h=716',
-                desc: '32寸 4C电视 超薄机身，无边框设计',
-                selected: false,
-                price: 2599
-            },
-
-            { Ttitle: '才艺类', id: 'talent' },
-
-            {
-                title: '小米15.6游戏本',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/c1bd4b3affc9c7af5b2844776049759c.jpg',
-                desc: '15.6游戏本 电竞级性能怪兽',
-                selected: false,
-                price: 5799
-            },
-
-            {
-                title: '小米笔记本Air13.3增强本',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/a20dc22f36750ae93eb51dfb579cd7bd.jpg?w=1212&h=716',
-                desc: '13.3增强本 带独立显卡的轻薄本',
-                selected: false,
-                price: 5599
-            },
-
-            {
-                title: '小米笔记本Air12.5',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/e3c8f48d3d9ca478a70917ec33bbb608.jpg',
-                desc: '12.5office版 轻薄全金属超长续航',
-                selected: false,
-                price: 4599
-            },
-
-            { Ttitle: '生活技能', id: 'skill' },
-
-            {
-                title: '小米电饭煲',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/ae476e43fdf872448d9e2a5e5b788970.jpg?w=1212&h=716',
-                desc: '电饭煲 省电节能',
-                selected: false,
-                price: 199
-            },
-
-            {
-                title: '小米净水器',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/d74f483bf42678358df51a7a3a8d8169.jpg?w=1212&h=716',
-                desc: '净水器 健康首选',
-                selected: false,
-                price: 2399
-            },
-
-            {
-                title: '小米净化器',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/fb9fc0f45533935beba6a7d884159bd3.jpg?w=1212&h=716 ',
-                desc: '净化器 让空气更清新',
-                selected: false,
-                price: 2599
-            },
-
-            { Ttitle: '专业知识', id: 'kown' },
-
-            {
-                title: '虾米路由4',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/88184ecbbf289180ef3ffb1abe7ec8b7.jpg?w=1212&h=716',
-                desc: '虾米路由4 网络更快更稳',
-                selected: false,
-                price: 419
-            },
-
-            {
-                title: '小米路由3A',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/6920ef747573ca14ef1c662c8e10737c.jpg?w=1212&h=716',
-                desc: '路由3A 网络更快更稳',
-                selected: false,
-                price: 359
-            },
-
-            {
-                title: '小米路由3G',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/f49bdc8faade883204ff79b29be0e6c0.jpg?w=1212&h=716',
-                desc: '路由3G 网络更快更稳',
-                selected: false,
-                price: 399
-            },
-
-            { Ttitle: '经验分享', id: 'exp' },
-
-            {
-                title: '小米智能摄像机',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/327b126304119a9d11b18defb36456ca.jpg?w=1212&h=716',
-                desc: '小米摄像机，这一刻更清晰',
-                selected: false,
-                price: 1599
-            },
-
-            {
-                title: '小米智能剃须刀',
-                image:
-                    ' https://i8.mifile.cn/b2c-mimall-media/649cbea6456877aa7d4eb9dc82e779a1.jpg?w=1212&h=716',
-                desc: '小米剃须刀，让颜值重回巅峰',
-                selected: false,
-                price: 199
-            },
-
-            {
-                title: '小米圈铁耳机',
-                image:
-                    'https://i8.mifile.cn/b2c-mimall-media/2026bb2471b772bf9712c71829a8dcac.jpg?w=1212&h=716',
-                desc: '圈铁耳机，让声音更清晰',
-                selected: false,
-                price: 199
-            }
-        ],
-        toView: 'hot',
-        curIndex: 0,
-        yes: true
-    };
-
-    // computed = {
-    //   now () {
-    //     return +new Date()
-    //   }
-    // }
-
-    methods = {
-        //事件处理函数
-        switchRightTab: function(e) {
-            // 获取item项的id，和数组的下标值
-            let id = e.target.dataset.id,
-                index = parseInt(e.target.dataset.index);
-            // 把点击到的某一项，设为当前index
-
-            var newNav = this.curNav;
-            var newIndex = this.curIndex;
-            this.curNav = id;
-            this.curIndex = index;
-        },
-
-        switchCategory: function(e) {
-            this.toView = e.target.dataset.id
-            console.log(e.target.dataset.id)
-            this.curIndex = e.currentTarget.dataset.index
-                ? e.currentTarget.dataset.index
-                : 0
-            console.log(this.curIndex)
-            this.$apply()
-        },
-
-        toDetail: function(e) {}
-    };
-
-    events = {
-
-    };
-
-    onLoad() {}
-}
-</script>

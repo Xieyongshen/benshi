@@ -200,17 +200,10 @@ import {
 } from '@/utils/constant';
 import testMixin from '../../mixins/test';
 
-console.log('moduleA ignored: ', moduleA); // => moduleA ignored: {}
-
 export default class Index extends wepy.page {
     config = {};
     components = {
-        panel: Panel,
-        counter1: Counter,
-        counter2: Counter,
-        list: List,
-        group: Group,
-        toast: Toast
+        
     };
 
     mixins = [testMixin];
