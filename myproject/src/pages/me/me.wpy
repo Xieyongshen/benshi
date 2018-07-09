@@ -6,7 +6,7 @@ page {
 .navBar {
     width: 750rpx;
     height: 150rpx;
-    font-size: 35rpx;
+    font-size: 36rpx;
     line-height: 100rpx;
     background-color: #ffffff;
     color: #b28850;
@@ -44,14 +44,14 @@ page {
 }
 
 .userinfo-nickname {
-    font-size: 33rpx;
+    font-size: 32rpx;
     line-height: 60rpx;
     display: block;
 }
 
 .userinfo-desc {
     height: 60rpx;
-    font-size: 33rpx;
+    font-size: 32rpx;
     line-height: 60rpx;
     color: #888888;
     vertical-align: top;
@@ -59,20 +59,32 @@ page {
 }
 
 .userinfo-edit {
+    width: 500rpx;
+    border-bottom: 1rpx solid #d1c0a5;
+    box-sizing: border-box;
+}
+
+.userinfo-setbtn {
     width: 60rpx;
     height: 60rpx;
     margin: none;
-    padding: 10rpx 0;
     margin-left: 20rpx;
+    padding: 10rpx 0;
+    border: none;
     background-color: #ffffff;
     display: inline-block;
     box-sizing: border-box;
 }
 
-.userinfo-edit image {
+.userinfo-setbtn image {
     width: 40rpx;
     height: 40rpx;
     vertical-align: top;
+}
+
+.userinfo-setbtn:hover {
+    background: #ffffff;
+    opacity: 0.5;
 }
 
 .user-items {
@@ -81,19 +93,28 @@ page {
     font-size: 32rpx;
     line-height: 80rpx;
     margin: 20rpx 0;
-    padding-left: 40rpx;
     border-top: 1rpx solid #d2d2d2;
     border-bottom: 1rpx solid #d2d2d2;
     box-sizing: border-box;
 }
 
-.user-navto {
-    float: right;
-    margin-right: 40rpx;
+.userItem-content {
+    width: 100%;
+    height: 80rpx;
+    background: #ffffff;
+    padding-left: 40rpx;
+    box-sizing: border-box;
 }
 
-.userItem-content:not(:first-child) {
+.userItem-content:not(:first-child) .userItem-details {
     border-top: 1rpx solid #d2d2d2;
+}
+
+.user-navto {
+    width: 30rpx;
+    height: 30rpx;
+    float: right;
+    margin: 25rpx 40rpx;
 }
 
 .userItem-balance {
@@ -124,30 +145,46 @@ page {
             <block wx:if="{{hasUserInfo === true}}">
                 <image class="userinfo-avatar" src="{{userInfos.avatarUrl}}">
                     <text class="userinfo-nickname">{{userInfos.nickName}}</text>
-                    <text class="userinfo-desc">{{userInfos.country}}</text>
-                    <navigator class="userinfo-edit">
-                        <image src="/icons/ic_edit.png">
-                    </navigator>
+                    <block wx:if="{{isEditing === false}}">
+                        <text class="userinfo-desc">{{userDesc === '' ? '这家伙比较懒，什么都没有写……' : userDesc}}</text>
+                        <view class="userinfo-setbtn" @tap="descEdit">
+                            <image src="/icons/ic_edit.png">
+                        </view>
+                    </block>
+                    <block wx:else>
+                        <form bindsubmit="descSave">
+                            <input type="text" name="desc" class="userinfo-desc userinfo-edit" value="{{userDesc}}">
+                            <button class="userinfo-setbtn" form-type="submit">
+                                <image src="/icons/ic_edit.png">
+                            </button>
+                        </form>
+                    </block>
             </block>
         </view>
         <view class="user-items">
             <navigator class="userItem-content">
-                <text>我的订单</text>
-                <view class="user-navto">></view>
+                <view class="userItem-details">
+                    <text>我的订单</text>
+                    <image class="user-navto" src="/icons/ic_path.png">
+                </view>
             </navigator>
             <navigator class="userItem-content">
-                <text>我的钱包</text>
-                <text class="userItem-balance">余额：0</text>
-                <view class="user-navto">></view>
+                <view class="userItem-details">
+                    <text>我的钱包</text>
+                    <text class="userItem-balance">余额：0</text>
+                    <image class="user-navto" src="/icons/ic_path.png">
+                </view>
             </navigator>
             <navigator class="userItem-content">
-                <text>我的收藏</text>
-                <view class="user-navto">></view>
+                <view class="userItem-details">
+                    <text>我的收藏</text>
+                    <image class="user-navto" src="/icons/ic_path.png">
+                </view>
             </navigator>
         </view>
-        <navigator class="user-items user-identify">
+        <navigator class="user-items userItem-content user-identify">
             <text>资历认证</text>
-            <view class="user-navto">></view>
+            <image class="user-navto" src="/icons/ic_path.png">
         </navigator>
         <view class="teamLogo">
             <text>©本事 Benshi</text>
@@ -168,18 +205,20 @@ export default class Index extends wepy.page {
         hasUserInfo: false,
         userInfos: {
             nickName: ''
-        }
+        },
+        isEditing: false,
+        userDesc: ''
     };
 
     //   async onLoad() {
-//     let res = await wepy.getSetting()
-//     //检验是否已授权
-//     if ((res.authSetting)['scope.userInfo']) {
-//       wepy.switchTab({
-//         url: '/pages/index/index'
-//       })
-//     }
-//   }
+    //     let res = await wepy.getSetting()
+    //     //检验是否已授权
+    //     if ((res.authSetting)['scope.userInfo']) {
+    //       wepy.switchTab({
+    //         url: '/pages/index/index'
+    //       })
+    //     }
+    //   }
 
     methods = {
         getUserInfoFun() {
@@ -278,6 +317,15 @@ export default class Index extends wepy.page {
             //     self.hasUserInfo = true;
             //     self.$apply();
             // });
+        },
+
+        descEdit() {
+            this.isEditing = true;
+        },
+
+        descSave(e) {
+            this.isEditing = false;
+            this.userDesc = e.detail.value.desc;
         }
     };
 

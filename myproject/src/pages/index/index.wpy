@@ -2,7 +2,7 @@
 .navBar {
     width: 750rpx;
     height: 150rpx;
-    font-size: 35rpx;
+    font-size: 36rpx;
     line-height: 100rpx;
     background-color: #ffffff;
     color: #b28850;
@@ -68,7 +68,7 @@
 .scrollTitle {
     width: 750rpx;
     color: #ffffff;
-    font-size: 35rpx;
+    font-size: 36rpx;
     padding: 0 40rpx;
     position: absolute;
     bottom: 70rpx;
@@ -93,7 +93,7 @@
 }
 
 .recommand-title {
-    font-size: 30rpx;
+    font-size: 32rpx;
     width: 100%;
     height: 70rpx;
     padding: 15rpx 40rpx;
@@ -126,7 +126,7 @@
 
 .userItem-tag {
     width: 530rpx;
-    font-size: 35rpx;
+    font-size: 36rpx;
     line-height: 60rpx;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -161,7 +161,7 @@
             <view class="search_input">搜索感兴趣的内容</view>
         </navigator>
         <swiper indicator-dots="true" indicator-active-color="#ffffff" autoplay="true" interval="5000" duration="1000" circular="true" class="topScroll">
-            <swiper-item class="scrollItem" wx:for="{{scroll}}">
+            <swiper-item class="scrollItem" wx:for="{{scroll}}" wx:key="desc">
                 <navigator url="{{item.url}}" class="scrollNav">
                     <image src="{{item.imgUrl}}" mode="scaleToFill" class="scrollImg">
                         <view class="scrollTitle">{{item.desc}}</view>

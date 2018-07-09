@@ -81,13 +81,7 @@ export default class categoryScroll extends wepy.page {
             {
                 id: 'skill',
                 name: '生活技能',
-                lables: [
-                    '烹调方法',
-                    '整理',
-                    '缝纫',
-                    '盥洗',
-                    '具体菜系'
-                ]
+                lables: ['烹调方法', '整理', '缝纫', '盥洗', '具体菜系']
             },
             {
                 id: 'knowledge',
@@ -106,12 +100,7 @@ export default class categoryScroll extends wepy.page {
             {
                 id: 'experience',
                 name: '经验分享',
-                lables: [
-                    '留学经验',
-                    '考研经验',
-                    '创业经验',
-                    '面试经验'
-                ]
+                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
             }
         ],
         // 当前分类的索引
@@ -202,7 +191,7 @@ page {
 
 .navBar {
     width: 750rpx;
-    font-size: 35rpx;
+    font-size: 36rpx;
     line-height: 100rpx;
     background-color: #ffffff;
     color: #b28850;
@@ -266,15 +255,8 @@ page {
 .cs-fix {
     width: 150rpx;
     height: auto;
-    // position: fixed;
-    // top: 0;
-    // left: 0;
     background: #ffffff;
     box-sizing: border-box;
-    // position: sticky;
-    // position: --webkit-sticky;
-    // top: 0rpx;
-    // left: 0rpx;
     position: fixed;
     top: 255rpx;
     left: 0;
@@ -307,9 +289,9 @@ page {
     }
     .products {
         width: 600rpx;
-        height: 100%;
+        height: auto;
         margin-left: 150rpx;
-        padding: 0 30rpx;
+        padding: 0 30rpx 30rpx 30rpx;
         box-sizing: border-box;
         .product {
             width: 100%;
@@ -317,13 +299,12 @@ page {
             box-sizing: border-box;
             font-size: 32rpx;
             line-height: 60rpx;
-            display: block;
-        }
-        .product:not(:first-child) {
             margin-top: 30rpx;
+            display: block;
         }
         .productBox {
             width: auto;
+            max-width: 580rpx;
             height: 60rpx;
             box-sizing: border-box;
             font-size: 28rpx;
@@ -335,6 +316,9 @@ page {
             margin-right: 20rpx;
             background: #ffffff;
             display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
     }
 }

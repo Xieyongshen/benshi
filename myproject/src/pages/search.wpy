@@ -122,8 +122,6 @@ export default class search extends wepy.page {
         search: Searchs
     };
 
-    mixins = [testMixin];
-
     data = {
         search_input_value: '',
         show: 1,
