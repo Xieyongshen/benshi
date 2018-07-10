@@ -172,7 +172,7 @@ export default class categoryScroll extends wepy.page {
             // 遍历每个商品距离顶部的距离
             this.productsTop.forEach((item, index) => {
                 // 如果滚动的距离大于某个商品到顶部的距离说明该商品到了顶部, 减10是为了减少触发距离
-                if (scrollTop > item.top - 10) {
+                if (scrollTop > item.top - 30) {
                     // 当前分类的索引小于满足条件的商品索引就赋值, 跳到下一个分类
                     if (this.currentCategory < index) {
                         this.currentCategory = index;
@@ -184,7 +184,7 @@ export default class categoryScroll extends wepy.page {
         } else if (scrollTop < this.moveStartPos) {
             this.moveStartPos = scrollTop;
             this.productsTop.forEach((item, index) => {
-                if (scrollTop < item.top - 10) {
+                if (scrollTop < item.top - 30) {
                     if (this.currentCategory >= index) {
                         this.currentCategory = index ? index - 1 : index;
                     }

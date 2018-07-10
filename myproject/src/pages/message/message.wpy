@@ -3,6 +3,10 @@ page {
     background: #fafafa;
 }
 
+.container{
+    padding-top: 150rpx;
+}
+
 ::-webkit-scrollbar {
     width: 0;
     height: 0;
