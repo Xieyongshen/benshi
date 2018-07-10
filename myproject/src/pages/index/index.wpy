@@ -44,7 +44,6 @@
 .topScroll {
     width: 750rpx;
     height: 400rpx;
-    background-color: #80dfe6;
 }
 
 .scrollNav {
@@ -102,7 +101,6 @@
     border-radius: 50%;
     margin: 30rpx 40rpx;
     box-sizing: border-box;
-    background: #80dfe6;
 }
 
 .userItem-details {
