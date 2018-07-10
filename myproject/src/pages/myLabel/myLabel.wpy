@@ -3,6 +3,10 @@ page {
     background: #fafafa;
 }
 
+.container{
+    padding-top: 150rpx;
+}
+
 .myLabel-add {
     position: fixed;
     right: 30rpx;
