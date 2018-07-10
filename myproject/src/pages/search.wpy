@@ -324,10 +324,10 @@ export default class search extends wepy.page {
                         imageUrl: '/icons/assets/label1_pic_1.png'
                     },
                     {
-                        imageUrl: '/icons/assets/pic_2.jpg'
+                        imageUrl: '/icons/assets/label1_pic_2.png'
                     },
                     {
-                        imageUrl: '/icons/assets/pic_3.jpg'
+                        imageUrl: '/icons/assets/label1_pic_3.png'
                     }
                 ]
             },
@@ -340,13 +340,13 @@ export default class search extends wepy.page {
                     '职业美食摄影师，生长工作于北京 美食摄影是通过摄影师拍的照片这个载体，展现食物本身提供的信息，很多信息是普通大众不会去注意的，同样一种美食，从不同的角度去拍，展现的效果也是不同的',
                 imageList: [
                     {
-                        imageUrl: '/icons/assets/pic_1.jpg'
+                        imageUrl: '/icons/assets/label2_pic_1.png'
                     },
                     {
-                        imageUrl: '/icons/assets/pic_2.jpg'
+                        imageUrl: '/icons/assets/label2_pic_2.png'
                     },
                     {
-                        imageUrl: '/icons/assets/pic_3.jpg'
+                        imageUrl: '/icons/assets/label2_pic_3.png'
                     }
                 ]
             }
