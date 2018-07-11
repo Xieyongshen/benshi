@@ -1,0 +1,125 @@
+<style lang="less">
+page {
+    background: #fafafa;
+}
+
+.container{
+    padding-top: 150rpx;
+}
+
+.navBar {
+    position: fixed;
+    top: 0;
+    z-index: 98;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+}
+
+.userinfo{
+    width: 100%;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 40rpx;
+    box-sizing: border-box;
+}
+
+.userinfo-avatar{
+    width: 150rpx;
+    height: 150rpx;
+}
+
+.userinfo-username{
+    font-size: 36rpx;
+    line-height: 50rpx;
+}
+
+.userinfo-desc{
+    color: #7d7d7d;
+    font-size: 32rpx;
+    line-height: 50rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+</style>
+<template>
+    <view class="container">
+        <navBar :navTitle.sync="userid" isChildPage="y"></navBar>
+        <view class="userinfo">
+            <image src="{{userUrl}}" class="userinfo-avatar">
+            <view class="userinfo-username">{{userid}}</view>
+            <view class="userinfo-desc">{{userDesc}}</view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import NavBar from '@/components/navBar';
+
+export default class categoryScroll extends wepy.page {
+    config = {};
+    components = {
+        navBar: NavBar
+    };
+
+    data = {
+        userid: '',
+        userUrl: '',
+        userDesc: '',
+        chooseTag: '',
+        tags: [{
+            name: '摄影',
+            desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            service: [{
+                name: '单人写真'
+            }, {
+                name: '毕业照定制'
+            }, {
+                name: '情侣写真'
+            }]
+        }, {
+            name: '烹饪',
+            desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            service: [{
+                name: '单人写真'
+            }, {
+                name: '毕业照定制'
+            }, {
+                name: '情侣写真'
+            }]
+        }, {
+            name: '编剧',
+            desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            service: [{
+                name: '单人写真'
+            }, {
+                name: '毕业照定制'
+            }, {
+                name: '情侣写真'
+            }]
+        }]
+    };
+
+    computed = {};
+
+    methods = {
+        
+    };
+
+    onLoad(options) {
+        this.userid = options.id;
+        this.userUrl = options.url;
+        this.userDesc = options.desc;
+        this.chooseTag = options.tag;
+        console.log(this.userid);
+        console.log(this.userUrl);
+        console.log(this.userDesc);
+        console.log(this.chooseTag);
+    }
+}
+</script>
