@@ -223,7 +223,7 @@ page {
         <block wx:if="{{showResult == true}}">
             <view class="search-result">
                 <repeat for="{{searchResult}}" key="tag">
-                    <navigator class="search-resItems">
+                    <navigator class="search-resItems" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.userdesc}})">
                         <image class="item-avatar" src="{{item.imgUrl}}">
                             <view class="item-content">
                                 <view class="item-tag">{{item.tag}}</view>
@@ -393,6 +393,20 @@ export default class search extends wepy.page {
             wx.previewImage({
                 current: url,
                 urls: this.preImgList
+            });
+        },
+        
+        navToUser(name, url, tag, desc, event) {
+            wx.navigateTo({
+                url:
+                    '/pages/person/person?id=' +
+                    name +
+                    '&url=' +
+                    url +
+                    '&tag=' +
+                    tag +
+                    '&desc=' +
+                    desc
             });
         }
         // searchInput(e) {

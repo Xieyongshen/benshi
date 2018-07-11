@@ -54,7 +54,7 @@ page {
     white-space: nowrap;
     position: sticky;
     top: 150rpx;
-    z-index: 90;
+    z-index: 909;
 }
 
 .labelList-content {
@@ -109,17 +109,15 @@ page {
     position: relative;
 }
 
-.labelList-content {
-    width: 750rpx;
-}
-
 .labelContent-items {
     width: 750rpx;
     display: inline-block;
 }
 
 .labelContent-list {
+    margin-top: 40rpx;
     vertical-align: top;
+    border-top: 1rpx solid #e5e5e5;
     border-bottom: 1rpx solid #e5e5e5;
 }
 
@@ -266,7 +264,7 @@ page {
             <view wx:if="{{noRight == false}}" class="labelMoreRight">
                 <image src="/icons/ic_path.png" class="labelMore-img">
             </view>
-            <scroll-view class="labelList-content" scroll-x='true' bindscroll="showLabel" upper-threshold="20" lower-threshold="20" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
+            <scroll-view class="labelList-content" scroll-x='true' bindscroll="showLabel" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
                 <repeat for="{{tags}}" key="name">
                     <view class="labelList-items {{currentLabel == index + 1?'list-current':''}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}" data-idx="{{index + 1}}">{{item.name}}</view>
                 </repeat>
@@ -622,10 +620,10 @@ export default class categoryScroll extends wepy.page {
         showLabel(e) {
             var left = e.detail.scrollLeft;
             var width = e.detail.scrollWidth;
-            if (left > 20) {
+            if (left > 50) {
                 this.noLeft = false;
             }
-            if (left < width - 20) {
+            if (left < width - 50) {
                 this.noRight = false;
             }
             this.$apply();
@@ -657,28 +655,34 @@ export default class categoryScroll extends wepy.page {
             this.$apply();
         },
         nextPage(e) {
-            var scrollX = e.detail.deltaX;
-            var sWidth = wx.getSystemInfoSync().windowWidth;
-            if (scrollX < -10 && scrollX > -sWidth && this.isScrolling == false) {
-                this.isScrolling = true;
-                this.currentLabel++;
-                this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                console.log('success:' + this.currentLabel + this.scrollInTo);
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 1000);
-            }else if (scrollX > 10 && scrollX < sWidth && this.isScrolling == false) {
-                this.isScrolling = true;
-                this.currentLabel--;
-                this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                console.log('success:' + this.currentLabel + this.scrollInTo);
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 1000);
-            }else{
-                this.scrollInTo = this.labelIDList[this.currentLabel].id;
+            if (this.isScrolling == false) {
+                var scrollX = e.detail.deltaX;
+                var sWidth = wx.getSystemInfoSync().windowWidth;
+                if (scrollX < -10 && scrollX > -sWidth) {
+                    this.isScrolling = true;
+                    this.currentLabel++;
+                    this.scrollInTo = this.labelIDList[this.currentLabel].id;
+                    console.log(
+                        'success:' + this.currentLabel + this.scrollInTo
+                    );
+                    setTimeout(() => {
+                        this.isScrolling = false;
+                    }, 1000);
+                } else if (scrollX > 10 && scrollX < sWidth) {
+                    this.isScrolling = true;
+                    this.currentLabel--;
+                    this.scrollInTo = this.labelIDList[this.currentLabel].id;
+                    console.log(
+                        'success:' + this.currentLabel + this.scrollInTo
+                    );
+                    setTimeout(() => {
+                        this.isScrolling = false;
+                    }, 1000);
+                } else {
+                    this.scrollInTo = this.labelIDList[this.currentLabel].id;
+                }
+                this.$apply();
             }
-            this.$apply();
         }
         // // 触摸开始事件
         // touchStart(e) {
