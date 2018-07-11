@@ -1,5 +1,5 @@
 <style lang="less">
-.container{
+.container {
     padding-top: 150rpx;
 }
 
@@ -250,20 +250,27 @@ export default class Index extends wepy.page {
     };
 
     methods = {
-        onShareAppMessage: function(res) {
-            return {
-                title: '本事',
-                path: '/page/user?id=123',
-                imageUrl: '/icons/logo.png'
-            };
-        },
-
-        navToUser(name, url, tag, desc, event){
+        navToUser(name, url, tag, desc, event) {
             wx.navigateTo({
-                url: '/pages/person/person?id=' + name + '&url=' + url + '&tag=' + tag + '&desc=' + desc
-            })
+                url:
+                    '/pages/person/person?id=' +
+                    name +
+                    '&url=' +
+                    url +
+                    '&tag=' +
+                    tag +
+                    '&desc=' +
+                    desc
+            });
         }
     };
+
+    onShareAppMessage() {
+        return {
+            title: '本事',
+            path: '/pages/index/index'
+        };
+    }
 
     onLoad() {}
 }

@@ -3,7 +3,7 @@ page {
     background: #fafafa;
 }
 
-.container{
+.container {
     padding-top: 150rpx;
 }
 
@@ -19,31 +19,199 @@ page {
     color: transparent;
 }
 
-.userinfo{
+.userinfo {
     width: 100%;
     text-align: center;
     background-color: #ffffff;
-    padding: 40rpx;
+    padding: 40rpx 40rpx 0 40rpx;
     box-sizing: border-box;
 }
 
-.userinfo-avatar{
+.userinfo-avatar {
     width: 150rpx;
     height: 150rpx;
 }
 
-.userinfo-username{
+.userinfo-username {
     font-size: 36rpx;
     line-height: 50rpx;
 }
 
-.userinfo-desc{
+.userinfo-desc {
     color: #7d7d7d;
     font-size: 32rpx;
-    line-height: 50rpx;
+    line-height: 80rpx;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.user-labelList {
+    width: 750rpx;
+    height: 100rpx;
+    border-bottom: 1rpx solid #e5e5e5;
+    overflow: hidden;
+    white-space: nowrap;
+    position: sticky;
+    top: 150rpx;
+    z-index: 90;
+}
+
+.labelList-content {
+    width: 600rpx;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.labelList-items {
+    width: 150rpx;
+    height: 100rpx;
+    font-size: 32rpx;
+    line-height: 100rpx;
+    text-align: center;
+    background-color: #ffffff;
+    display: inline-block;
+}
+
+.labelList-catalog {
+    vertical-align: top;
+}
+
+.labelMoreLeft,
+.labelMoreRight {
+    width: 50rpx;
+    height: 100rpx;
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    z-index: 90;
+}
+
+.labelMoreRight {
+    right: 0;
+}
+
+.labelMoreLeft {
+    left: 150rpx;
+}
+
+.labelMore-img {
+    width: 50rpx;
+    height: 50rpx;
+    margin: 25rpx 0;
+}
+
+.user-labelContent {
+    width: 750rpx;
+    height: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.labelList-content {
+    width: 750rpx;
+}
+
+.labelContent-items {
+    width: 750rpx;
+    display: inline-block;
+}
+
+.labelContent-list {
+    border-bottom: 1rpx solid #e5e5e5;
+}
+
+.list-items {
+    width: 100%;
+    height: 100rpx;
+    background: #ffffff;
+    padding-left: 40rpx;
+    box-sizing: border-box;
+}
+
+.listItem-content {
+    font-size: 32rpx;
+    line-height: 98rpx;
+}
+
+.list-items:not(:last-child) .listItem-content {
+    border-bottom: 1rpx solid #e5e5e5;
+}
+
+.listItem-navto {
+    width: 30rpx;
+    height: 30rpx;
+    float: right;
+    margin: 35rpx 40rpx;
+}
+
+.labelItem-service {
+    width: 750rpx;
+    margin-top: 40rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    border-top: 1rpx solid #d2d2d2;
+    border-bottom: 1rpx solid #d2d2d2;
+    box-sizing: border-box;
+    white-space: normal;
+    position: relative;
+}
+
+.service-title {
+    color: #b28850;
+    font-size: 40rpx;
+    line-height: 60rpx;
+    margin-bottom: 20rpx;
+}
+
+.service-more {
+    color: #b28850;
+    font-size: 32rpx;
+    line-height: 60rpx;
+    position: absolute;
+    top: 30rpx;
+    right: 30rpx;
+}
+
+.service-items {
+    height: 70rpx;
+    font-size: 32rpx;
+    line-height: 68rpx;
+    margin: 10rpx 30rpx 10rpx 0;
+    padding: 0 50rpx;
+    border: 1rpx solid #000000;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.labelItem-content {
+    width: 750rpx;
+    margin-top: 40rpx;
+    background: #ffffff;
+}
+
+.itemContent-intro {
+    width: 750rpx;
+    padding: 30rpx;
+    border-top: 1rpx solid #d2d2d2;
+    border-bottom: 1rpx solid #d2d2d2;
+    box-sizing: border-box;
+    white-space: normal;
+}
+
+.intro-title {
+    color: #b28850;
+    font-size: 40rpx;
+    line-height: 60rpx;
+    margin-bottom: 20rpx;
+}
+
+.intro-desc {
+    font-size: 32rpx;
+    line-height: 50rpx;
+    padding-left: 80rpx;
 }
 </style>
 <template>
@@ -51,9 +219,76 @@ page {
         <navBar :navTitle.sync="userid" isChildPage="y"></navBar>
         <view class="userinfo">
             <image src="{{userUrl}}" class="userinfo-avatar">
-            <view class="userinfo-username">{{userid}}</view>
-            <view class="userinfo-desc">{{userDesc}}</view>
+                <view class="userinfo-username">{{userid}}</view>
+                <view class="userinfo-desc">{{userDesc}}</view>
         </view>
+
+        <view class="user-labelList">
+            <view class="labelList-catalog labelList-items">目录</view>
+            <view wx:if="{{noLeft == false}}" class="labelMoreLeft">
+                <image src="/icons/ic_back.png" class="labelMore-img">
+            </view>
+            <view wx:if="{{noRight == false}}" class="labelMoreRight">
+                <image src="/icons/ic_path.png" class="labelMore-img">
+            </view>
+            <scroll-view class="labelList-content" scroll-x='true' bindscroll="showLabel" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
+                <repeat for="{{tags}}" key="name">
+                    <view class="labelList-items" @tap.stop="clickScrollInTo" data-id="{{item.name}}">{{item.name}}</view>
+                </repeat>
+            </scroll-view>
+        </view>
+
+        <view class="user-labelContent">
+            <scroll-view class="labelContent-content" scroll-x="true">
+                <!-- <view class="labelContent-list labelContent-items">
+                    <repeat for="{{tags}}" key="name">
+                        <navigator class="list-items">
+                            <view class="listItem-content">
+                                <text>{{item.name}}</text>
+                                <image class="listItem-navto" src="/icons/ic_path.png">
+                            </view>
+                        </navigator>
+                    </repeat>
+                </view> -->
+                <repeat for="{{tags}}" key="name">
+                    <view class="labelContent-items">
+                        <view class="labelItem-service">
+                            <view class="service-title">服务</view>
+                            <view class="service-more">查看全部</view>
+                            <repeat for="{{item.service}}" item="service" key="name">
+                                <view class="service-items">{{service.name}}</view>
+                            </repeat>
+                        </view>
+                        <view class="labelItem-content">
+                            <view class="itemContent-intro">
+                                <view class="intro-title">简介</view>
+                                <view class="intro-desc">{{item.desc}}</view>
+                            </view>
+                            <repeat for="{{item.post}}" item="post" key="postID">
+                                <view class="post-items">
+                                    <view class="post-time">{{post.time}} 更新</view>
+                                    <view class="post-desc">{{post.desc}}</view>
+                                    <repeat for="{{post.imgList}}" item="imgList" key="imageUrl">
+                                        <image src="{{imgList.imageUrl}}" class="post-listImg" data-list="{{post.imageList}}" @tap.stop="picPreview({{imageList.imageUrl}})">
+                                    </repeat>
+                                </view>
+                            </repeat>
+                        </view>
+                    </view>
+                </repeat>
+            </scroll-view>
+        </view>
+
+        <!-- <scroll-view class="category-content" scroll-into-view="{{scrollInTo}}" bindscroll="scrolling" scroll-with-animation="true" scroll-y="true">
+            <view class="products" id="prds">
+                <repeat for="{{categories}}" key="index" item="item" index="index">
+                    <view class="product" id="{{item.id}}">{{item.name}}</view>
+                    <view class="productBox" wx:for="{{item.lables}}" wx:for-item="itm" wx:key="idx" wx:for-index="idx">
+                        {{item.lables[idx]}}
+                    </view>
+                </repeat>
+            </view>
+        </scroll-view> -->
     </view>
 </template>
 
@@ -72,43 +307,291 @@ export default class categoryScroll extends wepy.page {
         userUrl: '',
         userDesc: '',
         chooseTag: '',
-        tags: [{
-            name: '摄影',
-            desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-            service: [{
-                name: '单人写真'
-            }, {
-                name: '毕业照定制'
-            }, {
-                name: '情侣写真'
-            }]
-        }, {
-            name: '烹饪',
-            desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-            service: [{
-                name: '单人写真'
-            }, {
-                name: '毕业照定制'
-            }, {
-                name: '情侣写真'
-            }]
-        }, {
-            name: '编剧',
-            desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-            service: [{
-                name: '单人写真'
-            }, {
-                name: '毕业照定制'
-            }, {
-                name: '情侣写真'
-            }]
-        }]
+        tags: [
+            {
+                name: '摄影',
+                desc:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                service: [
+                    {
+                        name: '单人写真'
+                    },
+                    {
+                        name: '毕业照定制'
+                    },
+                    {
+                        name: '情侣写真'
+                    }
+                ],
+                post: [
+                    {
+                        postID: 0,
+                        time: '2018.05.31',
+                        desc:
+                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    },
+                    {
+                        postID: 1,
+                        time: '2018.05.27',
+                        desc: '生活就是不停地旅行和拍照！ ',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '烹饪',
+                desc:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                service: [
+                    {
+                        name: '单人写真'
+                    },
+                    {
+                        name: '毕业照定制'
+                    },
+                    {
+                        name: '情侣写真'
+                    }
+                ],
+                post: [
+                    {
+                        postID: 0,
+                        time: '2018.05.31',
+                        desc:
+                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    },
+                    {
+                        postID: 1,
+                        time: '2018.05.27',
+                        desc: '生活就是不停地旅行和拍照！ ',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '编剧A',
+                desc:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                service: [
+                    {
+                        name: '单人写真'
+                    },
+                    {
+                        name: '毕业照定制'
+                    },
+                    {
+                        name: '情侣写真'
+                    }
+                ],
+                post: [
+                    {
+                        postID: 0,
+                        time: '2018.05.31',
+                        desc:
+                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    },
+                    {
+                        postID: 1,
+                        time: '2018.05.27',
+                        desc: '生活就是不停地旅行和拍照！ ',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '编剧B',
+                desc:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                service: [
+                    {
+                        name: '单人写真'
+                    },
+                    {
+                        name: '毕业照定制'
+                    },
+                    {
+                        name: '情侣写真'
+                    }
+                ],
+                post: [
+                    {
+                        postID: 0,
+                        time: '2018.05.31',
+                        desc:
+                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    },
+                    {
+                        postID: 1,
+                        time: '2018.05.27',
+                        desc: '生活就是不停地旅行和拍照！ ',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '编剧C',
+                desc:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                service: [
+                    {
+                        name: '单人写真'
+                    },
+                    {
+                        name: '毕业照定制'
+                    },
+                    {
+                        name: '情侣写真'
+                    }
+                ],
+                post: [
+                    {
+                        postID: 0,
+                        time: '2018.05.31',
+                        desc:
+                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    },
+                    {
+                        postID: 1,
+                        time: '2018.05.27',
+                        desc: '生活就是不停地旅行和拍照！ ',
+                        imgList: [
+                            {
+                                imageUrl: '/icons/assets/label1_pic_1.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_2.png'
+                            },
+                            {
+                                imageUrl: '/icons/assets/label1_pic_3.png'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        noLeft: true,
+        noRight: false
     };
 
     computed = {};
 
     methods = {
-        
+        showLabel(e) {
+            var left = e.detail.scrollLeft;
+            var width = e.detail.scrollWidth;
+            console.log(left);
+            if (left > 20) {
+                this.noLeft = false;
+            }
+            console.log(width);
+            if (left < width - 20) {
+                this.noRight = false;
+            }
+            this.$apply();
+        },
+        scrollToLeft() {
+            this.noLeft = true;
+            this.$apply();
+        },
+        scrollToRight() {
+            this.noRight = true;
+            this.$apply();
+        }
     };
 
     onLoad(options) {
