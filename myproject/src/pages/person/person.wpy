@@ -52,9 +52,12 @@ page {
     border-bottom: 1rpx solid #e5e5e5;
     overflow: hidden;
     white-space: nowrap;
-    position: sticky;
+    z-index: 90;
+}
+
+.list-sticky{
+    position: fixed;
     top: 150rpx;
-    z-index: 909;
 }
 
 .labelList-content {
@@ -256,12 +259,12 @@ page {
                 <view class="userinfo-desc">{{userDesc}}</view>
         </view>
 
-        <view class="user-labelList">
+        <view class="user-labelList {{listSticky === true?'list-sticky':''}}">
             <view class="labelList-catalog labelList-items {{currentLabel == 0?'list-current':''}}" @tap.stop="clickScrollInTo" data-id="list" data-idx='0'>目录</view>
-            <view wx:if="{{noLeft == false}}" class="labelMoreLeft">
+            <view wx:if="{{noLeft === false}}" class="labelMoreLeft">
                 <image src="/icons/ic_back.png" class="labelMore-img">
             </view>
-            <view wx:if="{{noRight == false}}" class="labelMoreRight">
+            <view wx:if="{{noRight === false}}" class="labelMoreRight">
                 <image src="/icons/ic_path.png" class="labelMore-img">
             </view>
             <scroll-view class="labelList-content" scroll-x='true' bindscroll="showLabel" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
@@ -275,7 +278,7 @@ page {
             <scroll-view class="labelContent-content" scroll-x="true" scroll-into-view="{{scrollInTo}}" scroll-with-animation="true" bindscroll="nextPage">
                 <view class="labelContent-list labelContent-items" id="list">
                     <repeat for="{{tags}}" key="name">
-                        <navigator class="list-items">
+                        <navigator class="list-items" @tap="toLabel({{index}}, {{item.id}})">
                             <view class="listItem-content">
                                 <text>{{item.name}}</text>
                                 <image class="listItem-navto" src="/icons/ic_path.png">
@@ -605,7 +608,8 @@ export default class categoryScroll extends wepy.page {
                 ]
             }
         ],
-        noLeft: true,
+        listSticky: false,
+        noLeft: false,
         noRight: false,
         preImgList: [],
         labelIDList: [],
@@ -656,67 +660,41 @@ export default class categoryScroll extends wepy.page {
         },
         nextPage(e) {
             if (this.isScrolling == false) {
+                this.isScrolling = true;
                 var scrollX = e.detail.deltaX;
                 var sWidth = wx.getSystemInfoSync().windowWidth;
-                if (scrollX < -10 && scrollX > -sWidth) {
-                    this.isScrolling = true;
+                if (scrollX < -5 && scrollX > -sWidth) {
                     this.currentLabel++;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                    console.log(
-                        'success:' + this.currentLabel + this.scrollInTo
-                    );
-                    setTimeout(() => {
-                        this.isScrolling = false;
-                    }, 1000);
-                } else if (scrollX > 10 && scrollX < sWidth) {
-                    this.isScrolling = true;
+                } else if (scrollX > 5 && scrollX < sWidth) {
                     this.currentLabel--;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                    console.log(
-                        'success:' + this.currentLabel + this.scrollInTo
-                    );
-                    setTimeout(() => {
-                        this.isScrolling = false;
-                    }, 1000);
-                } else {
+                } else if (scrollX > -5 && scrollX < 5) {
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
                 }
                 this.$apply();
+                setTimeout(() => {
+                    this.isScrolling = false;
+                }, 1000);
             }
+        },
+        toLabel(idx, id, e) {
+            this.currentLabel = ++idx;
+            this.scrollInTo = id;
+            this.$apply();
         }
-        // // 触摸开始事件
-        // touchStart(e) {
-        //     this.touchDot = e.touches[0].pageX; // 获取触摸时的原点
-        //     // 使用js计时器记录时间
-        //     interval = setInterval(function() {
-        //         time++;
-        //     }, 100);
-        // },
-        // // 触摸结束事件
-        // touchEnd(e) {
-        //     var touchMove = e.changedTouches[0].pageX;
-        //     // 向左滑动
-        //     if (touchMove - touchDot <= -40 && time < 10 && flag_hd == true) {
-        //         flag_hd = false;
-        //         //执行切换页面的方法
-        //         console.log('向右滑动');
-        //         wx.navigateTo({
-        //             url: '../right/right'
-        //         });
-        //     }
-        //     // 向右滑动
-        //     if (touchMove - touchDot >= 40 && time < 10 && flag_hd == true) {
-        //         flag_hd = false;
-        //         //执行切换页面的方法
-        //         console.log('向左滑动');
-        //         wx.navigateTo({
-        //             url: '../left/left'
-        //         });
-        //     }
-        //     clearInterval(interval); // 清除setInterval
-        //     time = 0;
-        // }
     };
+
+    onPageScroll(options) {
+        var that = this;
+                if(options.scrollTop <= 140){
+                    that.listSticky = false;
+                }else{
+                    that.listSticky = true;
+                }
+        that.$apply();
+
+    }
 
     onLoad(options) {
         this.userid = options.id;
@@ -726,15 +704,6 @@ export default class categoryScroll extends wepy.page {
         this.scrollInTo = 'cook';
         this.$apply();
         this.currentLabel = 2;
-        console.log(
-            this.userid +
-                ' - ' +
-                this.userUrl +
-                ' - ' +
-                this.userDesc +
-                ' - ' +
-                this.chooseTag
-        );
 
         this.labelIDList = [];
         this.labelIDList.push({ id: 'list' });
@@ -742,7 +711,6 @@ export default class categoryScroll extends wepy.page {
             this.labelIDList.push({ id: item.id });
         });
         this.$apply();
-        console.log('current: ' + this.currentLabel + ' - ' + this.scrollInTo);
     }
 }
 </script>
