@@ -1,5 +1,133 @@
+<style lang="less">
+page {
+    background: #fafafa;
+}
+
+.navBar {
+    position: fixed;
+    top: 0;
+    z-index: 98;
+}
+
+.search-container {
+    width: 100%;
+    padding: 20rpx 0;
+    background-color: #ffffff;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
+}
+
+.search_content {
+    width: 690rpx;
+    height: 70rpx;
+    margin: 0 auto;
+    padding: 0 30rpx;
+    color: #8c877e;
+    text-align: left;
+    background: #e5e5e5;
+    opacity: 0.5;
+    border-radius: 52rpx;
+    box-sizing: border-box;
+}
+
+.search-icon {
+    height: 70rpx;
+    line-height: 70rpx;
+    padding: 20rpx 0;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.search_input {
+    font-size: 32rpx;
+    line-height: 70rpx;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20rpx;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+}
+
+.cs-fix {
+    width: 150rpx;
+    height: 100vh;
+    padding-top: 255rpx;
+    box-sizing: border-box;
+    background: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    .cate {
+        height: 120rpx;
+        text-align: center;
+        line-height: 120rpx;
+        font-size: 30rpx;
+        border-right: 1px solid #bfbfbf;
+        border-bottom: 1px solid #bfbfbf;
+        box-sizing: border-box;
+    }
+    .selected {
+        color: #b28850;
+        border-right: none;
+        background-color: #fafafa;
+    }
+}
+
+.category-content {
+    width: 100%;
+    height: 100vh;
+    padding-top: 255rpx;
+    box-sizing: border-box;
+    .cs-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    .products {
+        width: 600rpx;
+        height: auto;
+        margin-left: 150rpx;
+        padding: 0 30rpx 30rpx 30rpx;
+        box-sizing: border-box;
+        .product {
+            width: 100%;
+            height: 60rpx;
+            box-sizing: border-box;
+            font-size: 32rpx;
+            line-height: 60rpx;
+            margin-top: 30rpx;
+            display: block;
+        }
+        .productBox {
+            width: auto;
+            max-width: 580rpx;
+            height: 60rpx;
+            box-sizing: border-box;
+            font-size: 28rpx;
+            line-height: 60rpx;
+            margin: 10rpx 0;
+            padding: 0 20rpx;
+            border: 1rpx solid #d1c0a5;
+            border-radius: 30rpx;
+            margin-right: 20rpx;
+            background: #ffffff;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+}
+</style>
 <template>
-    <view>
+    <view class="container">
         <navBar navTitle="分类"></navBar>
         <view class="search-container">
             <navigator class="search_content" url="/pages/search">
@@ -21,7 +149,7 @@
                 <repeat for="{{categories}}" key="index" item="item" index="index">
                     <view class="product" id="{{item.id}}">{{item.name}}</view>
                     <repeat for="{{item.lables}}" item="itm" index="idx" key="idx">
-                        <view class="productBox" @tap="navToCategory({{item.lables[idx]}})">{{item.lables[idx]}}</view>
+                        <view class="productBox" @tap.stop="navToCategory({{itm}})">{{itm}}</view>
                     </repeat>
                 </repeat>
             </view>
@@ -146,7 +274,7 @@ export default class categoryScroll extends wepy.page {
                     '土木工程',
                     '临床医学'
                 ]
-            },
+            }
         ],
         // 当前分类的索引
         currentCategory: 0,
@@ -206,7 +334,7 @@ export default class categoryScroll extends wepy.page {
             this.$apply();
         },
 
-        navToCategory(label, e){
+        navToCategory(label, e) {
             wx.navigateTo({
                 url: '/pages/label/label?id=' + label
             });
@@ -234,131 +362,3 @@ export default class categoryScroll extends wepy.page {
     }
 }
 </script>
-<style lang="less">
-page {
-    background: #fafafa;
-}
-
-.navBar {
-    position: fixed;
-    top: 0;
-    z-index: 98;
-}
-
-.search-container {
-    width: 100%;
-    padding: 20rpx 0;
-    background-color: #ffffff;
-    box-shadow: 0 1rpx 1rpx #a8a7a7;
-    position: fixed;
-    top: 147rpx;
-    z-index: 99;
-}
-
-.search_content {
-    width: 650rpx;
-    height: 70rpx;
-    margin: 0 auto;
-    padding: 0 30rpx;
-    color: #8c877e;
-    text-align: left;
-    background: #e5e5e5;
-    opacity: 0.5;
-    border-radius: 52rpx;
-    box-sizing: border-box;
-}
-
-.search-icon {
-    height: 70rpx;
-    line-height: 70rpx;
-    padding: 20rpx 0;
-    box-sizing: border-box;
-    vertical-align: top;
-}
-
-.search_input {
-    font-size: 32rpx;
-    line-height: 70rpx;
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 20rpx;
-}
-
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    color: transparent;
-}
-
-.cs-fix {
-    width: 150rpx;
-    height: 100vh;
-    padding-top: 255rpx;
-    box-sizing: border-box;
-    background: #ffffff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    .cate {
-        height: 120rpx;
-        text-align: center;
-        line-height: 120rpx;
-        font-size: 30rpx;
-        border-right: 1px solid #bfbfbf;
-        border-bottom: 1px solid #bfbfbf;
-        box-sizing: border-box;
-    }
-    .selected {
-        color: #b28850;
-        border-right: none;
-        background-color: #fafafa;
-    }
-}
-
-.category-content {
-    width: 100%;
-    height: 100vh;
-    padding-top: 255rpx;
-    box-sizing: border-box;
-    .cs-fixed {
-        position: fixed;
-        top: 0;
-        left: 0;
-    }
-    .products {
-        width: 600rpx;
-        height: auto;
-        margin-left: 150rpx;
-        padding: 0 30rpx 30rpx 30rpx;
-        box-sizing: border-box;
-        .product {
-            width: 100%;
-            height: 60rpx;
-            box-sizing: border-box;
-            font-size: 32rpx;
-            line-height: 60rpx;
-            margin-top: 30rpx;
-            display: block;
-        }
-        .productBox {
-            width: auto;
-            max-width: 580rpx;
-            height: 60rpx;
-            box-sizing: border-box;
-            font-size: 28rpx;
-            line-height: 60rpx;
-            margin: 10rpx 0;
-            padding: 0 20rpx;
-            border: 1rpx solid #d1c0a5;
-            border-radius: 30rpx;
-            margin-right: 20rpx;
-            background: #ffffff;
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-    }
-}
-</style>

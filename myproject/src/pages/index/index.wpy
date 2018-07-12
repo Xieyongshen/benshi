@@ -10,7 +10,7 @@
 }
 
 .search_content {
-    width: 650rpx;
+    width: 690rpx;
     height: 70rpx;
     margin: 20rpx auto;
     padding: 0 30rpx;

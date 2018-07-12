@@ -7,7 +7,7 @@
     background-color: #ffffff;
     color: #b28850;
     padding-top: 50rpx;
-    padding-left: 40rpx;
+    padding-left: 30rpx;
     box-shadow: 0 1rpx 1rpx #a8a7a7;
     box-sizing: border-box;
     position: fixed;
@@ -18,20 +18,26 @@
 .nav-back {
     width: 60rpx;
     height: 100rpx;
-    line-height: 100rpx;
+    text-align: left;
     display: inline-block;
 }
 
-.nav-back image{
-    width: 30rpx;
-    height: 30rpx;
+.navBack-text{
+    font-size: 60rpx;
+    line-height: 100rpx;
+}
+
+.nav-title{
+    line-height: 100rpx;
+    vertical-align: top;
+    display: inline-block;
 }
 </style>
 <template>
     <view class="navBar">
         <block wx:if="{{isChildPage == 'y'}}">
             <navigator open-type="navigateBack" delta="1" hover-class="none" class="nav-back">
-                <image src="/icons/ic_back.png">
+                <text class="fa fa-angle-left navBack-text"></text>
             </navigator>
         </block>
         <text class="nav-title">{{navTitle}}</text>

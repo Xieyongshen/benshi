@@ -24,7 +24,7 @@ page {
 }
 
 .searchBox-content {
-    width: 650rpx;
+    width: 690rpx;
     height: 70rpx;
     font-size: 32rpx;
     margin: 0 auto;
@@ -39,7 +39,7 @@ page {
 .searchBox-icon {
     position: absolute;
     top: 38rpx;
-    left: 80rpx;
+    left: 60rpx;
 }
 
 .search-recommand {

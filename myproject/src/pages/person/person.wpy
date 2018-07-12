@@ -7,12 +7,6 @@ page {
     padding-top: 150rpx;
 }
 
-.navBar {
-    position: fixed;
-    top: 0;
-    z-index: 98;
-}
-
 ::-webkit-scrollbar {
     width: 0;
     height: 0;

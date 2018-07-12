@@ -3,7 +3,7 @@ page {
     background: #fafafa;
 }
 
-.container{
+.container {
     padding-top: 150rpx;
 }
 
@@ -60,12 +60,12 @@ page {
     height: 160rpx;
     text-align: center;
     vertical-align: top;
+    font-size: 50rpx;
     line-height: 160rpx;
-    font-weight: 700;
     display: inline-block;
 }
 
-.icon-path{
+.icon-path {
     width: 30rpx;
     height: 30rpx;
 }
@@ -107,7 +107,7 @@ page {
     box-sizing: border-box;
 }
 
-.message-item:not(:first-child) .message-detail{
+.message-item:not(:first-child) .message-detail {
     border-top: 1px solid #a5a5a5;
 }
 
@@ -140,9 +140,7 @@ page {
                     <view class="system-title">系统消息</view>
                     <view class="system-desc">好友通知：李华请求添加您为好友</view>
                 </view>
-                <view class="system-more">
-                    <image class="icon-path" src="/icons/ic_path.png">
-                </view>
+                <text class="fa fa-angle-right system-more"></text>
         </navigator>
         <view class="message-list">
             <view class="message-title">消息列表</view>
@@ -162,7 +160,7 @@ page {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-// import Counter from 'counter'; 
+// import Counter from 'counter';
 // import moduleA from 'module-a';
 // import Toast from 'wepy-com-toast';
 // import testMixin from '../../mixins/test';

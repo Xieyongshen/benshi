@@ -3,7 +3,7 @@ page {
     background: #fafafa;
 }
 
-.container{
+.container {
     padding-top: 150rpx;
 }
 
@@ -48,7 +48,7 @@ page {
     background-color: #ffffff;
 }
 
-.userinfo-getbtn:hover{
+.userinfo-getbtn:hover {
     opacity: 0.7;
 }
 
@@ -120,10 +120,10 @@ page {
 }
 
 .user-navto {
-    width: 30rpx;
-    height: 30rpx;
+    font-size: 40rpx;
+    line-height: 80rpx;
     float: right;
-    margin: 25rpx 40rpx;
+    margin: 0 40rpx;
 }
 
 .userItem-balance {
@@ -145,55 +145,55 @@ page {
     <view class="container">
         <navBar navTitle="我的"></navBar>
         <view class="userinfo-container">
-        <view class="userinfo-content">
-            <block wx:if="{{hasUserInfo === false}}">
-                <image class="userinfo-avatar" src="/icons/logo.png">
-                    <button class="userinfo-getbtn" open-type="getUserInfo" bindgetuserinfo="getUserInfoFun">获取用户信息</button>
-            </block>
-            <block wx:if="{{hasUserInfo === true}}">
-                <image class="userinfo-avatar" src="{{userInfos.avatarUrl}}">
-                    <text class="userinfo-nickname">{{userInfos.nickName}}</text>
-                    <block wx:if="{{isEditing === false}}">
-                        <text class="userinfo-desc">{{userDesc === '' ? '这家伙比较懒，什么都没有写……' : userDesc}}</text>
-                        <view class="userinfo-setbtn" @tap="descEdit">
-                            <image src="/icons/ic_edit.png">
-                        </view>
-                    </block>
-                    <block wx:else>
-                        <form bindsubmit="descSave">
-                            <input type="text" name="desc" class="userinfo-desc userinfo-edit" value="{{userDesc}}">
-                            <button class="userinfo-setbtn" form-type="submit">
+            <view class="userinfo-content">
+                <block wx:if="{{hasUserInfo === false}}">
+                    <image class="userinfo-avatar" src="/icons/logo.png">
+                        <button class="userinfo-getbtn" open-type="getUserInfo" bindgetuserinfo="getUserInfoFun">获取用户信息</button>
+                </block>
+                <block wx:if="{{hasUserInfo === true}}">
+                    <image class="userinfo-avatar" src="{{userInfos.avatarUrl}}">
+                        <text class="userinfo-nickname">{{userInfos.nickName}}</text>
+                        <block wx:if="{{isEditing === false}}">
+                            <text class="userinfo-desc">{{userDesc === '' ? '这家伙比较懒，什么都没有写……' : userDesc}}</text>
+                            <view class="userinfo-setbtn" @tap="descEdit">
                                 <image src="/icons/ic_edit.png">
-                            </button>
-                        </form>
-                    </block>
-            </block>
-        </view>
-        <view class="user-items">
-            <navigator class="userItem-content">
-                <view class="userItem-details">
-                    <text>我的订单</text>
-                    <image class="user-navto" src="/icons/ic_path.png">
-                </view>
+                            </view>
+                        </block>
+                        <block wx:else>
+                            <form bindsubmit="descSave">
+                                <input type="text" name="desc" class="userinfo-desc userinfo-edit" value="{{userDesc}}">
+                                <button class="userinfo-setbtn" form-type="submit">
+                                    <image src="/icons/ic_edit.png">
+                                </button>
+                            </form>
+                        </block>
+                </block>
+            </view>
+            <view class="user-items">
+                <navigator class="userItem-content">
+                    <view class="userItem-details">
+                        <text>我的订单</text>
+                        <text class="fa fa-angle-right user-navto"></text>
+                    </view>
+                </navigator>
+                <navigator class="userItem-content">
+                    <view class="userItem-details">
+                        <text>我的钱包</text>
+                        <text class="userItem-balance">余额：0</text>
+                        <text class="fa fa-angle-right user-navto"></text>
+                    </view>
+                </navigator>
+                <navigator class="userItem-content">
+                    <view class="userItem-details">
+                        <text>我的收藏</text>
+                        <text class="fa fa-angle-right user-navto"></text>
+                    </view>
+                </navigator>
+            </view>
+            <navigator class="user-items userItem-content user-identify">
+                <text>资历认证</text>
+                <text class="fa fa-angle-right user-navto"></text>
             </navigator>
-            <navigator class="userItem-content">
-                <view class="userItem-details">
-                    <text>我的钱包</text>
-                    <text class="userItem-balance">余额：0</text>
-                    <image class="user-navto" src="/icons/ic_path.png">
-                </view>
-            </navigator>
-            <navigator class="userItem-content">
-                <view class="userItem-details">
-                    <text>我的收藏</text>
-                    <image class="user-navto" src="/icons/ic_path.png">
-                </view>
-            </navigator>
-        </view>
-        <navigator class="user-items userItem-content user-identify">
-            <text>资历认证</text>
-            <image class="user-navto" src="/icons/ic_path.png">
-        </navigator>
         </view>
         <view class="teamLogo">
             <text>©本事 Benshi</text>
