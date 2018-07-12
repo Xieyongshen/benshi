@@ -7,6 +7,19 @@ page {
     padding-top: 150rpx;
 }
 
+.navBar {
+    position: fixed;
+    top: 0;
+    z-index: 98;
+}
+
+.userinfo-container {
+    width: 100%;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
+}
+
 .userinfo-content {
     width: 100%;
     height: 360rpx;
@@ -15,7 +28,7 @@ page {
     text-align: center;
     background: #ffffff;
     box-sizing: border-box;
-    border-bottom: 1rpx solid #d2d2d2;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
 }
 
 .userinfo-avatar {
@@ -88,7 +101,7 @@ page {
     background: #ffffff;
     font-size: 32rpx;
     line-height: 80rpx;
-    margin: 20rpx 0;
+    margin: 40rpx 0;
     border-top: 1rpx solid #d2d2d2;
     border-bottom: 1rpx solid #d2d2d2;
     box-sizing: border-box;
@@ -131,6 +144,7 @@ page {
 <template>
     <view class="container">
         <navBar navTitle="我的"></navBar>
+        <view class="userinfo-container">
         <view class="userinfo-content">
             <block wx:if="{{hasUserInfo === false}}">
                 <image class="userinfo-avatar" src="/icons/logo.png">
@@ -180,6 +194,7 @@ page {
             <text>资历认证</text>
             <image class="user-navto" src="/icons/ic_path.png">
         </navigator>
+        </view>
         <view class="teamLogo">
             <text>©本事 Benshi</text>
         </view>
