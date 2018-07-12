@@ -223,7 +223,7 @@ page {
         <block wx:if="{{showResult == true}}">
             <view class="search-result">
                 <repeat for="{{searchResult}}" key="tag">
-                    <navigator class="search-resItems">
+                    <navigator class="search-resItems" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.userdesc}})">
                         <image class="item-avatar" src="{{item.imgUrl}}">
                             <view class="item-content">
                                 <view class="item-tag">{{item.tag}}</view>
@@ -232,7 +232,7 @@ page {
                                 </view>
                                 <view class="item-desc">{{item.desc}}</view>
                                 <repeat for="{{item.imageList}}" item="imageList" key="imageUrl">
-                                    <image src="{{imageList.imageUrl}}" class="item-listImg" data-url="{{imageList.imageUrl}}" data-list="{{item.imageList}}" @tap.stop="picPreview">
+                                    <image src="{{imageList.imageUrl}}" class="item-listImg" data-list="{{item.imageList}}" @tap.stop="picPreview({{imageList.imageUrl}})">
                                 </repeat>
                             </view>
                     </navigator>
@@ -383,8 +383,7 @@ export default class search extends wepy.page {
             this.showResult = true;
         },
 
-        picPreview(e) {
-            var imageUrl = e.currentTarget.dataset.url;
+        picPreview(url, e) {
             var imageList = e.currentTarget.dataset.list;
             
             imageList.forEach((item, index) => {
@@ -392,8 +391,22 @@ export default class search extends wepy.page {
             });
             this.$apply();
             wx.previewImage({
-                current: imageUrl,
+                current: url,
                 urls: this.preImgList
+            });
+        },
+        
+        navToUser(name, url, tag, desc, event) {
+            wx.navigateTo({
+                url:
+                    '/pages/person/person?id=' +
+                    name +
+                    '&url=' +
+                    url +
+                    '&tag=' +
+                    tag +
+                    '&desc=' +
+                    desc
             });
         }
         // searchInput(e) {

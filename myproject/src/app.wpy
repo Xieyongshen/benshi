@@ -21,6 +21,7 @@ export default class extends wepy.app {
             'pages/myLabel/myLabel',
             'pages/message/message',
             'pages/me/me',
+            'pages/person/person',
             'pages/search'
         ],
         window: {
