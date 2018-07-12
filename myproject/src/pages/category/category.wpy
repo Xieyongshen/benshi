@@ -20,9 +20,9 @@
             <view class="products" id="prds">
                 <repeat for="{{categories}}" key="index" item="item" index="index">
                     <view class="product" id="{{item.id}}">{{item.name}}</view>
-                    <view class="productBox" wx:for="{{item.lables}}" wx:for-item="itm" wx:key="idx" wx:for-index="idx">
-                        {{item.lables[idx]}}
-                    </view>
+                    <repeat for="{{item.lables}}" item="itm" index="idx" key="idx">
+                        <view class="productBox" @tap="navToCategory({{item.lables[idx]}})">{{item.lables[idx]}}</view>
+                    </repeat>
                 </repeat>
             </view>
         </scroll-view>
@@ -204,6 +204,12 @@ export default class categoryScroll extends wepy.page {
         clickScrollInTo(e) {
             this.scrollInTo = e.currentTarget.dataset.id;
             this.$apply();
+        },
+
+        navToCategory(label, e){
+            wx.navigateTo({
+                url: '/pages/label/label?id=' + label
+            });
         }
     };
 
@@ -243,7 +249,7 @@ page {
     width: 100%;
     padding: 20rpx 0;
     background-color: #ffffff;
-    border-bottom: 1rpx solid #d2d2d2;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
     position: fixed;
     top: 147rpx;
     z-index: 99;

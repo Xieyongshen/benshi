@@ -1,6 +1,10 @@
 <style lang="less">
-.content {
-    padding: 10rpx;
+page {
+    background: #fafafa;
+}
+
+.container {
+    padding-top: 255rpx;
 }
 
 .navBar {
@@ -13,7 +17,7 @@
     width: 100%;
     padding: 20rpx 0;
     background-color: #ffffff;
-    border-bottom: 1rpx solid #d2d2d2;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
     position: fixed;
     top: 147rpx;
     z-index: 99;
@@ -38,18 +42,19 @@
     left: 80rpx;
 }
 
-.search-content {
+.search-recommand {
     width: 100%;
     height: auto;
-    padding-top: 255rpx;
 }
 
-.search-history, .search-hot {
+.search-history,
+.search-hot {
     padding: 20rpx 30rpx;
     position: relative;
 }
 
-.history-title, .hot-title {
+.history-title,
+.hot-title {
     width: 100%;
     height: 60rpx;
     font-size: 32rpx;
@@ -57,7 +62,8 @@
     display: inline-block;
 }
 
-.history-clear, .hot-clear {
+.history-clear,
+.hot-clear {
     color: #b28850;
     font-size: 32rpx;
     line-height: 60rpx;
@@ -66,7 +72,7 @@
     right: 30rpx;
 }
 
-.search-keyword {
+.recommand-keyword {
     width: auto;
     max-width: 690rpx;
     height: 60rpx;
@@ -84,50 +90,155 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.search-keyword {
+    width: 100%;
+    border-bottom: 1rpx solid #e5e5e5;
+}
+
+.search-items {
+    background: #ffffff;
+    padding-left: 30rpx;
+}
+
+.search-items:not(:last-child) .keyword-content {
+    border-bottom: 1rpx solid #e5e5e5;
+}
+
+.keyword-content {
+    height: 80rpx;
+    font-size: 30rpx;
+    line-height: 80rpx;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.search-resItems {
+    width: 100%;
+    padding-left: 40rpx;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.item-avatar {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    position: absolute;
+    top: 40rpx;
+    left: 40rpx;
+}
+
+.item-content {
+    width: 710rpx;
+    max-height: 700rpx;
+    padding: 30rpx 40rpx 30rpx 130rpx;
+    border-bottom: 1rpx solid #e5e5e5;
+    box-sizing: border-box;
+}
+
+.item-tag {
+    width: 540rpx;
+    font-size: 36rpx;
+    line-height: 50rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-detail {
+    width: 540rpx;
+    font-size: 32rpx;
+    line-height: 50rpx;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-userdesc {
+    font-size: 32rpx;
+    line-height: 50rpx;
+    color: #7d7d7d;
+    margin-left: 20rpx;
+    display: inline-block;
+}
+
+.item-desc {
+    width: 540rpx;
+    height: 150rpx;
+    color: #434343;
+    font-size: 32rpx;
+    line-height: 50rpx;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.item-listImg {
+    width: 150rpx;
+    height: 150rpx;
+    margin-top: 30rpx;
+    margin-right: 20rpx;
+    z-index: 10;
+}
 </style>
 <template>
     <view class="container">
         <!-- <search @searchValue.user="doSearch"></search> -->
         <navBar navTitle="搜索" isChildPage="y"></navBar>
         <view class="searchBox-container">
-            <input type="text" class="searchBox-content" focus="true" placeholder="搜索你感兴趣的内容">
+            <input type="text" class="searchBox-content" focus="true" placeholder="搜索你感兴趣的内容" confirm-type="search" bindinput="searchInput" bindconfirm="searchResult">
             <icon type="search" size="15" class="searchBox-icon" />
         </view>
-        <view class="search-content">
-            <view class="search-history">
-                <view class="history-title">历史搜索</view>
-                <view class="history-clear">清除</view>
-                <view wx:for="{{history}}" wx:key="name" class="search-keyword">{{item.name}}</view>
-            </view>
-            <view class="search-hot">
-                <view class="hot-title">热门搜索</view>
-                <view class="hot-clear">换一换</view>
-                <view wx:for="{{hot}}" wx:key="name" class="search-keyword">{{item.name}}</view>
-            </view>
-        </view>
-        <!-- <view class="content">
-            <view class="search">
-                <view class="serch_content">
-                    <i class="iconfont icon-search"></i>
-                    <input type="text" name="search_input" bindinput="searchInput" class="search_input" focus="true" value="{{search_input_value}}" confirm-type="search" placeholder="搜索商品" />
-                    <i wx:if="{{search_input_value!=''}}" @tap="delText" class="iconfont icon-del"></i>
-                </view>
-                <button class="btn btn_cancel" @tap="goBack()" wx:if="{{search_input_value==''}}">取消</button>
-                <button class="btn btn_search" @tap="search()" wx:else>搜索</button>
-            </view>
-        </view> -->
+        <block wx:if="{{showResult == false}}">
+            <view wx:if="{{searchValue == ''}}" class="search-recommand">
+                <view class="search-history">
+                    <view class="history-title">历史搜索</view>
+                    <view class="history-clear">清除</view>
+                    <repeat for="{{history}}" key="name">
+                        <view class="recommand-keyword">{{item.name}}</view>
 
-        <!-- <view class="history {{shows?'':'hidden'}}">
-            <view class="doc">历史记录</view>
-            <view class="lable">
-                <view wx:for="{{keywordhisList}}" wx:key="item" @tap.stop="selHisKeyWord" data-id="{{item.id}}">
-                    <view class="child {{item.sel=='1' ?'active':''}}">{{item.keyword}}</view>
+                    </repeat>
+                </view>
+                <view class="search-hot">
+                    <view class="hot-title">热门搜索</view>
+                    <view class="hot-clear">换一换</view>
+                    <repeat for="{{hot}}" key="name">
+                        <view class="recommand-keyword">{{item.name}}</view>
+                    </repeat>
                 </view>
             </view>
-            <view class="btn_box">
-                <view class="button type_empity" @tap.stop="clearHis">清除历史记录</view>
+            <view wx:if="{{searchValue != ''}}" class="search-keyword">
+                <repeat for="{{searchKeywords}}" key="name">
+                    <navigator class="search-items">
+                        <view class="keyword-content">{{item.name}}</view>
+                    </navigator>
+                </repeat>
             </view>
-        </view> -->
+        </block>
+        <block wx:if="{{showResult == true}}">
+            <view class="search-result">
+                <repeat for="{{searchResult}}" key="tag">
+                    <navigator class="search-resItems" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.userdesc}})">
+                        <image class="item-avatar" src="{{item.imgUrl}}">
+                            <view class="item-content">
+                                <view class="item-tag">{{item.tag}}</view>
+                                <view class="item-detail">{{item.name}}
+                                    <view class="item-userdesc">{{item.userdesc}}</view>
+                                </view>
+                                <view class="item-desc">{{item.desc}}</view>
+                                <repeat for="{{item.imageList}}" item="imageList" key="imageUrl">
+                                    <image src="{{imageList.imageUrl}}" class="item-listImg" data-list="{{item.imageList}}" @tap.stop="picPreview({{imageList.imageUrl}})">
+                                </repeat>
+                            </view>
+                    </navigator>
+                </repeat>
+            </view>
+        </block>
     </view>
 </template>
 
@@ -144,6 +255,8 @@ export default class search extends wepy.page {
     };
 
     data = {
+        searchValue: '',
+        showResult: false,
         history: [
             {
                 name: 'TOEFL'
@@ -174,7 +287,71 @@ export default class search extends wepy.page {
             {
                 name: 'Java'
             }
-        ]
+        ],
+        searchKeywords: [
+            {
+                name: 'TOEFL'
+            },
+            {
+                name: '拍照摄影'
+            },
+            {
+                name: '茶艺'
+            },
+            {
+                name: '收纳'
+            },
+            {
+                name: 'Javascript'
+            },
+            {
+                name: 'Objective-C'
+            },
+            {
+                name: 'Java'
+            }
+        ],
+        searchResult: [
+            {
+                name: 'Clarenceyang',
+                tag: '摄影',
+                imgUrl: '/icons/assets/user_1.jpg',
+                userdesc: '爱生活，爱摄影，爱美食',
+                desc:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                imageList: [
+                    {
+                        imageUrl: '/icons/assets/label1_pic_1.png'
+                    },
+                    {
+                        imageUrl: '/icons/assets/label1_pic_2.png'
+                    },
+                    {
+                        imageUrl: '/icons/assets/label1_pic_3.png'
+                    }
+                ]
+            },
+            {
+                name: '雪白的狐狸',
+                tag: '美食摄影',
+                imgUrl: '/icons/assets/user_2.jpg',
+                userdesc: '拍照片儿的，一本正经的卖萌',
+                desc:
+                    '职业美食摄影师，生长工作于北京 美食摄影是通过摄影师拍的照片这个载体，展现食物本身提供的信息，很多信息是普通大众不会去注意的，同样一种美食，从不同的角度去拍，展现的效果也是不同的',
+                imageList: [
+                    {
+                        imageUrl: '/icons/assets/label2_pic_1.png'
+                    },
+                    {
+                        imageUrl: '/icons/assets/label2_pic_2.png'
+                    },
+                    {
+                        imageUrl: '/icons/assets/label2_pic_3.png'
+                    }
+                ]
+            }
+        ],
+        preImgList: []
         // search_input_value: '',
         // show: 1,
         // shows: true,
@@ -196,6 +373,42 @@ export default class search extends wepy.page {
     };
 
     methods = {
+        searchInput(e) {
+            this.showResult = false;
+            this.searchValue = e.detail.value;
+            this.$apply();
+        },
+
+        searchResult(e) {
+            this.showResult = true;
+        },
+
+        picPreview(url, e) {
+            var imageList = e.currentTarget.dataset.list;
+            
+            imageList.forEach((item, index) => {
+                this.preImgList.push(item.imageUrl);
+            });
+            this.$apply();
+            wx.previewImage({
+                current: url,
+                urls: this.preImgList
+            });
+        },
+        
+        navToUser(name, url, tag, desc, event) {
+            wx.navigateTo({
+                url:
+                    '/pages/person/person?id=' +
+                    name +
+                    '&url=' +
+                    url +
+                    '&tag=' +
+                    tag +
+                    '&desc=' +
+                    desc
+            });
+        }
         // searchInput(e) {
         //     this.search_input_value = e.detail.value;
         //     this.$apply();

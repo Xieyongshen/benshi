@@ -1,5 +1,5 @@
 <style lang="less">
-.container{
+.container {
     padding-top: 150rpx;
 }
 
@@ -44,7 +44,6 @@
 .topScroll {
     width: 750rpx;
     height: 400rpx;
-    background-color: #80dfe6;
 }
 
 .scrollNav {
@@ -102,7 +101,6 @@
     border-radius: 50%;
     margin: 30rpx 40rpx;
     box-sizing: border-box;
-    background: #80dfe6;
 }
 
 .userItem-details {
@@ -168,7 +166,7 @@
         <view class="index-recommand">
             <view class="recommand-title">标签推荐</view>
             <block wx:for="{{recommandUsers}}" wx:key="recommandUsers">
-                <navigator class="recommand-items">
+                <navigator class="recommand-items" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.description}})">
                     <image src="{{item.imgUrl}}" class="userItem-img">
                         <view class="userItem-details">
                             <view class="userItem-tag">{{item.tag}}</view>
@@ -218,7 +216,7 @@ export default class Index extends wepy.page {
                 name: 'Clarenceyang',
                 imgUrl: '/icons/assets/user_1.jpg',
                 tag: '摄影',
-                description: '爱生活，爱摄影，爱美食'
+                description: '爱生活，爱摄影，爱美食的三爱人士'
             },
             {
                 id: 1,
@@ -252,14 +250,27 @@ export default class Index extends wepy.page {
     };
 
     methods = {
-        onShareAppMessage: function(res) {
-            return {
-                title: '本事',
-                path: '/page/user?id=123',
-                imageUrl: '/icons/logo.png'
-            };
+        navToUser(name, url, tag, desc, event) {
+            wx.navigateTo({
+                url:
+                    '/pages/person/person?id=' +
+                    name +
+                    '&url=' +
+                    url +
+                    '&tag=' +
+                    tag +
+                    '&desc=' +
+                    desc
+            });
         }
     };
+
+    onShareAppMessage() {
+        return {
+            title: '本事',
+            path: '/pages/index/index'
+        };
+    }
 
     onLoad() {}
 }
