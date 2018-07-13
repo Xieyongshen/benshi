@@ -2349,7 +2349,6 @@ import 'wepy-async-function';
 export default class extends wepy.app {
     config = {
         pages: [
-            'pages/star/star',
             'pages/index/index',
             'pages/category/category',
             'pages/myLabel/myLabel',
@@ -2357,6 +2356,7 @@ export default class extends wepy.app {
             'pages/me/me',
             'pages/person/person',
             'pages/label/label',
+            'pages/star/star',
             'pages/search'
         ],
         window: {
