@@ -7,12 +7,6 @@ page {
     padding-top: 150rpx;
 }
 
-.navBar {
-    position: fixed;
-    top: 0;
-    z-index: 98;
-}
-
 .userinfo-container {
     width: 100%;
     position: fixed;
@@ -183,7 +177,7 @@ page {
                         <text class="fa fa-angle-right user-navto"></text>
                     </view>
                 </navigator>
-                <navigator class="userItem-content">
+                <navigator class="userItem-content" url="/pages/star/star">
                     <view class="userItem-details">
                         <text>我的收藏</text>
                         <text class="fa fa-angle-right user-navto"></text>
