@@ -190,7 +190,7 @@ checkbox .wx-checkbox-input {
                                 <view wx:if="{{isManaging == true}}" class="manage-selectCur">
                                     <label>
                                         <view class="selectCur-choose">
-                                            <checkbox value="{{tagList.tag}}" checked="{{selectAll}}"/>
+                                            <checkbox value="{{tagList.tag}}" checked="{{selectAll}}" />
                                         </view>
                                         <view class="tagList-items">
                                             <image src="{{tagList.imgUrl}}" class="tagItem-img">
@@ -338,10 +338,9 @@ export default class search extends wepy.page {
             this.$apply();
         },
 
-        changeSelect(e){
-            console.log(e.detail.value);
+        changeSelect(e) {
             this.selectList = e.detail.value;
-            console.log(this.selectList);
+            console.log("Select: " + this.selectList);
         },
 
         navToUser(name, url, tag, desc, event) {
@@ -360,6 +359,13 @@ export default class search extends wepy.page {
 
         selectAllTag() {
             this.selectAll = !this.selectAll;
+            this.selectList = [];
+            this.star.forEach((item, index) => {
+                item.tagList.forEach((tagItem, tagIndex) => {
+                    this.selectList.push(tagItem.tag);
+                });
+            });
+            console.log(this.selectList);
             this.$apply();
         },
 
@@ -367,8 +373,8 @@ export default class search extends wepy.page {
             this.star.forEach((item, index) => {
                 item.tagList.forEach((tagItem, tagIndex) => {
                     this.selectList.forEach((element, eleIndex) => {
-                        if(element == tagItem.tag){
-                            console.log("Delete: " + element);
+                        if (element == tagItem.tag) {
+                            console.log('Delete: ' + element);
                             item.tagList.splice(tagIndex, 1);
                             this.selectList.splice(eleIndex, 1);
                         }
