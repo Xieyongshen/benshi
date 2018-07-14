@@ -27,6 +27,7 @@ page {
     width: 690rpx;
     height: 70rpx;
     font-size: 32rpx;
+    line-height: 70rpx;
     margin: 0 auto;
     padding: 0 30rpx 0 80rpx;
     color: #8c877e;
@@ -40,6 +41,20 @@ page {
     position: absolute;
     top: 38rpx;
     left: 60rpx;
+}
+
+.searchBox-keyword {
+    height: 50rpx;
+    font-size: 32rpx;
+    line-height: 48rpx;
+    background: #ffffff;
+    padding: 0 30rpx;
+    border: 1rpx solid #d1c0a5;
+    border-radius: 40rpx;
+    box-sizing: border-box;
+    position: absolute;
+    top: 30rpx;
+    left: 110rpx;
 }
 
 .search-recommand {
@@ -191,8 +206,9 @@ page {
         <!-- <search @searchValue.user="doSearch"></search> -->
         <navBar navTitle="搜索" isChildPage="y"></navBar>
         <view class="searchBox-container">
-            <input type="text" class="searchBox-content" focus="true" placeholder="搜索你感兴趣的内容" confirm-type="search" bindinput="searchInput" bindconfirm="searchResult">
+            <input type="text" value="{{searchValue}}" class="searchBox-content" focus="true" placeholder="{{showResult == false?'搜索你感兴趣的内容':''}}" confirm-type="search" bindfocus="searchClear" bindinput="searchInput" bindconfirm="searchResult">
             <icon type="search" size="15" class="searchBox-icon" />
+            <view wx:if="{{searchDone}}" class="searchBox-keyword">{{keywordDone}}</view>
         </view>
         <block wx:if="{{showResult == false}}">
             <view wx:if="{{searchValue == ''}}" class="search-recommand">
@@ -200,21 +216,20 @@ page {
                     <view class="history-title">历史搜索</view>
                     <view class="history-clear">清除</view>
                     <repeat for="{{history}}" key="name">
-                        <view class="recommand-keyword">{{item.name}}</view>
-
+                        <view class="recommand-keyword" @tap="selectSearch({{item.name}})">{{item.name}}</view>
                     </repeat>
                 </view>
                 <view class="search-hot">
                     <view class="hot-title">热门搜索</view>
                     <view class="hot-clear">换一换</view>
                     <repeat for="{{hot}}" key="name">
-                        <view class="recommand-keyword">{{item.name}}</view>
+                        <view class="recommand-keyword" @tap="selectSearch({{item.name}})">{{item.name}}</view>
                     </repeat>
                 </view>
             </view>
             <view wx:if="{{searchValue != ''}}" class="search-keyword">
                 <repeat for="{{searchKeywords}}" key="name">
-                    <navigator class="search-items">
+                    <navigator class="search-items" @tap="selectSearch({{item.name}})">
                         <view class="keyword-content">{{item.name}}</view>
                     </navigator>
                 </repeat>
@@ -256,6 +271,8 @@ export default class search extends wepy.page {
 
     data = {
         searchValue: '',
+        keywordDone: '',
+        searchDone: false,
         showResult: false,
         history: [
             {
@@ -373,19 +390,38 @@ export default class search extends wepy.page {
     };
 
     methods = {
+        searchClear(e) {
+            if (this.showResult) {
+                this.searchValue = '';
+                this.searchDone = false;
+                this.keywordDone = '';
+                this.showResult = false;
+                this.$apply();
+            }
+        },
+
         searchInput(e) {
-            this.showResult = false;
             this.searchValue = e.detail.value;
             this.$apply();
         },
 
         searchResult(e) {
             this.showResult = true;
+            this.keywordDone = this.searchValue;
+            this.searchDone = true;
+            this.$apply();
+        },
+
+        selectSearch(name, e) {
+            this.keywordDone = name;
+            this.searchDone = true;
+            this.showResult = true;
+            this.$apply();
         },
 
         picPreview(url, e) {
             var imageList = e.currentTarget.dataset.list;
-            
+
             imageList.forEach((item, index) => {
                 this.preImgList.push(item.imageUrl);
             });
@@ -395,7 +431,7 @@ export default class search extends wepy.page {
                 urls: this.preImgList
             });
         },
-        
+
         navToUser(name, url, tag, desc, event) {
             wx.navigateTo({
                 url:
