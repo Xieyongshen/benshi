@@ -166,14 +166,7 @@ page {
                                 <image src="/icons/ic_edit.png">
                             </view>
                         </block>
-                        <block wx:else>
-                            <form bindsubmit="descSave">
-                                <input type="text" name="desc" class="userinfo-desc userinfo-edit" value="{{userDesc}}">
-                                <button class="userinfo-setbtn" form-type="submit">
-                                    <image src="/icons/ic_edit.png">
-                                </button>
-                            </form>
-                        </block>
+                        
                 </block>
             </view>
             <view class="user-items">
