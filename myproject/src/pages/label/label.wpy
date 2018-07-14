@@ -4,7 +4,46 @@ page {
 }
 
 .container {
-    padding-top: 150rpx;
+    padding-top: 255rpx;
+}
+
+.search-container {
+    width: 100%;
+    padding: 20rpx 0;
+    background-color: #ffffff;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
+}
+
+.search_content {
+    width: 690rpx;
+    height: 70rpx;
+    margin: 0 auto;
+    padding: 0 30rpx;
+    color: #8c877e;
+    text-align: left;
+    background: #e5e5e5;
+    opacity: 0.5;
+    border-radius: 52rpx;
+    box-sizing: border-box;
+}
+
+.search-icon {
+    height: 70rpx;
+    line-height: 70rpx;
+    padding: 20rpx 0;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.search_input {
+    font-size: 32rpx;
+    line-height: 70rpx;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20rpx;
 }
 
 .label-items {
@@ -81,6 +120,12 @@ page {
 <template>
     <view class="container">
         <navBar :navTitle.sync="label" isChildPage="y"></navBar>
+        <view class="search-container">
+            <navigator class="search_content" url="/pages/search">
+                <icon type="search" size="15" class="search-icon" />
+                <view class="search_input">搜索感兴趣的内容</view>
+            </navigator>
+        </view>
         <view class="label-content">
             <repeat for="{{tags}}" key="tag">
                 <navigator class="label-items" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.userdesc}})">

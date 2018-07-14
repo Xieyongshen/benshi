@@ -165,7 +165,7 @@
 
         <view class="index-recommand">
             <view class="recommand-title">标签推荐</view>
-            <block wx:for="{{recommandUsers}}" wx:key="recommandUsers">
+            <repeat for="{{recommandUsers}}" key="recommandUsers">
                 <navigator class="recommand-items" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.description}})">
                     <image src="{{item.imgUrl}}" class="userItem-img">
                         <view class="userItem-details">
@@ -175,7 +175,7 @@
                             </view>
                         </view>
                 </navigator>
-            </block>
+            </repeat>
         </view>
     </view>
 </template>

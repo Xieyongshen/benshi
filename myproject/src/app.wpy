@@ -2356,6 +2356,7 @@ export default class extends wepy.app {
             'pages/me/me',
             'pages/person/person',
             'pages/label/label',
+            'pages/star/star',
             'pages/search'
         ],
         window: {

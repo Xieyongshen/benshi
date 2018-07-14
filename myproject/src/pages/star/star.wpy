@@ -1,0 +1,397 @@
+<style lang="less">
+page {
+    background: #fafafa;
+}
+
+.container {
+    padding-top: 255rpx;
+}
+
+.star-func {
+    width: 100%;
+    height: 100rpx;
+    background: #ffffff;
+    padding: 10rpx 30rpx;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
+    box-sizing: border-box;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
+}
+
+.star-chooseType {
+    height: 80rpx;
+    font-size: 34rpx;
+    line-height: 80rpx;
+    display: inline-block;
+}
+
+.star-chooseType .fa {
+    font-size: 30rpx;
+    margin-left: 10rpx;
+}
+
+.star-manage {
+    height: 80rpx;
+    font-size: 34rpx;
+    line-height: 80rpx;
+    float: right;
+}
+
+.manage-selectCur {
+    width: 750rpx;
+    height: 160rpx;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.selectCur-choose {
+    width: 80rpx;
+    height: 160rpx;
+    text-align: center;
+    vertical-align: top;
+    padding: 50rpx 0 50rpx 30rpx;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.tagList-items {
+    width: 100%;
+    height: 160rpx;
+    border-bottom: 1px solid #a5a5a5;
+    display: inline-block;
+}
+
+.tagItem-img {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    margin: 30rpx 40rpx;
+    box-sizing: border-box;
+}
+
+.tagItem-details {
+    width: 570rpx;
+    height: 160rpx;
+    padding: 20rpx 40rpx 20rpx 0;
+    vertical-align: top;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.tagItem-tag {
+    width: 530rpx;
+    font-size: 36rpx;
+    line-height: 60rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tagItem-detail {
+    width: 530rpx;
+    font-size: 32rpx;
+    line-height: 60rpx;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tagItem-desc {
+    font-size: 32rpx;
+    line-height: 60rpx;
+    color: #999999;
+    margin-left: 20rpx;
+    display: inline-block;
+}
+
+.star-typeList {
+    width: 100%;
+    padding: 20rpx;
+    box-sizing: border-box;
+}
+
+.typeList-items {
+    width: 325rpx;
+    height: 80rpx;
+    font-size: 34rpx;
+    line-height: 78rpx;
+    text-align: center;
+    background: #ffffff;
+    margin: 10rpx 15rpx;
+    border-radius: 15rpx;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.typeItem-choose {
+    color: #b28850;
+    border: 1rpx solid #d1c0a5;
+}
+
+.star-manageBtn {
+    width: 100%;
+    height: 100rpx;
+    background: #ffffff;
+    padding: 15rpx 30rpx;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    z-index: 99;
+    checkbox-group {
+        display: inline-block;
+    }
+}
+
+.manage-selectAll {
+    height: 70rpx;
+    font-size: 34rpx;
+    line-height: 70rpx;
+    display: inline-block;
+}
+
+.selectAll-choose {
+    margin-right: 20rpx;
+}
+
+checkbox .wx-checkbox-input {
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: 50%;
+}
+
+.manage-delete {
+    height: 70rpx;
+    color: #ffffff;
+    font-size: 34rpx;
+    line-height: 70rpx;
+    padding: 0 40rpx;
+    background: #d0b287;
+    border-radius: 10rpx;
+    float: right;
+}
+</style>
+<template>
+    <view class="container">
+        <navBar navTitle="我的收藏" isChildPage="y"></navBar>
+        <view class="star-func">
+            <view class="star-chooseType" @tap="chooseType">{{typeList[currentIndex]}}
+                <text class="fa fa-caret-{{isChoosing?'up':'down'}}" aria-hidden="true"></text>
+            </view>
+            <view class="star-manage" @tap="manageStar">管理</view>
+        </view>
+        <view class="star-content">
+            <view wx:if="{{isChoosing == false}}" class="star-tagList">
+                <checkbox-group bindchange="changeSelect">
+                    <repeat for="{{star}}" key="type" index="idx">
+                        <block wx:if="{{currentIndex == 0 || idx == currentIndex - 1}}">
+                            <repeat for="{{item.tagList}}" item="tagList" key="tag" index="tagIdx">
+                                <view wx:if="{{isManaging == true}}" class="manage-selectCur">
+                                    <label>
+                                        <view class="selectCur-choose">
+                                            <checkbox value="{{tagList.tag}}" checked="{{selectAll}}" />
+                                        </view>
+                                        <view class="tagList-items">
+                                            <image src="{{tagList.imgUrl}}" class="tagItem-img">
+                                                <view class="tagItem-details">
+                                                    <view class="tagItem-tag">{{tagList.tag}}</view>
+                                                    <view class="tagItem-detail">{{tagList.name}}
+                                                        <view class="tagItem-desc">{{tagList.description}}</view>
+                                                    </view>
+                                                </view>
+                                        </view>
+                                    </label>
+                                </view>
+                                <navigator wx:else class="tagList-items" @tap="navToUser({{tagList.name}}, {{tagList.imgUrl}}, {{tagList.tag}}, {{tagList.description}})">
+                                    <image src="{{tagList.imgUrl}}" class="tagItem-img">
+                                        <view class="tagItem-details">
+                                            <view class="tagItem-tag">{{tagList.tag}}</view>
+                                            <view class="tagItem-detail">{{tagList.name}}
+                                                <view class="tagItem-desc">{{tagList.description}}</view>
+                                            </view>
+                                        </view>
+                                </navigator>
+                            </repeat>
+                        </block>
+                    </repeat>
+                </checkbox-group>
+            </view>
+            <view wx:else class="star-typeList">
+                <repeat for="{{typeList}}" key="index" index="idx">
+                    <view class="typeList-items {{idx == currentIndex?'typeItem-choose':''}}" @tap="selectType({{idx}})">{{item}}</view>
+                </repeat>
+            </view>
+        </view>
+        <view wx:if="{{isManaging == true}}" class="star-manageBtn" animation="{{animation}}">
+            <checkbox-group bindchange="selectAllTag">
+                <label class="manage-selectAll">
+                    <checkbox class="selectAll-choose" />全选
+                </label>
+            </checkbox-group>
+            <view class="manage-delete" @tap="deleteTag">删除</view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import NavBar from '@/components/navBar';
+
+export default class search extends wepy.page {
+    config = {};
+    components = {
+        navBar: NavBar
+    };
+
+    data = {
+        currentIndex: 0,
+        typeList: [],
+        selectList: [],
+        isChoosing: false,
+        isManaging: false,
+        showManage: {},
+        selectAll: false,
+        star: [
+            {
+                type: '外语类',
+                tagList: [
+                    {
+                        name: 'Jarvis',
+                        imgUrl: '/icons/assets/user_5.jpg',
+                        tag: '100天奋战TOEFL',
+                        description: '备考进行中！'
+                    }
+                ]
+            },
+            {
+                type: '才艺类',
+                tagList: []
+            },
+            {
+                type: '生活技能',
+                tagList: [
+                    {
+                        name: 'Clarenceyang',
+                        imgUrl: '/icons/assets/user_1.jpg',
+                        tag: '摄影',
+                        description: '爱生活，爱摄影，爱美食的三爱人士'
+                    }
+                ]
+            },
+            {
+                type: '经验分享',
+                tagList: [
+                    {
+                        name: '范臻',
+                        imgUrl: '/icons/assets/user_5.jpg',
+                        tag: '三国杀',
+                        description: '奇策火攻，酒杀不闪。'
+                    }
+                ]
+            },
+            {
+                type: '专业知识',
+                tagList: [
+                    {
+                        name: '松鹅',
+                        imgUrl: '/icons/assets/user_2.jpg',
+                        tag: '用Python解决你的所有问题',
+                        description: '最近在学摄影的话痨程序员'
+                    },
+                    {
+                        name: '温酒',
+                        imgUrl: '/icons/assets/user_3.jpg',
+                        tag: '编剧',
+                        description: '希望做一个温柔的人，想给你讲一万个故事。'
+                    },
+                    {
+                        name: '喻以流年',
+                        imgUrl: '/icons/assets/user_4.jpg',
+                        tag: '历史',
+                        description: '在《资治通鉴》里，探寻当下与未来。'
+                    }
+                ]
+            }
+        ]
+    };
+
+    computed = {};
+
+    methods = {
+        chooseType() {
+            this.isChoosing = !this.isChoosing;
+            this.$apply();
+        },
+
+        selectType(index, e) {
+            this.currentIndex = index;
+            this.isChoosing = !this.isChoosing;
+            this.$apply();
+        },
+
+        manageStar() {
+            if (!this.isManaging) {
+                this.selectList = [];
+            }
+            this.isManaging = !this.isManaging;
+            this.$apply();
+        },
+
+        changeSelect(e) {
+            this.selectList = e.detail.value;
+            console.log("Select: " + this.selectList);
+        },
+
+        navToUser(name, url, tag, desc, event) {
+            wx.navigateTo({
+                url:
+                    '/pages/person/person?id=' +
+                    name +
+                    '&url=' +
+                    url +
+                    '&tag=' +
+                    tag +
+                    '&desc=' +
+                    desc
+            });
+        },
+
+        selectAllTag() {
+            this.selectAll = !this.selectAll;
+            this.selectList = [];
+            this.star.forEach((item, index) => {
+                item.tagList.forEach((tagItem, tagIndex) => {
+                    this.selectList.push(tagItem.tag);
+                });
+            });
+            console.log(this.selectList);
+            this.$apply();
+        },
+
+        deleteTag() {
+            this.star.forEach((item, index) => {
+                item.tagList.forEach((tagItem, tagIndex) => {
+                    this.selectList.forEach((element, eleIndex) => {
+                        if (element == tagItem.tag) {
+                            console.log('Delete: ' + element);
+                            item.tagList.splice(tagIndex, 1);
+                            this.selectList.splice(eleIndex, 1);
+                        }
+                    });
+                });
+            });
+        }
+    };
+
+    events = {};
+
+    onLoad() {
+        this.animation = wx.createAnimation();
+        this.typeList.push('全部分类');
+        this.star.forEach((item, index) => {
+            this.typeList.push(item.type);
+        });
+    }
+}
+</script>
