@@ -1,0 +1,142 @@
+<style lang="less">
+.container {
+    padding-top: 150rpx;
+}
+
+.topScroll {
+    width: 750rpx;
+    height: 500rpx;
+}
+
+.scrollImg {
+    width: 750rpx;
+    height: 500rpx;
+}
+
+.service-content {
+    width: 750rpx;
+    color: #434343;
+    font-size: 32rpx;
+    line-height: 50rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.service-price {
+    color: #cfa972;
+    font-size: 38rpx;
+    line-height: 60rpx;
+    text{
+        font-size: 30rpx;
+    }
+}
+
+.service-name{
+    font-size: 40rpx;
+    line-height: 60rpx;
+    margin-bottom: 10rpx;
+}
+
+.service-seller{
+    width: 750rpx;
+    height: 160rpx;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.seller-avatar{
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+}
+
+.seller-name{
+    font-size: 40rpx;
+    line-height: 100rpx;
+    margin-left: 20rpx;
+    vertical-align: top;
+    display: inline-block;
+}
+</style>
+<template>
+    <view class="container">
+        <navBar :navTitle.sync="serviceName" isChildPage="y"></navBar>
+        <swiper indicator-dots="true" indicator-active-color="#ffffff" circular="true" class="topScroll">
+            <repeat for="{{imgList}}" key="imageUrl">
+                <swiper-item class="scrollItem">
+                    <image src="{{item.imageUrl}}" mode="aspectFill" class="scrollImg" @tap="picPreview({{item.imageUrl}})">
+                </swiper-item>
+            </repeat>
+        </swiper>
+        <view class="service-content">
+            <view class="service-price">
+                <text>￥</text>{{servicePrice}}</view>
+            <view class="service-name">{{serviceName}}</view>
+            <view class="service-desc">{{serviceDesc}}</view>
+        </view>
+        <view class="service-seller">
+            <image src="{{sellerAvatar}}" class="seller-avatar">
+                <text class="seller-name">{{sellerName}}</text>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import NavBar from '@/components/navBar';
+
+export default class Service extends wepy.page {
+    config = {};
+    components = {
+        navBar: NavBar
+    };
+
+    data = {
+        sellerAvatar: '/icons/assets/user_1.jpg',
+        sellerName: 'Clarenceyang',
+        serviceName: '单人约拍写真',
+        servicePrice: 388,
+        serviceDesc:
+            '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
+        imgList: [
+            {
+                imageUrl: '/icons/assets/pic3_1.JPEG'
+            },
+            {
+                imageUrl: '/icons/assets/pic3_2.JPEG'
+            },
+            {
+                imageUrl: '/icons/assets/pic3_3.JPEG'
+            }
+        ],
+        preImgList: [],
+        serviceDetail: ''
+    };
+
+    computed = {};
+
+    methods = {
+        picPreview(url, e) {
+            this.imgList.forEach((item, index) => {
+                this.preImgList.push(item.imageUrl);
+            });
+            this.$apply();
+            wx.previewImage({
+                current: url,
+                urls: this.preImgList
+            });
+        }
+    };
+
+    onLoad(options) {
+        this.serviceName = options.name;
+        this.servicePrice = options.price;
+        this.serviceDesc = options.desc;
+        this.imgList = options.list;
+        this.$apply();
+    }
+}
+</script>

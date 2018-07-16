@@ -243,7 +243,7 @@ checkbox .wx-checkbox-input {
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class search extends wepy.page {
+export default class Star extends wepy.page {
     config = {};
     components = {
         navBar: NavBar

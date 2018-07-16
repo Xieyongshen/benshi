@@ -119,7 +119,7 @@ page {
                 <repeat for="{{serviceList}}" key="label" index="idx">
                     <block wx:if="{{idx == currentIndex}}">
                         <repeat for="{{item.service}}" item="service" key="name" index="serviceIndex">
-                            <navigator class="service-items" @tap="navToUser({{service.name}}, {{service.price}}, {{service.description}})">
+                            <navigator class="service-items" data-imglist="{{service.imageList}}" @tap="navToService({{service.name}}, {{service.price}}, {{service.description}})">
                                 <view class="service-name">{{service.name}}</view>
                                 <view class="service-price"><text>￥</text>{{service.price}}</view>
                                 <view class="service-content">
@@ -146,7 +146,7 @@ page {
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class search extends wepy.page {
+export default class ServiceList extends wepy.page {
     config = {};
     components = {
         navBar: NavBar
@@ -243,8 +243,19 @@ export default class search extends wepy.page {
             });
         },
 
-        navToUser(name, url, tag, desc, event) {
-            
+        navToService(name, price, desc, event) {
+            var imgList = event.currentTarget.dataset.imglist;
+            wx.navigateTo({
+                url:
+                    '/pages/service/service?name=' +
+                    name +
+                    '&price=' +
+                    price +
+                    '&desc=' +
+                    desc +
+                    '&list=' +
+                    imgList
+            });
         }
     };
 

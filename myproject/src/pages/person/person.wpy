@@ -308,14 +308,13 @@ page {
             </scroll-view>
         </view>
     </view>
-    </view>
 </template>
 
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class categoryScroll extends wepy.page {
+export default class Person extends wepy.page {
     config = {};
     components = {
         navBar: NavBar
