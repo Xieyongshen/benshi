@@ -291,15 +291,27 @@ export default class Index extends wepy.page {
                                             console.log(self.globalData);
                                             self.hasUserInfo = true;
                                             self.$apply();
+                                        },
+                                        fail: function({ errMsg }) {
+                                            console.log('request fail', errMsg);
                                         }
                                     });
+                                },
+                                fail: function({ errMsg }) {
+                                    console.log('request fail', errMsg);
                                 }
                             });
+                        },
+                        fail: function({ errMsg }) {
+                            console.log('request fail', errMsg);
                         }
                     });
                 } else if (res.cancel) {
                     console.log('fail');
                 }
+            },
+            fail: function({ errMsg }) {
+                console.log('request fail', errMsg);
             }
         });
 

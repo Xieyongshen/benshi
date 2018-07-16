@@ -1,0 +1,260 @@
+<style lang="less">
+page {
+    background: #fafafa;
+}
+
+.container {
+    padding-top: 255rpx;
+}
+
+.serviceList-func {
+    width: 100%;
+    height: 100rpx;
+    background: #ffffff;
+    padding: 10rpx 30rpx;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
+    box-sizing: border-box;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
+}
+
+.serviceList-chooseLabel {
+    height: 80rpx;
+    font-size: 34rpx;
+    line-height: 80rpx;
+    display: inline-block;
+}
+
+.serviceList-chooseLabel .fa {
+    font-size: 30rpx;
+    margin-left: 10rpx;
+}
+
+.service-items {
+    width: 750rpx;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    border-top: 1px solid #d2d2d2;
+    border-bottom: 1px solid #d2d2d2;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.service-name {
+    font-size: 40rpx;
+    line-height: 60rpx;
+    margin-bottom: 20rpx;
+    display: inline-block;
+}
+
+.service-price {
+    color: #cfa972;
+    font-size: 38rpx;
+    line-height: 60rpx;
+    float: right;
+    text{
+        font-size: 30rpx;
+    }
+}
+
+.service-content {
+    font-size: 32rpx;
+    line-height: 50rpx;
+    padding-left: 80rpx;
+}
+
+.service-desc {
+    height: 150rpx;
+    color: #434343;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.service-listImg {
+    width: 150rpx;
+    height: 150rpx;
+    margin-top: 30rpx;
+    margin-right: 20rpx;
+    z-index: 10;
+}
+
+.serviceList-labelList {
+    width: 100%;
+    padding: 20rpx;
+    box-sizing: border-box;
+}
+
+.labelList-items {
+    width: 325rpx;
+    height: 80rpx;
+    font-size: 34rpx;
+    line-height: 78rpx;
+    text-align: center;
+    background: #ffffff;
+    margin: 10rpx 15rpx;
+    border-radius: 15rpx;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.labelItem-choose {
+    color: #b28850;
+    border: 1rpx solid #d1c0a5;
+}
+</style>
+<template>
+    <view class="container">
+        <navBar navTitle="服务" isChildPage="y"></navBar>
+        <view class="serviceList-func">
+            <view class="serviceList-chooseLabel" @tap="chooseLabel">{{labelList[currentIndex]}}
+                <text class="fa fa-caret-{{isChoosing?'up':'down'}}" aria-hidden="true"></text>
+            </view>
+        </view>
+        <view class="serviceList-content">
+            <view wx:if="{{isChoosing == false}}" class="serviceList-service">
+                <repeat for="{{serviceList}}" key="label" index="idx">
+                    <block wx:if="{{idx == currentIndex}}">
+                        <repeat for="{{item.service}}" item="service" key="name" index="serviceIndex">
+                            <navigator class="service-items" @tap="navToUser({{service.name}}, {{service.price}}, {{service.description}})">
+                                <view class="service-name">{{service.name}}</view>
+                                <view class="service-price"><text>￥</text>{{service.price}}</view>
+                                <view class="service-content">
+                                    <view class="service-desc">{{service.description}}</view>
+                                    <repeat for="{{service.imageList}}" item="imgList" key="imageUrl">
+                                        <image src="{{imgList.imageUrl}}" mode="aspectFill" class="service-listImg" data-list="{{service.imageList}}" @tap.stop="picPreview({{imgList.imageUrl}})">
+                                    </repeat>
+                                </view>
+                            </navigator>
+                        </repeat>
+                    </block>
+                </repeat>
+            </view>
+            <view wx:else class="serviceList-labelList">
+                <repeat for="{{labelList}}" key="index" index="idx">
+                    <view class="labelList-items {{idx == currentIndex?'labelItem-choose':''}}" @tap="selectLabel({{idx}})">{{item}}</view>
+                </repeat>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import NavBar from '@/components/navBar';
+
+export default class search extends wepy.page {
+    config = {};
+    components = {
+        navBar: NavBar
+    };
+
+    data = {
+        currentIndex: 0,
+        labelList: [],
+        isChoosing: false,
+        serviceList: [
+            {
+                label: '摄影',
+                service: [
+                    {
+                        name: '单人约拍写真',
+                        price: 388,
+                        description:
+                            '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
+                        imageList: [
+                            {
+                                imageUrl: '/icons/assets/pic3_1.JPEG'
+                            },
+                            {
+                                imageUrl: '/icons/assets/pic3_2.JPEG'
+                            },
+                            {
+                                imageUrl: '/icons/assets/pic3_3.JPEG'
+                            }
+                        ]
+                    },
+                    {
+                        name: '毕业照定制',
+                        price: 688,
+                        description:
+                            '熟悉的食堂、图书馆、自习室、宿舍、操场......学校好多个角落都留下过你和他们的故事。可以拍一组外拍，跟别的同学不一样，选择松江有代表性的景点，拍一组有温度有故事的毕业照，势在必行',
+                        imageList: [
+                            {
+                                imageUrl: '/icons/assets/pic4_1.jpg'
+                            },
+                            {
+                                imageUrl: '/icons/assets/pic4_2.jpg'
+                            },
+                            {
+                                imageUrl: '/icons/assets/pic4_3.jpg'
+                            }
+                        ]
+                    },
+                    {
+                        name: '情侣约拍写真',
+                        price: 488,
+                        description:
+                            '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
+                        imageList: []
+                    }
+                ]
+            },
+            {
+                label: '烹饪',
+                service: [
+                    {
+                        name: '手把手教你学做菜',
+                        price: 200,
+                        description: '厨艺大师教你学做菜！'
+                    }
+                ]
+            }
+        ]
+    };
+
+    computed = {};
+
+    methods = {
+        chooseLabel() {
+            this.isChoosing = !this.isChoosing;
+            this.$apply();
+        },
+
+        selectLabel(index, e) {
+            this.currentIndex = index;
+            this.isChoosing = !this.isChoosing;
+            this.$apply();
+        },
+
+        picPreview(url, e) {
+            var imageList = e.currentTarget.dataset.list;
+
+            imageList.forEach((item, index) => {
+                this.preImgList.push(item.imageUrl);
+            });
+            this.$apply();
+            wx.previewImage({
+                current: url,
+                urls: this.preImgList
+            });
+        },
+
+        navToUser(name, url, tag, desc, event) {
+            
+        }
+    };
+
+    events = {};
+
+    onLoad(options) {
+        this.serviceList.forEach((item, index) => {
+            this.labelList.push(item.label);
+        });
+        this.currentIndex = options.index;
+    }
+}
+</script>
