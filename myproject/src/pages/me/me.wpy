@@ -149,18 +149,13 @@ page {
                         <text class="userinfo-nickname">{{globalData.globalUserInfo.nickName}}</text>
                         <block wx:if="{{isEditing === false}}">
                             <text class="userinfo-desc">{{userDesc === '' ? '这家伙比较懒，什么都没有写……' : userDesc}}</text>
-                            <view class="userinfo-setbtn" @tap="descEdit">
-                                <image src="/icons/ic_edit.png">
-                            </view>
                         </block>
                         <block wx:else>
-                            <form bindsubmit="descSave">
-                                <input type="text" name="desc" class="userinfo-desc userinfo-edit" value="{{userDesc}}">
-                                <button class="userinfo-setbtn" form-type="submit">
-                                    <image src="/icons/ic_edit.png">
-                                </button>
-                            </form>
+                            <input type="text" class="userinfo-desc userinfo-edit" value="{{userDesc}}" bindinput="descChange">
                         </block>
+                        <view class="userinfo-setbtn" @tap="descEdit">
+                            <image src="/icons/ic_edit.png">
+                        </view>
                 </block>
             </view>
             <view class="user-items">
@@ -265,7 +260,7 @@ export default class Index extends wepy.page {
                                     console.log('code' + code);
                                     wepy.request({
                                         url:
-                                            'http://127.0.0.1:8000' +
+                                            'http://192.168.137.241:8000' +
                                             '/auth/token?code=' +
                                             code,
                                         data: {
@@ -394,12 +389,13 @@ export default class Index extends wepy.page {
         },
 
         descEdit() {
-            this.isEditing = true;
+            this.isEditing = !this.isEditing;
+            this.$apply();
         },
 
-        descSave(e) {
-            this.isEditing = false;
-            this.userDesc = e.detail.value.desc;
+        descChange(e) {
+            this.userDesc = e.detail.value;
+            this.$apply();
         }
     };
 
