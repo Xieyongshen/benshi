@@ -1,5 +1,9 @@
 
 <style lang='less'>
+page {
+    background: #fafafa;
+}
+
 .container {
     height: 100%;
     display: flex;
@@ -7,6 +11,12 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
 }
 
 @font-face {
@@ -2356,6 +2366,8 @@ export default class extends wepy.app {
             'pages/message/message',
             'pages/me/me',
             'pages/person/person',
+            'pages/serviceList/serviceList',
+            'pages/service/service',
             'pages/label/label',
             'pages/star/star',
             'pages/follow/follow',

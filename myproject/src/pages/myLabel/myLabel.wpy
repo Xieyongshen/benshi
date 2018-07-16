@@ -127,7 +127,7 @@ page {
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class Index extends wepy.page {
+export default class MyLabel extends wepy.page {
     config = {};
     components = {
         navBar: NavBar

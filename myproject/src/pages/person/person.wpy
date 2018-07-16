@@ -47,6 +47,7 @@ page {
     overflow: hidden;
     white-space: nowrap;
     z-index: 90;
+    position: relative;
 }
 
 .list-sticky{
@@ -76,8 +77,10 @@ page {
 
 .labelMoreLeft,
 .labelMoreRight {
-    width: 50rpx;
+    width: 30rpx;
     height: 100rpx;
+    line-height: 100rpx;
+    text-align: center;
     background-color: #ffffff;
     position: absolute;
     top: 0;
@@ -90,12 +93,6 @@ page {
 
 .labelMoreLeft {
     left: 150rpx;
-}
-
-.labelMore-img {
-    width: 50rpx;
-    height: 50rpx;
-    margin: 25rpx 0;
 }
 
 .user-labelContent {
@@ -256,10 +253,10 @@ page {
         <view class="user-labelList {{listSticky === true?'list-sticky':''}}">
             <view class="labelList-catalog labelList-items {{currentLabel == 0?'list-current':''}}" @tap.stop="clickScrollInTo" data-id="list" data-idx='0'>目录</view>
             <view wx:if="{{noLeft === false}}" class="labelMoreLeft">
-                <image src="/icons/ic_back.png" class="labelMore-img">
+                <text class="fa fa-angle-left more-icon"></text>
             </view>
             <view wx:if="{{noRight === false}}" class="labelMoreRight">
-                <image src="/icons/ic_path.png" class="labelMore-img">
+                <text class="fa fa-angle-right more-icon"></text>
             </view>
             <scroll-view class="labelList-content" scroll-x='true' bindscroll="showLabel" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
                 <repeat for="{{tags}}" key="name">
@@ -284,9 +281,9 @@ page {
                     <view class="labelContent-items" id="{{item.id}}">
                         <view class="labelItem-service">
                             <view class="service-title">服务</view>
-                            <view class="service-more">查看全部</view>
-                            <repeat for="{{item.service}}" item="service" key="name">
-                                <view class="service-items">{{service.name}}</view>
+                            <view class="service-more" @tap="navToService(0)">查看全部</view>
+                            <repeat for="{{item.service}}" item="service" key="name" index="sIndex">
+                                <view class="service-items" @tap="navToService({{sIndex}})">{{service.name}}</view>
                             </repeat>
                         </view>
                         <view class="labelItem-content">
@@ -310,18 +307,6 @@ page {
                 </repeat>
             </scroll-view>
         </view>
-
-        <!-- <scroll-view class="category-content" scroll-into-view="{{scrollInTo}}" bindscroll="scrolling" scroll-with-animation="true" scroll-y="true">
-            <view class="products" id="prds">
-                <repeat for="{{categories}}" key="index" item="item" index="index">
-                    <view class="product" id="{{item.id}}">{{item.name}}</view>
-                    <view class="productBox" wx:for="{{item.lables}}" wx:for-item="itm" wx:key="idx" wx:for-index="idx">
-                        {{item.lables[idx]}}
-                    </view>
-                </repeat>
-            </view>
-            </scroll-view> -->
-    </view>
     </view>
 </template>
 
@@ -329,7 +314,7 @@ page {
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class categoryScroll extends wepy.page {
+export default class Person extends wepy.page {
     config = {};
     components = {
         navBar: NavBar
@@ -603,7 +588,7 @@ export default class categoryScroll extends wepy.page {
             }
         ],
         listSticky: false,
-        noLeft: false,
+        noLeft: true,
         noRight: false,
         preImgList: [],
         labelIDList: [],
@@ -676,6 +661,12 @@ export default class categoryScroll extends wepy.page {
             this.currentLabel = ++idx;
             this.scrollInTo = id;
             this.$apply();
+        },
+        navToService(index, e){
+            wx.navigateTo({
+                url:
+                    '/pages/serviceList/serviceList?index=' + index
+            });
         }
     };
 

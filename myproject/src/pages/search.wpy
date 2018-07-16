@@ -261,7 +261,7 @@ page {
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class search extends wepy.page {
+export default class Search extends wepy.page {
     config = {
         navigationBarTitleText: '搜索'
     };
