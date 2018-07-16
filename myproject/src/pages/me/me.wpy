@@ -258,7 +258,7 @@ export default class Index extends wepy.page {
                                     console.log('code' + code);
                                     wepy.request({
                                         url:
-                                            'http://192.168.23.1:8000' +
+                                            'http://192.168.137.241:8000' +
                                             '/auth/token?code=' +
                                             code,
                                         data: {

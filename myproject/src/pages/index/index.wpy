@@ -272,6 +272,15 @@ export default class Index extends wepy.page {
         };
     }
 
-    onLoad() {}
+    async onLoad() {
+        let self = this;
+        let res = await api.getIndex({});
+        console.log('-------------');
+        console.log(res);
+        console.log('-------------');
+        self.recommandUsers = res.data;
+        // self.categories = res.data
+        self.$apply();
+    }
 }
 </script>
