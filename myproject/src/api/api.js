@@ -12,8 +12,11 @@ const testCode = (params) => wxRequest(params, apiBenshi + "/new_add");
 const getCategory = (params) => wxRequest(params, apiBenshi + "/api/get_category");
 //获取首页推荐标签
 const getIndex = (params) => wxRequest(params, apiBenshi + "/api/get_index/recommand");
+//获取卖家用户详情
+const getPerson = (params) => wxRequest(params, apiBenshi + "/api/get_person");
 
 export default {
     getCategory,
-    getIndex
+    getIndex,
+    getPerson
 }
