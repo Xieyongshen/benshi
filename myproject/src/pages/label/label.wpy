@@ -4,14 +4,13 @@ page {
 }
 
 .container {
-    padding-top: 255rpx;
+    padding-top: 380rpx;
 }
 
 .search-container {
     width: 100%;
     padding: 20rpx 0;
     background-color: #ffffff;
-    box-shadow: 0 1rpx 1rpx #a8a7a7;
     position: fixed;
     top: 147rpx;
     z-index: 99;
@@ -44,6 +43,57 @@ page {
     display: inline-block;
     vertical-align: top;
     margin-left: 20rpx;
+}
+
+.label-follow{
+    width: 100%;
+    height: 100rpx;
+    background: #ffffff;
+    padding: 10rpx 30rpx 20rpx 30rpx;
+    box-sizing: border-box;
+    box-shadow: 0 1rpx 1rpx #a8a7a7;
+    position: fixed;
+    top: 250rpx;
+    z-index: 99;
+}
+
+.follow-btn{
+    height: 70rpx;
+    font-size: 34rpx;
+    line-height: 70rpx;
+    padding: 0 30rpx;
+    border-radius: 10rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+    float: right;
+    .fa-plus{
+        font-weight: 100;
+    }
+}
+
+.follow-no{
+    color: #b28850;
+    border: 1rpx solid #d1c0a5;
+}
+
+.follow-no:hover{
+    color: #ffffff;
+    background: #d1c0a5;
+}
+
+.follow-yes{
+    color: #888888;
+    border: 1rpx solid #888888;
+}
+
+.follow-yes:hover{
+    color: #ffffff;
+    background: #888888;
+}
+
+.label-content{
+    background: #ffffff;
+    border-top: 1rpx solid #e5e5e5;
 }
 
 .label-items {
@@ -126,6 +176,10 @@ page {
                 <view class="search_input">搜索感兴趣的内容</view>
             </navigator>
         </view>
+        <view class="label-follow">
+            <view wx:if="{{isFollow}}" class="follow-btn follow-no" @tap="followTag"><text class="fa fa-plus"></text> 关注</view>
+            <view wx:else class="follow-btn follow-yes" @tap="followTag">已关注</view>
+        </view>
         <view class="label-content">
             <repeat for="{{tags}}" key="tag">
                 <navigator class="label-items" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.userdesc}})">
@@ -159,6 +213,7 @@ export default class search extends wepy.page {
     };
 
     data = {
+        isFollow: false,
         label: '',
         tags: [
             {
@@ -206,6 +261,11 @@ export default class search extends wepy.page {
     computed = {};
 
     methods = {
+        followTag(){
+            this.isFollow = !this.isFollow;
+            this.$apply();
+        },
+
         picPreview(url, e) {
             var imageList = e.currentTarget.dataset.list;
 

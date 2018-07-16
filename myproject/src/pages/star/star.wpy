@@ -223,7 +223,7 @@ checkbox .wx-checkbox-input {
                 </repeat>
             </view>
         </view>
-        <view wx:if="{{isManaging == true}}" class="star-manageBtn" animation="{{animation}}">
+        <view wx:if="{{isManaging == true}}" class="star-manageBtn">
             <checkbox-group bindchange="selectAllTag">
                 <label class="manage-selectAll">
                     <checkbox class="selectAll-choose" />全选
@@ -250,7 +250,6 @@ export default class search extends wepy.page {
         selectList: [],
         isChoosing: false,
         isManaging: false,
-        showManage: {},
         selectAll: false,
         star: [
             {
@@ -387,7 +386,6 @@ export default class search extends wepy.page {
     events = {};
 
     onLoad() {
-        this.animation = wx.createAnimation();
         this.typeList.push('全部分类');
         this.star.forEach((item, index) => {
             this.typeList.push(item.type);
