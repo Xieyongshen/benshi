@@ -46,7 +46,7 @@ page {
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class search extends wepy.page {
+export default class Follow extends wepy.page {
     config = {};
     components = {
         navBar: NavBar
