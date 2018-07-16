@@ -392,7 +392,6 @@ export default class search extends wepy.page {
     methods = {
         searchClear(e) {
             if (this.showResult) {
-                this.searchValue = '';
                 this.searchDone = false;
                 this.keywordDone = '';
                 this.showResult = false;
@@ -413,6 +412,7 @@ export default class search extends wepy.page {
         },
 
         selectSearch(name, e) {
+            this.searchValue = '';
             this.keywordDone = name;
             this.searchDone = true;
             this.showResult = true;

@@ -45,6 +45,11 @@ page {
     white-space: nowrap;
 }
 
+.manage-selectCur:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.7;
+}
+
 .selectCur-choose {
     width: 80rpx;
     height: 160rpx;
@@ -58,7 +63,7 @@ page {
 .tagList-items {
     width: 100%;
     height: 160rpx;
-    border-bottom: 1px solid #a5a5a5;
+    border-bottom: 1px solid #d2d2d2;
     display: inline-block;
 }
 
@@ -339,7 +344,7 @@ export default class search extends wepy.page {
 
         changeSelect(e) {
             this.selectList = e.detail.value;
-            console.log("Select: " + this.selectList);
+            console.log('Select: ' + this.selectList);
         },
 
         navToUser(name, url, tag, desc, event) {
@@ -359,27 +364,47 @@ export default class search extends wepy.page {
         selectAllTag() {
             this.selectAll = !this.selectAll;
             this.selectList = [];
-            this.star.forEach((item, index) => {
-                item.tagList.forEach((tagItem, tagIndex) => {
-                    this.selectList.push(tagItem.tag);
+            if (this.selectAll) {
+                this.star.forEach((item, index) => {
+                    item.tagList.forEach((tagItem, tagIndex) => {
+                        this.selectList.push(tagItem.tag);
+                    });
                 });
-            });
-            console.log(this.selectList);
+            }
             this.$apply();
         },
 
         deleteTag() {
-            this.star.forEach((item, index) => {
-                item.tagList.forEach((tagItem, tagIndex) => {
-                    this.selectList.forEach((element, eleIndex) => {
+            for (let i = 0; i < this.star.length; i++) {
+                const item = this.star[i];
+                for (let tagIndex = item.tagList.length - 1; tagIndex >= 0; tagIndex--) {
+                    const tagItem = item.tagList[tagIndex];
+                    this.selectList.every((element, eleIndex) => {
+                        console.log(
+                            'Cur: ' +
+                                tagIndex +
+                                ' - ' +
+                                tagItem.tag +
+                                ' to ' +
+                                eleIndex +
+                                ' - ' +
+                                element
+                        );
                         if (element == tagItem.tag) {
-                            console.log('Delete: ' + element);
+                            console.log(
+                                'Find to delete: ' + eleIndex + ' - ' + element
+                            );
+                            console.log(
+                                'Delete: ' + tagIndex + ' - ' + tagItem.tag
+                            );
                             item.tagList.splice(tagIndex, 1);
-                            this.selectList.splice(eleIndex, 1);
+                            return false;
                         }
+                        return true;
                     });
-                });
-            });
+                }
+            }
+            this.selectList = [];
         }
     };
 
