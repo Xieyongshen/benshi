@@ -365,7 +365,7 @@ export default class categoryScroll extends wepy.page {
                             '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
                         imgList: [
                             {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
+                                imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
                             },
                             {
                                 imageUrl: '/icons/assets/label1_pic_2.png'
@@ -381,7 +381,7 @@ export default class categoryScroll extends wepy.page {
                         desc: '生活就是不停地旅行和拍照！ ',
                         imgList: [
                             {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
+                                imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
                             },
                             {
                                 imageUrl: '/icons/assets/label1_pic_2.png'
