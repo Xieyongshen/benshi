@@ -1,16 +1,6 @@
 <style lang="less">
-page {
-    background: #fafafa;
-}
-
 .container {
     padding-top: 150rpx;
-}
-
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    color: transparent;
 }
 
 .userinfo {
@@ -289,9 +279,9 @@ page {
             <view wx:if="{{noRight === false}}" class="labelMoreRight">
                 <text class="fa fa-angle-right more-icon"></text>
             </view>
-            <scroll-view class="labelList-content" scroll-x='true' bindscroll="showLabel" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
+            <scroll-view class="labelList-content" scroll-x='true' scroll-into-view="{{lScrollInTo}}" scroll-with-animation="true" bindscroll="showLabel" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
                 <repeat for="{{tags}}" key="name">
-                    <view class="labelList-items {{currentLabel == index + 1?'list-current':''}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}" data-idx="{{index + 1}}">{{item.name}}</view>
+                    <view class="labelList-items {{currentLabel == index + 1?'list-current':''}}" id="{{item.id}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}" data-idx="{{index + 1}}">{{item.name}}</view>
                 </repeat>
             </scroll-view>
         </view>
@@ -628,6 +618,7 @@ export default class Person extends wepy.page {
         preImgList: [],
         labelIDList: [],
         currentLabel: 0,
+        lScrollInTo: '',
         scrollInTo: '',
         isScrolling: false
     };
@@ -679,9 +670,12 @@ export default class Person extends wepy.page {
                 var sWidth = wx.getSystemInfoSync().windowWidth;
                 if (scrollX < 0 && scrollX > -sWidth) {
                     this.currentLabel++;
+                    this.lScrollInTo = this.labelIDList[this.currentLabel].id;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
+                    
                 } else if (scrollX > 0 && scrollX < sWidth) {
                     this.currentLabel--;
+                    this.lScrollInTo = this.labelIDList[this.currentLabel].id;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
                 }
                 this.$apply();
@@ -728,6 +722,9 @@ export default class Person extends wepy.page {
         this.tags.forEach((item, index) => {
             this.labelIDList.push({ id: item.id });
         });
+        if(this.tags.length <= 4){
+            this.noRight = true;
+        }
         this.$apply();
 
         let self = this

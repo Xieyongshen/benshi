@@ -1,8 +1,4 @@
 <style lang="less">
-page {
-    background: #fafafa;
-}
-
 .container {
     padding-top: 150rpx;
 }
