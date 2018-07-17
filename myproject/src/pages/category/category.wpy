@@ -162,18 +162,18 @@ export default class Category extends wepy.page {
         navBar: NavBar
     };
 
-    // async onLoad() {
-    //     let self = this
-    //     let res = await api.getCategory({})
-    //     console.log('-------------')
-    //     console.log(res)
-    //     console.log('-------------')
-    //     self.categories = res.data
-    //     console.log(res.data)
-    //     console.log(self.categories)
-    //     // self.categories = res.data
-    //     self.$apply()
-    // }
+    async onLoad() {
+        let self = this
+        let res = await api.getCategory({})
+        console.log('-------------')
+        console.log(res)
+        console.log('-------------')
+        self.categories = res.data
+        console.log(res.data)
+        console.log(self.categories)
+        // self.categories = res.data
+        self.$apply()
+    }
 
     data = {
         categories: [

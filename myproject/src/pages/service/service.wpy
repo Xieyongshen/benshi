@@ -26,14 +26,15 @@
 .service-price {
     color: #cfa972;
     font-size: 38rpx;
-    line-height: 60rpx;
+    line-height: 70rpx;
+    display: inline-block;
     text {
         font-size: 30rpx;
     }
 }
 
 .service-name {
-    font-size: 40rpx;
+    font-size: 42rpx;
     line-height: 60rpx;
     margin-bottom: 10rpx;
 }
@@ -103,6 +104,34 @@
     font-size: 32rpx;
     line-height: 50rpx;
 }
+
+.service-buy{
+    width: 750rpx;
+    height: 110rpx;
+    padding: 20rpx 30rpx;
+    border-top: 1rpx solid #d2d2d2;
+    background: #ffffff;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+}
+
+.service-btn{
+    height: 70rpx;
+    color: #b28850;
+    font-size: 34rpx;
+    line-height: 68rpx;
+    padding: 0 40rpx;
+    border: 1rpx solid #cfa972;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    float: right;
+}
+
+.service-btn:hover{
+    color: #ffffff;
+    background: #cfa972;
+}
 </style>
 <template>
     <view class="container">
@@ -132,7 +161,12 @@
         </view>
         <view class="service-detail">
             <view class="detail-title">服务详情</view>
-            <view class="detail-content">{{serviceDetail}}</view>
+            <text class="detail-content">{{serviceDetail}}</text>
+        </view>
+        <view class="service-buy">
+            <view class="service-price">
+                <text>￥</text>{{servicePrice}}</view>
+            <view class="service-btn">购买</view>
         </view>
     </view>
 </template>
@@ -156,13 +190,13 @@ export default class Service extends wepy.page {
             '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
         imgList: [
             {
+                imageUrl: '/icons/assets/pic3_3.jpg'
+            },
+            {
                 imageUrl: '/icons/assets/pic3_1.jpg'
             },
             {
                 imageUrl: '/icons/assets/pic3_2.jpg'
-            },
-            {
-                imageUrl: '/icons/assets/pic3_3.jpg'
             }
         ],
         preImgList: [],
