@@ -106,8 +106,8 @@ def verify_wxapp(encrypted_data, iv, code):
     		acc.id = openid
     		acc.nickname = nickname
     		acc.avatar = avatar
-    		acc.created_time = datetime.datetime.now()
-    		acc.updated_time = datetime.datetime.now()
+    		acc.created_time = datetime.now()
+    		acc.updated_time = datetime.now()
     		acc.save()
     	
     	raise Unauthorized('invalid_wxapp_code')
