@@ -43,6 +43,7 @@ page {
 .user-labelList {
     width: 750rpx;
     height: 100rpx;
+    background: #ffffff;
     border-bottom: 1rpx solid #e5e5e5;
     overflow: hidden;
     white-space: nowrap;
@@ -311,7 +312,7 @@ page {
                     <view class="labelContent-items" id="{{item.id}}">
                         <view class="labelItem-service">
                             <view class="service-title">服务</view>
-                            <view class="service-more" @tap="navToService(0)">查看全部</view>
+                            <view wx:if="{{item.service.length > 0}}" class="service-more" @tap="navToService(0)">查看全部</view>
                             <view wx:if="{{item.service.length == 0}}" class="service-null">暂无服务</view>
                             <repeat for="{{item.service}}" item="service" key="name" index="sIndex">
                                 <view class="service-items" @tap="navToService({{sIndex}})">{{service.name}}</view>
@@ -360,266 +361,266 @@ export default class Person extends wepy.page {
         userDesc: '',
         chooseTag: '',
         tags: [
-            {
-                id: 'photo',
-                name: '摄影',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'cook',
-                name: '烹饪',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'writerA',
-                name: '编剧A',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'writerB',
-                name: '编剧B',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'writerC',
-                name: '编剧C',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            }
+            // {
+            //     id: 'photo',
+            //     name: '摄影',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'cook',
+            //     name: '烹饪',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'writerA',
+            //     name: '编剧A',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'writerB',
+            //     name: '编剧B',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'writerC',
+            //     name: '编剧C',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // }
         ],
         listSticky: false,
         noLeft: true,
