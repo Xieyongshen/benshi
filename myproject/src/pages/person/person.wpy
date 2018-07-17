@@ -313,6 +313,7 @@ page {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Person extends wepy.page {
     config = {};
@@ -679,7 +680,7 @@ export default class Person extends wepy.page {
 
     }
 
-    onLoad(options) {
+    async onLoad(options) {
         this.userid = options.id;
         this.userUrl = options.url;
         this.userDesc = options.desc;
@@ -694,6 +695,17 @@ export default class Person extends wepy.page {
             this.labelIDList.push({ id: item.id });
         });
         this.$apply();
+
+        let self = this
+        let res = await api.getPerson({
+            query: {
+                userId: self.userid
+            }
+        })
+        console.log('-------------')
+        console.log(res)
+        console.log('-------------')
+        self.$apply()
     }
 }
 </script>
