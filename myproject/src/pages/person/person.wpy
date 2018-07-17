@@ -593,7 +593,7 @@ export default class Person extends wepy.page {
         noRight: false,
         preImgList: [],
         labelIDList: [],
-        currentLabel: 2,
+        currentLabel: 0,
         scrollInTo: '',
         isScrolling: false
     };
@@ -604,10 +604,10 @@ export default class Person extends wepy.page {
         showLabel(e) {
             var left = e.detail.scrollLeft;
             var width = e.detail.scrollWidth;
-            if (left > 50) {
+            if (left > 30) {
                 this.noLeft = false;
             }
-            if (left < width - 50) {
+            if (left < width - 30) {
                 this.noRight = false;
             }
             this.$apply();
@@ -643,13 +643,11 @@ export default class Person extends wepy.page {
                 this.isScrolling = true;
                 var scrollX = e.detail.deltaX;
                 var sWidth = wx.getSystemInfoSync().windowWidth;
-                if (scrollX < -5 && scrollX > -sWidth) {
+                if (scrollX < 0 && scrollX > -sWidth) {
                     this.currentLabel++;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                } else if (scrollX > 5 && scrollX < sWidth) {
+                } else if (scrollX > 0 && scrollX < sWidth) {
                     this.currentLabel--;
-                    this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                } else if (scrollX > -5 && scrollX < 5) {
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
                 }
                 this.$apply();
@@ -687,9 +685,9 @@ export default class Person extends wepy.page {
         this.userUrl = options.url;
         this.userDesc = options.desc;
         this.chooseTag = options.tag;
-        this.scrollInTo = 'cook';
+        this.scrollInTo = 'list';
         this.$apply();
-        this.currentLabel = 2;
+        this.currentLabel = 0;
 
         this.labelIDList = [];
         this.labelIDList.push({ id: 'list' });
