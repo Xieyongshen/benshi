@@ -162,25 +162,25 @@ export default class Category extends wepy.page {
         navBar: NavBar
     };
 
-    async onLoad() {
-        let self = this
-        let res = await api.getCategory({})
-        console.log('-------------')
-        console.log(res)
-        console.log('-------------')
-        self.categories = res.data
-        console.log(res.data)
-        console.log(self.categories)
-        // self.categories = res.data
-        self.$apply()
-    }
+    // async onLoad() {
+    //     let self = this
+    //     let res = await api.getCategory({})
+    //     console.log('-------------')
+    //     console.log(res)
+    //     console.log('-------------')
+    //     self.categories = res.data
+    //     console.log(res.data)
+    //     console.log(self.categories)
+    //     // self.categories = res.data
+    //     self.$apply()
+    // }
 
     data = {
         categories: [
             {
                 id: 'hot',
                 name: '热门分类',
-                lables: [
+                labels: [
                     'TOEFL',
                     'IELTS',
                     '围棋',
@@ -194,12 +194,12 @@ export default class Category extends wepy.page {
             {
                 id: 'language',
                 name: '外语类',
-                lables: ['TOEFL', 'IELTS', '日语', '德语', '法语']
+                labels: ['TOEFL', 'IELTS', '日语', '德语', '法语']
             },
             {
                 id: 'talent',
                 name: '才艺类',
-                lables: [
+                labels: [
                     '象棋',
                     '书法',
                     '围棋',
@@ -215,32 +215,32 @@ export default class Category extends wepy.page {
             {
                 id: 'skill',
                 name: '生活技能',
-                lables: ['烹调方法', '整理', '缝纫', '盥洗', '具体菜系']
+                labels: ['烹调方法', '整理', '缝纫', '盥洗', '具体菜系']
             },
             {
                 id: 'experience1',
                 name: '经验分享1',
-                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
             },
             {
                 id: 'experience2',
                 name: '经验分享2',
-                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
             },
             {
                 id: 'experience3',
                 name: '经验分享3',
-                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
             },
             {
                 id: 'experience4',
                 name: '经验分享4',
-                lables: ['留学经验', '考研经验', '创业经验', '面试经验']
+                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
             },
             {
                 id: 'knowledge',
                 name: '专业知识',
-                lables: [
+                labels: [
                     '法学',
                     '哲学',
                     '文学',

@@ -27,18 +27,18 @@
     color: #cfa972;
     font-size: 38rpx;
     line-height: 60rpx;
-    text{
+    text {
         font-size: 30rpx;
     }
 }
 
-.service-name{
+.service-name {
     font-size: 40rpx;
     line-height: 60rpx;
     margin-bottom: 10rpx;
 }
 
-.service-seller{
+.service-seller {
     width: 750rpx;
     height: 160rpx;
     margin-top: 30rpx;
@@ -47,18 +47,61 @@
     box-sizing: border-box;
 }
 
-.seller-avatar{
+.seller-avatar {
     width: 100rpx;
     height: 100rpx;
     border-radius: 50%;
 }
 
-.seller-name{
+.seller-name {
     font-size: 40rpx;
     line-height: 100rpx;
     margin-left: 20rpx;
     vertical-align: top;
     display: inline-block;
+}
+
+.service-evaluation {
+    width: 750rpx;
+    font-size: 36rpx;
+    line-height: 100rpx;
+    margin-top: 30rpx;
+    padding: 0 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.evaluation-title {
+    display: inline-block;
+}
+
+.evaluation-all {
+    color: #cfa972;
+    float: right;
+    .fa {
+        margin-left: 20rpx;
+        font-size: 45rpx;
+    }
+}
+
+.service-detail {
+    width: 750rpx;
+    font-size: 36rpx;
+    line-height: 60rpx;
+    margin: 30rpx 0;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.detail-title {
+    margin-bottom: 20rpx;
+}
+
+.detail-content {
+    color: #434343;
+    font-size: 32rpx;
+    line-height: 50rpx;
 }
 </style>
 <template>
@@ -80,6 +123,16 @@
         <view class="service-seller">
             <image src="{{sellerAvatar}}" class="seller-avatar">
                 <text class="seller-name">{{sellerName}}</text>
+        </view>
+        <view class="service-evaluation">
+            <view class="evaluation-title">服务评价({{evaNum}})</view>
+            <view class="evaluation-all">查看全部
+                <text class="fa fa-angle-right"></text>
+            </view>
+        </view>
+        <view class="service-detail">
+            <view class="detail-title">服务详情</view>
+            <view class="detail-content">{{serviceDetail}}</view>
         </view>
     </view>
 </template>
@@ -103,17 +156,39 @@ export default class Service extends wepy.page {
             '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
         imgList: [
             {
-                imageUrl: '/icons/assets/pic3_1.JPEG'
+                imageUrl: '/icons/assets/pic3_1.jpg'
             },
             {
-                imageUrl: '/icons/assets/pic3_2.JPEG'
+                imageUrl: '/icons/assets/pic3_2.jpg'
             },
             {
-                imageUrl: '/icons/assets/pic3_3.JPEG'
+                imageUrl: '/icons/assets/pic3_3.jpg'
             }
         ],
         preImgList: [],
-        serviceDetail: ''
+        evaNum: 2,
+        serviceDetail:
+            '时间：每周六，日 08:00 - 19:00 \n 地点：上海 徐汇区 上海任何值得留下影像的城市角落 \n 服务流程：' +
+            ' \n ' +
+            '1）下单后将自己照片给我' +
+            ' \n ' +
+            '2）商议主题和样式' +
+            ' \n ' +
+            '3）确定服装道具化妆' +
+            ' \n ' +
+            '4）敲定场地、时间' +
+            ' \n ' +
+            '5）2~3小时拍摄' +
+            ' \n ' +
+            '6）10张左右精修照片' +
+            ' \n ' +
+            '服务宗旨：' +
+            ' \n ' +
+            '1、	只选取上海最有吸引力、最好玩的角落拍摄' +
+            ' \n ' +
+            '2、	这是一个年轻人的活动，我们可以一边拍照、一边穿梭在上海的大街小巷' +
+            ' \n ' +
+            '3、	不拍庸俗平凡的照片，只希望能拍出展现我们年轻人生命力的照片'
     };
 
     computed = {};
@@ -135,7 +210,7 @@ export default class Service extends wepy.page {
         this.serviceName = options.name;
         this.servicePrice = options.price;
         this.serviceDesc = options.desc;
-        this.imgList = options.list;
+        // this.imgList = options.list;
         this.$apply();
     }
 }

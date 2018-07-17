@@ -167,13 +167,13 @@ export default class ServiceList extends wepy.page {
                             '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
                         imageList: [
                             {
-                                imageUrl: '/icons/assets/pic3_1.JPEG'
+                                imageUrl: '/icons/assets/pic3_1.jpg'
                             },
                             {
-                                imageUrl: '/icons/assets/pic3_2.JPEG'
+                                imageUrl: '/icons/assets/pic3_2.jpg'
                             },
                             {
-                                imageUrl: '/icons/assets/pic3_3.JPEG'
+                                imageUrl: '/icons/assets/pic3_3.jpg'
                             }
                         ]
                     },
