@@ -227,66 +227,6 @@ export default class Me extends wepy.page {
     //   }
     async getUserInfoFun2(e) {
         let self = this;
-<<<<<<< HEAD
-        console.log('1111')
-        const APP_ID = 'wx73bdc6a0b793aa42'
-        const APP_SECRET = 'd18f4ce06504cc4d7c2dbb0e06e03929'
-        var OPEN_ID = ''
-        var SESSION_KEY = ''
-        var CODE = ''
-        console.log(APP_ID)
-        wx.login({
-            success: function(login_res) {
-                console.log(login_res.code)
-                let code = login_res.code
-                wx.getUserInfo({
-                    //调用getUserInfo获取encryptedData和iv
-                    success: function(get_res) {
-                        self.globalData.globalUserInfo = get_res.userInfo;
-                        let encryptedData = get_res.encryptedData || 'encry'
-                        console.log(get_res)
-                        console.log(get_res.encryptedData)
-                        console.log('encry and iv')
-                        console.log(get_res.iv)
-                        let iv = get_res.iv || 'iv'
-                        console.log('code' + code)
-                        wx.request({
-                            url:
-                                'http://192.168.137.241:8000' +
-                                '/auth/token?code=' +
-                                code,
-                            data: {
-                                username: encryptedData,
-                                password: iv,
-                                grant_type: 'password',
-                                auth_approach: 'wxapp'
-                            },
-                            method: 'POST',
-                            header: {
-                                'Content-Type':
-                                    'application/x-www-form-urlencoded'
-                            },
-                            success: function(token_res) {
-                                wx.showToast({
-                                    title: '登陆成功',
-                                    icon: 'success'
-                                });
-                                // console.log('token res:======'+token_res.data.access_token)
-                                console.log(token_res)
-                                wx.setStorageSync('jet',token_res);
-                                self.globalData.access_token =
-                                    token_res.data.access_token
-                                self.globalData.account_id =
-                                    token_res.data.account_id
-                                self.$apply()
-                                console.log(self.globalData)
-                                self.hasUserInfo = true
-                                self.$apply()
-                            }
-                        });
-                    }
-                });
-=======
         wepy.showModal({
             title: '授权',
             content: '需要获取你的头像和昵称',
@@ -372,7 +312,6 @@ export default class Me extends wepy.page {
             },
             fail: function({ errMsg }) {
                 console.log('request fail', errMsg);
->>>>>>> 20d518386b796198dcfeeafe52611ac9a8e85dde
             }
         });
 

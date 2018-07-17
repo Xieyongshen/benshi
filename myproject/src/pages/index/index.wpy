@@ -160,7 +160,7 @@
         <view class="index-recommand">
             <view class="recommand-title">标签推荐</view>
             <repeat for="{{recommandUsers}}" key="recommandUsers">
-                <navigator class="recommand-items" @tap="navToUser({{item.userId}}, {{item.imgUrl}}, {{item.tag}}, {{item.description}})">
+                <navigator class="recommand-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.tag}})">
                     <image src="{{item.imgUrl}}" class="userItem-img">
                         <view class="userItem-details">
                             <view class="userItem-tag">{{item.tag}}</view>
@@ -244,18 +244,18 @@ export default class Index extends wepy.page {
     };
 
     methods = {
-        navToUser(id, url, tag, desc, event) {
-            console.log(id)
+        navToUser(uid, name, url, tag, event) {
+            console.log(uid)
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
-                    id +
+                    uid +
+                    '&name=' +
+                    name +
                     '&url=' +
                     url +
                     '&tag=' +
-                    tag +
-                    '&desc=' +
-                    desc
+                    tag
             });
         }
     };
@@ -268,14 +268,15 @@ export default class Index extends wepy.page {
     }
 
     async onLoad() {
-        // let self = this;
-        // let res = await api.getIndex({});
-        // console.log('-------------');
-        // console.log(res);
-        // console.log('-------------');
-        // self.recommandUsers = res.data;
-        // // self.categories = res.data
-        // self.$apply();
+        let self = this;
+        let res = await api.getIndex({});
+        console.log('-------------');
+        console.log(res);
+        console.log('-------------');
+        self.recommandUsers = res.data;
+        console.log(res.data);
+        // self.categories = res.data
+        self.$apply();
     }
 }
 </script>
