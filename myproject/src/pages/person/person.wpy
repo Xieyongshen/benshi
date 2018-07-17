@@ -43,6 +43,7 @@ page {
 .user-labelList {
     width: 750rpx;
     height: 100rpx;
+    background: #ffffff;
     border-bottom: 1rpx solid #e5e5e5;
     overflow: hidden;
     white-space: nowrap;
@@ -67,8 +68,13 @@ page {
     font-size: 32rpx;
     line-height: 100rpx;
     text-align: center;
+    padding: 0 5rpx;
     background-color: #ffffff;
+    box-sizing: border-box;
     display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .labelList-catalog {
@@ -106,6 +112,7 @@ page {
 .labelContent-items {
     width: 750rpx;
     display: inline-block;
+    vertical-align: top;
 }
 
 .labelContent-list {
@@ -167,6 +174,11 @@ page {
     right: 30rpx;
 }
 
+.service-null{
+    padding-left: 80rpx;
+    font-size: 32rpx;
+}
+
 .service-items {
     height: 70rpx;
     font-size: 32rpx;
@@ -197,13 +209,32 @@ page {
 .intro-title {
     color: #cfa972;
     font-size: 40rpx;
-    line-height: 60rpx;
-    margin-bottom: 20rpx;
+    line-height: 70rpx;
+    display: inline-block;
+}
+
+.label-star{
+    float: right;
+    height: 70rpx;
+    color: #b28850;
+    font-size: 32rpx;
+    line-height: 68rpx;
+    padding: 0 20rpx;
+    border: 1rpx solid #cfa972;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    float: right;
+}
+
+.label-star:hover{
+    color: #ffffff;
+    background: #cfa972;
 }
 
 .intro-desc {
     font-size: 32rpx;
     line-height: 50rpx;
+    margin-top: 20rpx;
     padding-left: 80rpx;
 }
 
@@ -243,10 +274,10 @@ page {
 </style>
 <template>
     <view class="container">
-        <navBar :navTitle.sync="userid" isChildPage="y"></navBar>
+        <navBar :navTitle.sync="userName" isChildPage="y"></navBar>
         <view class="userinfo">
             <image src="{{userUrl}}" class="userinfo-avatar">
-                <view class="userinfo-username">{{userid}}</view>
+                <view class="userinfo-username">{{userName}}</view>
                 <view class="userinfo-desc">{{userDesc}}</view>
         </view>
 
@@ -281,14 +312,16 @@ page {
                     <view class="labelContent-items" id="{{item.id}}">
                         <view class="labelItem-service">
                             <view class="service-title">服务</view>
-                            <view class="service-more" @tap="navToService(0)">查看全部</view>
+                            <view wx:if="{{item.service.length > 0}}" class="service-more" @tap="navToService(0)">查看全部</view>
+                            <view wx:if="{{item.service.length == 0}}" class="service-null">暂无服务</view>
                             <repeat for="{{item.service}}" item="service" key="name" index="sIndex">
                                 <view class="service-items" @tap="navToService({{sIndex}})">{{service.name}}</view>
                             </repeat>
                         </view>
                         <view class="labelItem-content">
                             <view class="itemContent-intro">
-                                <view class="intro-title">简介</view>
+                                <view class="intro-title">{{item.name}}</view>
+                                <view class="label-star"><text class="fa fa-star-o"></text> 收藏</view>
                                 <view class="intro-desc">{{item.desc}}</view>
                             </view>
                             <repeat for="{{item.post}}" item="post" key="postID">
@@ -313,6 +346,7 @@ page {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Person extends wepy.page {
     config = {};
@@ -322,277 +356,278 @@ export default class Person extends wepy.page {
 
     data = {
         userid: '',
+        userName: '',
         userUrl: '',
         userDesc: '',
         chooseTag: '',
         tags: [
-            {
-                id: 'photo',
-                name: '摄影',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'cook',
-                name: '烹饪',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'writerA',
-                name: '编剧A',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'writerB',
-                name: '编剧B',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 'writerC',
-                name: '编剧C',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                service: [
-                    {
-                        name: '单人写真'
-                    },
-                    {
-                        name: '毕业照定制'
-                    },
-                    {
-                        name: '情侣写真'
-                    }
-                ],
-                post: [
-                    {
-                        postID: 0,
-                        time: '2018.05.31',
-                        desc:
-                            '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    },
-                    {
-                        postID: 1,
-                        time: '2018.05.27',
-                        desc: '生活就是不停地旅行和拍照！ ',
-                        imgList: [
-                            {
-                                imageUrl: '/icons/assets/label1_pic_1.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_2.png'
-                            },
-                            {
-                                imageUrl: '/icons/assets/label1_pic_3.png'
-                            }
-                        ]
-                    }
-                ]
-            }
+            // {
+            //     id: 'photo',
+            //     name: '摄影',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: 'http://192.168.23.1:8000/static/miniprogram.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'cook',
+            //     name: '烹饪',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'writerA',
+            //     name: '编剧A',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'writerB',
+            //     name: '编剧B',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // },
+            // {
+            //     id: 'writerC',
+            //     name: '编剧C',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     service: [
+            //         {
+            //             name: '单人写真'
+            //         },
+            //         {
+            //             name: '毕业照定制'
+            //         },
+            //         {
+            //             name: '情侣写真'
+            //         }
+            //     ],
+            //     post: [
+            //         {
+            //             postID: 0,
+            //             time: '2018.05.31',
+            //             desc:
+            //                 '依稀记得这台最早接触的SONY胶卷机，算是启蒙机器，感触颇多！那时候胶卷挺贵，照相机也很珍贵，为了拍照片没少浪费我爹买的胶卷（小声哔哔）。但是每当我看到自己的照片，还是会一本满足啊！一个小小的取景框于我而言，却是一个大世界！',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             postID: 1,
+            //             time: '2018.05.27',
+            //             desc: '生活就是不停地旅行和拍照！ ',
+            //             imgList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_1.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_2.png'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/label1_pic_3.png'
+            //                 }
+            //             ]
+            //         }
+            //     ]
+            // }
         ],
         listSticky: false,
         noLeft: true,
         noRight: false,
         preImgList: [],
         labelIDList: [],
-        currentLabel: 2,
+        currentLabel: 0,
         scrollInTo: '',
         isScrolling: false
     };
@@ -603,10 +638,10 @@ export default class Person extends wepy.page {
         showLabel(e) {
             var left = e.detail.scrollLeft;
             var width = e.detail.scrollWidth;
-            if (left > 50) {
+            if (left > 30) {
                 this.noLeft = false;
             }
-            if (left < width - 50) {
+            if (left < width - 30) {
                 this.noRight = false;
             }
             this.$apply();
@@ -642,13 +677,11 @@ export default class Person extends wepy.page {
                 this.isScrolling = true;
                 var scrollX = e.detail.deltaX;
                 var sWidth = wx.getSystemInfoSync().windowWidth;
-                if (scrollX < -5 && scrollX > -sWidth) {
+                if (scrollX < 0 && scrollX > -sWidth) {
                     this.currentLabel++;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                } else if (scrollX > 5 && scrollX < sWidth) {
+                } else if (scrollX > 0 && scrollX < sWidth) {
                     this.currentLabel--;
-                    this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                } else if (scrollX > -5 && scrollX < 5) {
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
                 }
                 this.$apply();
@@ -681,14 +714,14 @@ export default class Person extends wepy.page {
 
     }
 
-    onLoad(options) {
+    async onLoad(options) {
         this.userid = options.id;
+        this.userName = options.name;
         this.userUrl = options.url;
-        this.userDesc = options.desc;
         this.chooseTag = options.tag;
-        this.scrollInTo = 'cook';
+        this.scrollInTo = 'list';
         this.$apply();
-        this.currentLabel = 2;
+        this.currentLabel = 0;
 
         this.labelIDList = [];
         this.labelIDList.push({ id: 'list' });
@@ -696,6 +729,21 @@ export default class Person extends wepy.page {
             this.labelIDList.push({ id: item.id });
         });
         this.$apply();
+
+        let self = this
+        let res = await api.getPerson({
+            query: {
+                userId: self.userid
+            }
+        })
+        console.log('-------------')
+        console.log(res)
+        this.tags = res.data;
+        this.tags.forEach(element => {
+            element.id = 'labels' + element.id;
+        });
+        console.log('-------------')
+        self.$apply()
     }
 }
 </script>

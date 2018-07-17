@@ -148,7 +148,7 @@ page {
                     <image class="userinfo-avatar" src="{{globalData.globalUserInfo.avatarUrl}}">
                         <text class="userinfo-nickname">{{globalData.globalUserInfo.nickName}}</text>
                         <block wx:if="{{isEditing === false}}">
-                            <text class="userinfo-desc">{{userDesc === '' ? '这家伙比较懒，什么都没有写……' : userDesc}}</text>
+                            <text class="userinfo-desc">{{globalData.globalUserInfo.userDesc === '' ? '这家伙比较懒，什么都没有写……' : globalData.globalUserInfo.userDesc}}</text>
                         </block>
                         <block wx:else>
                             <input type="text" class="userinfo-desc userinfo-edit" value="{{userDesc}}" bindinput="descChange">
@@ -227,93 +227,140 @@ export default class Me extends wepy.page {
     //   }
     async getUserInfoFun2(e) {
         let self = this;
-        wepy.showModal({
-            title: '授权',
-            content: '需要获取你的头像和昵称',
-            success: function(res) {
-                if (res.confirm) {
-                    console.log('success');
-                    // let self = this;
-                    //调用login获取code
-                    const APP_ID = 'wx73bdc6a0b793aa42';
-                    const APP_SECRET = 'd18f4ce06504cc4d7c2dbb0e06e03929';
-                    var OPEN_ID = '';
-                    var SESSION_KEY = '';
-                    var CODE = '';
-                    wepy.login({
-                        success: function(login_res) {
-                            let code = login_res.code;
-                            wepy.getUserInfo({
-                                //调用getUserInfo获取encryptedData和iv
-                                success: function(get_res) {
-                                    self.globalData.globalUserInfo =
-                                        get_res.userInfo;
-                                    let encryptedData =
-                                        get_res.encryptedData || 'encry';
-                                    console.log(get_res);
-                                    console.log(get_res.encryptedData);
-                                    console.log('encry and iv');
-                                    console.log(get_res.iv);
-                                    let iv = get_res.iv || 'iv';
-                                    console.log('code' + code);
-                                    wepy.request({
-                                        url:
-                                            'http://192.168.137.241:8000' +
-                                            '/auth/token?code=' +
-                                            code,
-                                        data: {
-                                            username: encryptedData,
-                                            password: iv,
-                                            grant_type: 'password',
-                                            auth_approach: 'wxapp'
-                                        },
-                                        method: 'POST',
-                                        header: {
-                                            'Content-Type':
-                                                'application/x-www-form-urlencoded'
-                                        },
-                                        success: function(token_res) {
-                                            wepy.showToast({
-                                                title: '登陆成功',
-                                                icon: 'success'
-                                            });
-                                            // console.log('token res:======'+token_res.data.access_token)
-                                            console.log(token_res);
-                                            wepy.setStorageSync({
-                                                key: 'jwt',
-                                                data: token_res
-                                            });
-                                            self.globalData.access_token =
-                                                token_res.data.access_token;
-                                            self.globalData.account_id =
-                                                token_res.data.account_id;
-                                            self.$apply();
-                                            console.log(self.globalData);
-                                            self.hasUserInfo = true;
-                                            self.$apply();
-                                        },
-                                        fail: function({ errMsg }) {
-                                            console.log('request fail', errMsg);
-                                        }
-                                    });
-                                },
-                                fail: function({ errMsg }) {
-                                    console.log('request fail', errMsg);
-                                }
-                            });
-                        },
-                        fail: function({ errMsg }) {
-                            console.log('request fail', errMsg);
-                        }
-                    });
-                } else if (res.cancel) {
-                    console.log('fail');
-                }
-            },
-            fail: function({ errMsg }) {
-                console.log('request fail', errMsg);
+        console.log('1111');
+        const APP_ID = 'wx73bdc6a0b793aa42';
+        const APP_SECRET = 'd18f4ce06504cc4d7c2dbb0e06e03929';
+        var OPEN_ID = '';
+        var SESSION_KEY = '';
+        var CODE = '';
+        console.log(APP_ID);
+        wx.login({
+            success: function(login_res) {
+                console.log(login_res.code);
+                let code = login_res.code;
+                wx.getUserInfo({
+                    //调用getUserInfo获取encryptedData和iv
+                    success: function(get_res) {
+                        self.globalData.globalUserInfo = get_res.userInfo;
+                        let encryptedData = get_res.encryptedData || 'encry';
+                        console.log(get_res);
+                        console.log(get_res.encryptedData);
+                        console.log('encry and iv');
+                        console.log(get_res.iv);
+                        let iv = get_res.iv || 'iv';
+                        console.log('code' + code);
+                        wx.request({
+                            url:
+                                'http://192.168.137.241:8000' +
+                                '/auth/token?code=' +
+                                code,
+                            data: {
+                                username: encryptedData,
+                                password: iv,
+                                grant_type: 'password',
+                                auth_approach: 'wxapp'
+                            },
+                            method: 'POST',
+                            header: {
+                                'Content-Type':
+                                    'application/x-www-form-urlencoded'
+                            },
+                            success: function(token_res) {
+                                wx.showToast({
+                                    title: '登陆成功',
+                                    icon: 'success'
+                                });
+                                // console.log('token res:======'+token_res.data.access_token)
+                                console.log(token_res);
+                                wx.setStorageSync('jwt', token_res);
+                                self.globalData.access_token =
+                                    token_res.data.access_token;
+                                self.globalData.account_id =
+                                    token_res.data.account_id;
+                                self.$apply();
+                                console.log(self.globalData);
+                                self.hasUserInfo = true;
+                                self.$apply();
+                            }
+                        });
+                    }
+                });
             }
         });
+
+        // wepy.showModal({
+        //     title: '授权',
+        //     content: '需要获取你的头像和昵称',
+        //     success: function(res) {
+        //         if (res.confirm) {
+        //             console.log('success');
+        //             const APP_ID = 'wx73bdc6a0b793aa42';
+        //             const APP_SECRET = 'd18f4ce06504cc4d7c2dbb0e06e03929';
+        //             var OPEN_ID = '';
+        //             var SESSION_KEY = '';
+        //             var CODE = '';
+        //             wepy.login({
+        //                 success: function(login_res) {
+        //                     let code = login_res.code;
+        //                     wepy.getUserInfo({
+        //                         //调用getUserInfo获取encryptedData和iv
+        //                         success: function(get_res) {
+        //                             self.globalData.globalUserInfo =
+        //                                 get_res.userInfo;
+        //                             let encryptedData =
+        //                                 get_res.encryptedData || 'encry';
+        //                             console.log(get_res);
+        //                             console.log(get_res.encryptedData);
+        //                             console.log('encry and iv');
+        //                             console.log(get_res.iv);
+        //                             let iv = get_res.iv || 'iv';
+        //                             console.log('code' + code);
+        //                             wepy.request({
+        //                                 url:
+        //                                     'http://192.168.137.241:8000' +
+        //                                     '/auth/token?code=' +
+        //                                     code,
+        //                                 data: {
+        //                                     username: encryptedData,
+        //                                     password: iv,
+        //                                     grant_type: 'password',
+        //                                     auth_approach: 'wxapp'
+        //                                 },
+        //                                 method: 'POST',
+        //                                 header: {
+        //                                     'Content-Type':
+        //                                         'application/x-www-form-urlencoded'
+        //                                 },
+        //                                 success: function(token_res) {
+        //                                     wepy.showToast({
+        //                                         title: '登陆成功',
+        //                                         icon: 'success'
+        //                                     });
+        //                                     // console.log('token res:======'+token_res.data.access_token)
+        //                                     console.log(token_res);
+        //                                     wepy.setStorageSync({
+        //                                         key: 'jwt',
+        //                                         data: token_res
+        //                                     });
+        //                                     self.globalData.access_token =
+        //                                         token_res.data.access_token;
+        //                                     self.globalData.account_id =
+        //                                         token_res.data.account_id;
+        //                                     self.$apply();
+        //                                     console.log(self.globalData);
+        //                                     self.hasUserInfo = true;
+        //                                     self.$apply();
+        //                                 }
+        //                             });
+        //                         }
+        //                     });
+        //                 }
+        //             });
+        //         } else if (res.cancel) {
+        //             console.log('fail');
+        //         }
+        //     }
+        // });
 
         self.$apply();
     }
@@ -413,6 +460,29 @@ export default class Me extends wepy.page {
 
     events = {};
 
-    onLoad() {}
+    async onLoad() {
+        var jwt = wx.getStorageSync('jwt');
+        console.log('jwt:');
+        console.log(jwt);
+        let self = this;
+
+        if (jwt.data.access_token != null) {
+            //检查 jwt 是否存在 如果不存在调用登录
+            // that.login();
+            console.log(jwt.data.account_id);
+            let res = await api.login({
+                query: {
+                    access_token: jwt.data.access_token,
+                    account_id: jwt.data.account_id
+                }
+            });
+            console.log('-------------');
+            console.log(res.data.nickname);
+            self.globalData.globalUserInfo = res.data
+            console.log(self.globalData.globalUserInfo)
+            self.hasUserInfo = true;
+            self.$apply();
+        }
+    }
 }
 </script>
