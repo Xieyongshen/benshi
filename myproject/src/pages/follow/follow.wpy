@@ -82,6 +82,7 @@ export default class Follow extends wepy.page {
             });
             console.log('-------------');
             console.log(res);
+            self.tags = res.data;
             self.$apply();
         }
         

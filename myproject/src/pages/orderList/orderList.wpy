@@ -1,0 +1,238 @@
+<style lang="less">
+.container {
+    padding-top: 250rpx;
+}
+
+.order-type {
+    width: 750rpx;
+    height: 100rpx;
+    padding: 0 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
+}
+
+.type-items {
+    width: 138rpx;
+    height: 100rpx;
+    font-size: 34rpx;
+    line-height: 100rpx;
+    text-align: center;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.type-choose {
+    color: #cfa972;
+    border-bottom: 5rpx solid #cfa972;
+}
+
+.order-items{
+    width: 750rpx;
+    margin-top: 30rpx;
+    background: #ffffff;
+}
+
+.item-header{
+    width: 750rpx;
+    height: 130rpx;
+    padding: 30rpx 30rpx 20rpx 30rpx;
+    box-sizing: border-box;
+}
+
+.user-avatar{
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+}
+
+.user-name{
+    font-size: 36rpx;
+    line-height: 60rpx;
+    vertical-align: top;
+    margin-top: 20rpx;
+    margin-left: 30rpx;
+    display: inline-block;
+}
+
+.item-status{
+    color: #b28850;
+    font-size: 32rpx;
+    line-height: 60rpx;
+    vertical-align: top;
+    margin-top: 20rpx;
+    float: right;
+}
+
+.item-content{
+    width: 750rpx;
+    color: #434343;
+    padding: 20rpx 30rpx;
+    border-top: 1rpx solid #d2d2d2;
+    border-bottom: 1rpx solid #d2d2d2;
+    box-sizing: border-box;
+}
+
+.service-img {
+    width: 200rpx;
+    height: 200rpx;
+}
+
+.service-name {
+    font-size: 36rpx;
+    line-height: 50rpx;
+    margin-left: 40rpx;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.service-price{
+    font-size: 38rpx;
+    float: right;
+    text {
+        font-size: 30rpx;
+    }
+}
+
+.item-handle{
+    width: 750rpx;
+    height: 110rpx;
+    padding: 20rpx 30rpx;
+    box-sizing: border-box;
+}
+
+.order-btn{
+    height: 70rpx;
+    font-size: 34rpx;
+    line-height: 68rpx;
+    padding: 0 30rpx;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    float: right;
+}
+
+.order-cancel, .order-delete{
+    color: #535353;
+    border: 1rpx solid #535353;
+}
+
+.order-cancel:hover, .order-delete:hover {
+    color: #ffffff;
+    background: #535353;
+}
+
+.order-confirm, .order-comment {
+    color: #b28850;
+    border: 1rpx solid #cfa972;
+}
+
+.order-confirm:hover, .order-comment:hover {
+    color: #ffffff;
+    background: #cfa972;
+}
+</style>
+<template>
+    <view class="container">
+        <navBar navTitle="我的订单" isChildPage="y"></navBar>
+        <view class="order-type">
+            <repeat for="{{type}}" key="{{index}}">
+                <view class="type-items {{currentType == index ? 'type-choose' : ''}}" @tap="chooseType({{index}})">{{item}}</view>
+            </repeat>
+        </view>
+        <view class="order-content">
+            <repeat for="{{orderList}}" key="index">
+                <navigator wx:if="{{currentType == 0 || item.status == currentType - 1 || (currentType == 4 && item.status == 4)}}" class="order-items" @tap="navToOrder">
+                    <view class="item-header">
+                        <image class="user-avatar" src="{{item.userAvatar}}">
+                            <view class="user-name">{{item.user}}</view>
+                            <view class="item-status">{{status[item.status]}}</view>
+                    </view>
+                    <view class="item-content">
+                        <image src="{{item.servicePic}}" mode="aspectFill" class="service-img">
+                            <text class="service-name">{{item.serviceName}}</text>
+                            <view class="service-price">
+                                <text>￥</text>{{item.servicePrice}}</view>
+                    </view>
+                    <view class="item-handle">
+                        <view wx:if="{{item.status == 0}}" class="order-cancel order-btn" @tap.stop="cancelOrder">取消订单</view>
+                        <view wx:if="{{item.status == 1}}" class="order-confirm order-btn" @tap.stop="confirmOrder">确认服务</view>
+                        <view wx:if="{{item.status == 2}}" class="order-comment order-btn" @tap.stop="commentOrder">评价服务</view>
+                        <view wx:if="{{item.status >= 3}}" class="order-delete order-btn" @tap.stop="deleteOrder">删除订单</view>
+                    </view>
+                </navigator>
+            </repeat>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import NavBar from '@/components/navBar';
+
+export default class OrderList extends wepy.page {
+    config = {};
+    components = {
+        navBar: NavBar
+    };
+
+    data = {
+        currentType: 0,
+        type: ['全部', '待服务', '待确认', '待评价', '已完成'],
+        status: ['等待服务', '等待确认', '等待评价', '交易成功', '交易取消'],
+        orderList: [
+            {
+                user: 'wooAini',
+                userAvatar: '/icons/assets/user_3.jpg',
+                status: 1,
+                serviceName: '单人约拍写真',
+                servicePrice: 388,
+                servicePic: '/icons/assets/pic3_3.jpg'
+            },
+            {
+                user: '闲花花',
+                userAvatar: '/icons/assets/user_5.jpg',
+                status: 3,
+                serviceName: '单人约拍写真',
+                servicePrice: 388,
+                servicePic: '/icons/assets/pic3_3.jpg'
+            },
+            {
+                user: '嘤嘤嘤',
+                userAvatar: '/icons/assets/user_2.jpg',
+                status: 2,
+                serviceName: '单人约拍写真',
+                servicePrice: 388,
+                servicePic: '/icons/assets/pic3_3.jpg'
+            },
+            {
+                user: 'Clarenceyang',
+                userAvatar: '/icons/assets/user_1.jpg',
+                status: 4,
+                serviceName: '单人约拍写真',
+                servicePrice: 388,
+                servicePic: '/icons/assets/pic3_3.jpg'
+            }
+        ]
+    };
+
+    computed = {};
+
+    methods = {
+        chooseType(type, e) {
+            this.currentType = type;
+            this.$apply();
+        },
+
+        navToOrder(){
+            wx.navigateTo({
+                url:
+                    '/pages/orderList/order/order'
+            });
+        }
+    };
+
+    onLoad(options) {}
+}
+</script>
