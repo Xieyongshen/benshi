@@ -2362,14 +2362,14 @@ export default class extends wepy.app {
         pages: [
             'pages/index/index',
             'pages/category/category',
-            'pages/myLabel/myLabel',
             'pages/message/message',
             'pages/me/me',
             'pages/person/person',
             'pages/serviceList/serviceList',
             'pages/service/service',
-            'pages/comment/comment',
             'pages/confirm/confirm',
+            'pages/confirm/success/success',
+            'pages/comment/comment',
             'pages/label/label',
             'pages/star/star',
             'pages/follow/follow',
@@ -2396,12 +2396,6 @@ export default class extends wepy.app {
                     iconPath: 'icons/tabbar/ic_category.png',
                     selectedIconPath: 'icons/tabbar/ic_category_selected.png',
                     text: '分类'
-                },
-                {
-                    pagePath: 'pages/myLabel/myLabel',
-                    iconPath: 'icons/tabbar/ic_myLabel.png',
-                    selectedIconPath: 'icons/tabbar/ic_myLabel_selected.png',
-                    text: '标签'
                 },
                 {
                     pagePath: 'pages/message/message',

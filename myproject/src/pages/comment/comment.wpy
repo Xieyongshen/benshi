@@ -110,7 +110,7 @@
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 
-export default class Service extends wepy.page {
+export default class Comment extends wepy.page {
     config = {};
     components = {
         navBar: NavBar
