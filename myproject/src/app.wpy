@@ -2368,6 +2368,7 @@ export default class extends wepy.app {
             'pages/person/person',
             'pages/serviceList/serviceList',
             'pages/service/service',
+            'pages/comment/comment',
             'pages/label/label',
             'pages/star/star',
             'pages/follow/follow',

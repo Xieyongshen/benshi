@@ -1,0 +1,190 @@
+<style lang="less">
+.container {
+    padding-top: 255rpx;
+}
+
+.comment-type{
+    width: 750rpx;
+    height: 110rpx;
+    padding: 20rpx 30rpx;
+    border-bottom: 1rpx solid #d2d2d2;
+    background: #ffffff;
+    box-sizing: border-box;
+    position: fixed;
+    top: 147rpx;
+    z-index: 99;
+}
+
+.type-items{
+    height: 70rpx;
+    font-size: 34rpx;
+    line-height: 68rpx;
+    margin-right: 20rpx;
+    padding: 0 30rpx;
+    border: 1rpx solid #cfa972;
+    border-radius: 40rpx;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.type-choose{
+    color: #ffffff;
+    background: #cfa972;
+}
+
+.comment-items{
+    width: 750rpx;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.item-user{
+    width: 750rpx;
+    padding: 20rpx 0;
+}
+
+.user-avatar{
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    margin-right: 20rpx;
+}
+
+.user-name{
+    font-size: 36rpx;
+    line-height: 100rpx;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.item-time{
+    color: #888888;
+    font-size: 32rpx;
+    line-height: 60rpx;
+    margin-bottom: 20rpx;
+}
+
+.item-desc{
+    color: #434343;
+    font-size: 32rpx;
+    line-height: 50rpx;
+}
+
+.item-img{
+    width: 150rpx;
+    height: 150rpx;
+    margin-top: 30rpx;
+    margin-right: 20rpx;
+    z-index: 10;
+}
+</style>
+<template>
+    <view class="container">
+        <navBar navTitle="评价" isChildPage="y"></navBar>
+        <view class="comment-type">
+            <view class="type-items {{currentType == 0 ? 'type-choose' : ''}}" @tap="chooseType(0)">全部({{goodCon + badCon}})</view>
+            <view class="type-items {{currentType == 1 ? 'type-choose' : ''}}" @tap="chooseType(1)">好评({{goodCon}})</view>
+            <view class="type-items {{currentType == 2 ? 'type-choose' : ''}}" @tap="chooseType(2)">差评({{badCon}})</view>
+        </view>
+        <view class="comment-content">
+            <repeat for="{{comment}}" key="user">
+                <view wx:if="{{currentType == 0 || (currentType == 1 && item.type) || (currentType == 2 && item.type == false)}}" class="comment-items">
+                    <view class="item-user">
+                        <image class="user-avatar" src="{{item.userAvatar}}">
+                            <view class="user-name">{{item.user}}</view>
+                    </view>
+                    <view class="item-time">{{item.time}}</view>
+                    <view class="item-desc">{{item.desc}}</view>
+                    <repeat for="{{item.imgList}}" item="imgList" key="imgUrl">
+                        <image src="{{imgList.imgUrl}}" mode="aspectFill" class="item-img" data-list="{{item.imgList}}" @tap.stop="picPreview({{imgList.imgUrl}})">
+                    </repeat>
+                </view>
+            </repeat>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import NavBar from '@/components/navBar';
+
+export default class Service extends wepy.page {
+    config = {};
+    components = {
+        navBar: NavBar
+    };
+
+    data = {
+        currentType: 0,
+        goodCon: 0,
+        badCon: 0,
+        preImgList: [],
+        comment: [{
+            user: 'wooAini',
+            userAvatar: '/icons/assets/user_3.jpg',
+            type: true,
+            time: '2018.07.07',
+            desc: '拍得很满意，摄影小哥哥人超好！！因为平时比较忙，约了好多次时间终于拍到啦，很快就拿到照片了，超喜欢！会推荐给身边的朋友的w',
+            imgList: []
+        }, {
+            user: '闲花花',
+            userAvatar: '/icons/assets/user_5.jpg',
+            type: true,
+            time: '2018.06.21',
+            desc: '很喜欢拍的片子，穿着什么的小哥哥提了很多有用的建议，总算有一组满意的写真啦！！推荐！',
+            imgList: [
+            {
+                imgUrl: '/icons/assets/pic3_3.jpg'
+            },
+            {
+                imgUrl: '/icons/assets/pic3_1.jpg'
+            },
+            {
+                imgUrl: '/icons/assets/pic3_2.jpg'
+            }]
+        }, {
+            user: '嘤嘤嘤',
+            userAvatar: '/icons/assets/user_2.jpg',
+            type: false,
+            time: '2018.06.20',
+            desc: '嘤嘤嘤，人家就是不喜欢啦',
+            imgList: []
+        }]
+    };
+
+    computed = {};
+
+    methods = {
+        chooseType(type, e){
+            this.currentType = type;
+            this.$apply();
+        },
+
+        picPreview(url, e) {
+            var imageList = e.currentTarget.dataset.list;
+
+            imageList.forEach((item, index) => {
+                this.preImgList.push(item.imgUrl);
+            });
+            this.$apply();
+            wx.previewImage({
+                current: url,
+                urls: this.preImgList
+            });
+        },
+    };
+
+    onLoad(options) {
+        this.comment.forEach(element => {
+            if(element.type){
+                this.goodCon++;
+            }else{
+                this.badCon++;
+            }
+        })
+        this.$apply();
+    }
+}
+</script>

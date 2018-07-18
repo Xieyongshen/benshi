@@ -150,7 +150,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Category extends wepy.page {
     config = {};
@@ -159,126 +159,140 @@ export default class Category extends wepy.page {
     };
 
     async onLoad() {
-        let self = this
-        let res = await api.getCategory({})
-        console.log('-------------')
-        console.log(res)
-        console.log('-------------')
-        self.categories = res.data
-        console.log(res.data)
-        console.log(self.categories)
+        let self = this;
+        let res = await api.getCategory({});
+        console.log('-------------');
+        console.log(res);
+        console.log('-------------');
+        self.categories = res.data;
+        console.log(res.data);
+        console.log(self.categories);
         // self.categories = res.data
-        self.$apply()
+        self.$apply();
+
+        var query = wx.createSelectorQuery();
+        this.productsTop = [];
+        query
+            .selectAll('.product')
+            .boundingClientRect(rect => {
+                rect.forEach((item, index) => {
+                    console.log(item.top);
+                    this.productsTop.push({ top: item.top - 108 });
+                });
+                this.$apply();
+            })
+            .exec();
+        console.log(this.productsTop);
     }
 
     data = {
         categories: [
-            {
-                id: 'hot',
-                name: '热门分类',
-                labels: [
-                    'TOEFL',
-                    'IELTS',
-                    '围棋',
-                    '3DMax',
-                    '留学经验',
-                    '拍照摄影',
-                    '茶艺',
-                    '收纳'
-                ]
-            },
-            {
-                id: 'language',
-                name: '外语类',
-                labels: ['TOEFL', 'IELTS', '日语', '德语', '法语']
-            },
-            {
-                id: 'talent',
-                name: '才艺类',
-                labels: [
-                    '象棋',
-                    '书法',
-                    '围棋',
-                    '国画',
-                    '素描',
-                    '街舞',
-                    '茶艺',
-                    '插花',
-                    '游泳',
-                    '潜水'
-                ]
-            },
-            {
-                id: 'skill',
-                name: '生活技能',
-                labels: ['烹调方法', '整理', '缝纫', '盥洗', '具体菜系']
-            },
-            {
-                id: 'experience1',
-                name: '经验分享1',
-                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            },
-            {
-                id: 'experience2',
-                name: '经验分享2',
-                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            },
-            {
-                id: 'experience3',
-                name: '经验分享3',
-                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            },
-            {
-                id: 'experience4',
-                name: '经验分享4',
-                labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            },
-            {
-                id: 'knowledge',
-                name: '专业知识',
-                labels: [
-                    '法学',
-                    '哲学',
-                    '文学',
-                    '数学',
-                    '物理',
-                    '计算机',
-                    '土木工程',
-                    '临床医学',
-                    '法学',
-                    '哲学',
-                    '文学',
-                    '数学',
-                    '物理',
-                    '计算机',
-                    '土木工程',
-                    '临床医学',
-                    '法学',
-                    '哲学',
-                    '文学',
-                    '数学',
-                    '物理',
-                    '计算机',
-                    '土木工程',
-                    '临床医学',
-                    '法学',
-                    '哲学',
-                    '文学',
-                    '数学',
-                    '物理',
-                    '计算机',
-                    '土木工程',
-                    '临床医学',
-                    '法学',
-                    '哲学',
-                    '文学',
-                    '数学',
-                    '物理',
-                    '计算机',
-                    '土木工程',
-                    '临床医学'
-                ]
-            }
+            // {
+            //     id: 'hot',
+            //     name: '热门分类',
+            //     labels: [
+            //         'TOEFL',
+            //         'IELTS',
+            //         '围棋',
+            //         '3DMax',
+            //         '留学经验',
+            //         '拍照摄影',
+            //         '茶艺',
+            //         '收纳'
+            //     ]
+            // },
+            // {
+            //     id: 'language',
+            //     name: '外语类',
+            //     labels: ['TOEFL', 'IELTS', '日语', '德语', '法语']
+            // },
+            // {
+            //     id: 'talent',
+            //     name: '才艺类',
+            //     labels: [
+            //         '象棋',
+            //         '书法',
+            //         '围棋',
+            //         '国画',
+            //         '素描',
+            //         '街舞',
+            //         '茶艺',
+            //         '插花',
+            //         '游泳',
+            //         '潜水'
+            //     ]
+            // },
+            // {
+            //     id: 'skill',
+            //     name: '生活技能',
+            //     labels: ['烹调方法', '整理', '缝纫', '盥洗', '具体菜系']
+            // },
+            // {
+            //     id: 'experience1',
+            //     name: '经验分享1',
+            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
+            // },
+            // {
+            //     id: 'experience2',
+            //     name: '经验分享2',
+            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
+            // },
+            // {
+            //     id: 'experience3',
+            //     name: '经验分享3',
+            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
+            // },
+            // {
+            //     id: 'experience4',
+            //     name: '经验分享4',
+            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
+            // },
+            // {
+            //     id: 'knowledge',
+            //     name: '专业知识',
+            //     labels: [
+            //         '法学',
+            //         '哲学',
+            //         '文学',
+            //         '数学',
+            //         '物理',
+            //         '计算机',
+            //         '土木工程',
+            //         '临床医学',
+            //         '法学',
+            //         '哲学',
+            //         '文学',
+            //         '数学',
+            //         '物理',
+            //         '计算机',
+            //         '土木工程',
+            //         '临床医学',
+            //         '法学',
+            //         '哲学',
+            //         '文学',
+            //         '数学',
+            //         '物理',
+            //         '计算机',
+            //         '土木工程',
+            //         '临床医学',
+            //         '法学',
+            //         '哲学',
+            //         '文学',
+            //         '数学',
+            //         '物理',
+            //         '计算机',
+            //         '土木工程',
+            //         '临床医学',
+            //         '法学',
+            //         '哲学',
+            //         '文学',
+            //         '数学',
+            //         '物理',
+            //         '计算机',
+            //         '土木工程',
+            //         '临床医学'
+            //     ]
+            // }
         ],
         // 当前分类的索引
         currentCategory: 0,
@@ -309,7 +323,9 @@ export default class Category extends wepy.page {
                     // 当前分类的索引小于满足条件的商品索引就赋值, 跳到下一个分类
                     if (this.currentCategory < index) {
                         this.currentCategory = index;
-                        this.cScrollInTo = this.categories[this.currentCategory].id;
+                        this.cScrollInTo = this.categories[
+                            this.currentCategory
+                        ].id;
                     }
                 }
             });
@@ -321,7 +337,9 @@ export default class Category extends wepy.page {
                 if (scrollTop < item.top - 10) {
                     if (this.currentCategory >= index) {
                         this.currentCategory = index ? index - 1 : index;
-                        this.cScrollInTo = this.categories[this.currentCategory].id;
+                        this.cScrollInTo = this.categories[
+                            this.currentCategory
+                        ].id;
                     }
                 }
             });
@@ -350,23 +368,6 @@ export default class Category extends wepy.page {
 
     onReady() {
         // 页面准备完成之后获取每个分类距离顶部的高度, 存储在数组productsTop中
-        var query = wx.createSelectorQuery();
-        this.productsTop = [];
-        query.selectAll('.product').boundingClientRect(rect => {
-            rect.forEach((item, index) => {
-                this.productsTop.push({ top: item.top - 108 });
-            });
-            this.$apply();
-        });
-        console.log(this.productsTop)
-
-        query
-            .selectAll('.cs-fix')
-            .boundingClientRect(rect => {
-                this.categoryTop = rect[0].top;
-                this.$apply();
-            })
-            .exec();
     }
 }
 </script>
