@@ -443,13 +443,36 @@ export default class Me extends wepy.page {
             self.$apply();
         },
 
-        descEdit() {
+        async descEdit() {
             this.isEditing = !this.isEditing;
+            if (this.isEditing === false) {
+                let self = this;
+                var jwt = wx.getStorageSync('jwt');
+                if (jwt.data.access_token != null) {
+                    let res = await api.changeDesc({
+                        query: {
+                            access_token: jwt.data.access_token,
+                            account_id: jwt.data.account_id,
+                            changedDesc: self.globalData.globalUserInfo.userDesc
+                        },
+                        method: 'POST',
+                        header: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+                    console.log('-------------');
+                    console.log(res.data);
+                    self.globalData.globalUserInfo.userDesc = res.data.userDesc;
+                    // console.log(self.globalData.globalUserInfo.userDesc);
+                    self.$apply();
+                }
+            }
+
             this.$apply();
         },
 
         descChange(e) {
-            this.userDesc = e.detail.value;
+            this.globalData.globalUserInfo.userDesc = e.detail.value;
             this.$apply();
         }
     };
@@ -474,8 +497,8 @@ export default class Me extends wepy.page {
             });
             console.log('-------------');
             console.log(res.data.nickname);
-            self.globalData.globalUserInfo = res.data
-            console.log(self.globalData.globalUserInfo)
+            self.globalData.globalUserInfo = res.data;
+            console.log(self.globalData.globalUserInfo);
             self.hasUserInfo = true;
             self.$apply();
         }

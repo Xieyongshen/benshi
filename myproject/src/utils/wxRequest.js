@@ -29,7 +29,7 @@ const wxRequest = async(params = {}, url) => {
         url: url,
         method: params.method || 'GET',
         data: data,
-        header: { 'Content-Type': 'application/json' },
+        header: params.header || { 'Content-Type': 'application/json' },
         // success: function(res1) {
         //     // console.log(res1)
         //     return res1;
