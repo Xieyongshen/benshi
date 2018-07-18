@@ -321,8 +321,8 @@
                         <view class="labelItem-content">
                             <view class="itemContent-intro">
                                 <view class="intro-title">{{item.name}}</view>
-                                <view class="label-star {{item.isStarted?'star-true':''}}" @tap="starLabel" id="{{item.id}}">
-                                    <block wx:if="{{!item.isStarted}}">
+                                <view class="label-star {{item.isStared?'star-true':''}}" @tap="starLabel({{labelIdx}})" id="{{item.id}}">
+                                    <block wx:if="{{!item.isStared}}">
                                         <text class="fa fa-star-o"></text> 收藏</block>
                                     <block wx:else>已收藏</block>
                                 </view>
@@ -711,8 +711,9 @@ export default class Person extends wepy.page {
                 url: '/pages/serviceList/serviceList?index=' + index
             });
         },
-        async starLabel(e) {
+        async starLabel(index, e) {
             // this.isStar = !this.isStar;
+            this.labels[index].isStared = !this.labels[index].isStared;
             console.log(e)
             var jwt = wx.getStorageSync('jwt');
             let self = this;
