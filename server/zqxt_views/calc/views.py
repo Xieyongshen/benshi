@@ -223,7 +223,7 @@ def get_person(request):
 				str_date = posts.date.strftime("%Y-%m-%d")
 				postObjects_dict = dict(postID=posts.postNum,time=str_date,desc=posts.postDes,imgList=imgUrls)
 				postObjects.append(postObjects_dict)
-			eve_dict = dict(id=labels.labelNum,isStarted=isStarted,name=labels.labelName,desc=labels.labelDes,service=serviceNames,post=postObjects)
+			eve_dict = dict(id=labels.labelNum,isStared=isStarted,name=labels.labelName,desc=labels.labelDes,service=serviceNames,post=postObjects)
 			labels_all_dict.append(eve_dict)
 	
 	
@@ -388,9 +388,9 @@ def changeStarStatus(request):
 			isStared = 1
 			the_user = User.objects.get(id=client_account_id)
 			the_label = Label.objects.get(labelNum=labelId)
-			newLabel = Label.objects.create(user=the_user,label=the_label)
-			print(newLabel)
-			newLabel.save()
+			newStar = Star.objects.create(user=the_user,label=the_label)
+			print(newStar)
+			newStar.save()
 		else:
 			pass
 		finally:
