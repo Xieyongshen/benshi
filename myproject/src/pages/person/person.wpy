@@ -221,6 +221,16 @@
     background: #cfa972;
 }
 
+.star-true{
+    color: #535353;
+    border: 1rpx solid #535353;
+}
+
+.star-true:hover{
+    color: #ffffff;
+    background: #535353;
+}
+
 .intro-desc {
     font-size: 32rpx;
     line-height: 50rpx;
@@ -311,8 +321,10 @@
                         <view class="labelItem-content">
                             <view class="itemContent-intro">
                                 <view class="intro-title">{{item.name}}</view>
-                                <view class="label-star">
-                                    <text class="fa fa-star-o"></text> 收藏</view>
+                                <view class="label-star {{isStar?'star-true':''}}" @tap="starLabel">
+                                    <block wx:if="{{!isStar}}"><text class="fa fa-star-o"></text> 收藏</block>
+                                    <block wx:else>已收藏</block>
+                                </view>
                                 <view class="intro-desc">{{item.desc}}</view>
                             </view>
                             <repeat for="{{item.post}}" item="post" key="postID">
@@ -351,6 +363,7 @@ export default class Person extends wepy.page {
         userUrl: '',
         userDesc: '',
         chooseLabel: '',
+        isStar: false,
         labels: [
             // {
             //     id: 'photo',
@@ -696,6 +709,10 @@ export default class Person extends wepy.page {
             wx.navigateTo({
                 url: '/pages/serviceList/serviceList?index=' + index
             });
+        },
+        starLabel(){
+            this.isStar = !this.isStar;
+            this.$apply();
         }
     };
 
