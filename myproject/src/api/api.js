@@ -24,6 +24,10 @@ const changeDesc = (params) => wxRequest(params, apiBenshi + "/api/changeDesc");
 const getFollow = (params) => wxRequest(params, apiBenshi + "/api/get_follow");
 //获取个人收藏列表
 const getStar = (params) => wxRequest(params, apiBenshi + "/api/get_star");
+//获取某个标签类关注状态
+const getFollowStatus = (params) => wxRequest(params, apiBenshi + "/api/get_followstatus");
+//改变某个标签的关注状态
+const changeFollowStatus = (params) => wxRequest(params, apiBenshi + "/api/change_followstatus");
 export default {
     getCategory,
     getIndex,
@@ -31,5 +35,7 @@ export default {
     login,
     getFollow,
     getStar,
-    changeDesc
+    changeDesc,
+    getFollowStatus,
+    changeFollowStatus
 }

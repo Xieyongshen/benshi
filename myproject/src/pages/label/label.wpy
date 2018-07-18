@@ -41,7 +41,7 @@
     margin-left: 20rpx;
 }
 
-.label-follow{
+.label-follow {
     width: 100%;
     height: 100rpx;
     background: #ffffff;
@@ -53,7 +53,7 @@
     z-index: 99;
 }
 
-.follow-btn{
+.follow-btn {
     height: 70rpx;
     font-size: 34rpx;
     line-height: 70rpx;
@@ -62,32 +62,32 @@
     background: #ffffff;
     box-sizing: border-box;
     float: right;
-    .fa-plus{
+    .fa-plus {
         font-weight: 100;
     }
 }
 
-.follow-no{
+.follow-no {
     color: #b28850;
     border: 1rpx solid #d1c0a5;
 }
 
-.follow-no:hover{
+.follow-no:hover {
     color: #ffffff;
     background: #d1c0a5;
 }
 
-.follow-yes{
+.follow-yes {
     color: #888888;
     border: 1rpx solid #888888;
 }
 
-.follow-yes:hover{
+.follow-yes:hover {
     color: #ffffff;
     background: #888888;
 }
 
-.label-content{
+.label-content {
     background: #ffffff;
     border-top: 1rpx solid #e5e5e5;
 }
@@ -173,7 +173,8 @@
             </navigator>
         </view>
         <view class="label-follow">
-            <view wx:if="{{isFollow}}" class="follow-btn follow-no" @tap="followTag"><text class="fa fa-plus"></text> 关注</view>
+            <view wx:if="{{!isFollow}}" class="follow-btn follow-no" @tap="followTag">
+                <text class="fa fa-plus"></text> 关注</view>
             <view wx:else class="follow-btn follow-yes" @tap="followTag">已关注</view>
         </view>
         <view class="label-content">
@@ -199,6 +200,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api';
 
 export default class Label extends wepy.page {
     config = {
@@ -217,8 +219,7 @@ export default class Label extends wepy.page {
                 tag: '摄影',
                 imgUrl: '/icons/assets/user_1.jpg',
                 userdesc: '爱生活，爱摄影，爱美食',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
                 imageList: [
                     {
                         imageUrl: '/icons/assets/label1_pic_1.png'
@@ -257,8 +258,27 @@ export default class Label extends wepy.page {
     computed = {};
 
     methods = {
-        followTag(){
-            this.isFollow = !this.isFollow;
+        async followTag() {
+            // this.isFollow = !this.isFollow;
+
+            var jwt = wx.getStorageSync('jwt');
+            let self = this;
+            if (jwt.data.access_token != null) {
+                console.log(jwt.data.account_id);
+                let res = await api.changeFollowStatus({
+                    query: {
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id,
+                        tagName: this.label
+                    }
+                });
+                console.log('-------------');
+                console.log(res);
+                self.isFollow = res.data.isFollow;
+                self.$apply();
+            }
+            self.$apply();
+
             this.$apply();
         },
 
@@ -292,8 +312,25 @@ export default class Label extends wepy.page {
 
     events = {};
 
-    onLoad(options) {
+    async onLoad(options) {
         this.label = options.id;
+        var jwt = wx.getStorageSync('jwt');
+        let self = this;
+        console.log(this.label);
+        if (jwt.data.access_token != null) {
+            console.log(jwt.data.account_id);
+            let res = await api.getFollowStatus({
+                query: {
+                    access_token: jwt.data.access_token,
+                    account_id: jwt.data.account_id,
+                    tagName: this.label
+                }
+            });
+            console.log('-------------');
+            console.log(res);
+            self.isFollow = res.data.isFollow;
+            self.$apply();
+        }
         this.$apply();
     }
 }

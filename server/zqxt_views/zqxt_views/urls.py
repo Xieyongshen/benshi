@@ -30,5 +30,7 @@ urlpatterns = [
     path('login', calc_views.login),
     path('api/get_follow', calc_views.get_follow),
     path('api/get_star', calc_views.get_star),
-    path('api/changeDesc', calc_views.changeDesc)
+    path('api/changeDesc', calc_views.changeDesc),
+    path('api/get_followstatus', calc_views.getFollowStatus),
+    path('api/change_followstatus', calc_views.changeFollowStatus)
 ]
