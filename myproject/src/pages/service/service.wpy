@@ -105,7 +105,7 @@
     line-height: 50rpx;
 }
 
-.service-buy{
+.service-buy {
     width: 750rpx;
     height: 110rpx;
     padding: 20rpx 30rpx;
@@ -116,7 +116,7 @@
     bottom: 0;
 }
 
-.service-btn{
+.service-btn {
     height: 70rpx;
     color: #b28850;
     font-size: 34rpx;
@@ -128,7 +128,7 @@
     float: right;
 }
 
-.service-btn:hover{
+.service-btn:hover {
     color: #ffffff;
     background: #cfa972;
 }
@@ -166,7 +166,7 @@
         <view class="service-buy">
             <view class="service-price">
                 <text>￥</text>{{servicePrice}}</view>
-            <view class="service-btn">购买</view>
+            <view class="service-btn" @tap="confirmOrder">购买</view>
         </view>
     </view>
 </template>
@@ -202,8 +202,7 @@ export default class Service extends wepy.page {
         preImgList: [],
         commentNum: 2,
         serviceDetail:
-            '时间：每周六，日 08:00 - 19:00 \n 地点：上海 徐汇区 上海任何值得留下影像的城市角落 \n 服务流程：' +
-            ' \n ' +
+            '时间：每周六，日 08:00 - 19:00\n地点：上海 徐汇区 上海任何值得留下影像的城市角落\n服务流程：\n' +
             '1）下单后将自己照片给我' +
             ' \n ' +
             '2）商议主题和样式' +
@@ -231,7 +230,14 @@ export default class Service extends wepy.page {
         navToComment(){
             wx.navigateTo({
                 url:
-                    '/pages/comment/comment
+                    '/pages/comment/comment'
+            });
+        },
+
+        confirmOrder(){
+            wx.navigateTo({
+                url:
+                    '/pages/confirm/confirm'
             });
         },
 

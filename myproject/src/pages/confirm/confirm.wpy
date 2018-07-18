@@ -1,0 +1,187 @@
+<style lang="less">
+.container {
+    padding-top: 150rpx;
+}
+
+.confirm-seller {
+    width: 750rpx;
+    height: 160rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.seller-avatar {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+}
+
+.seller-name {
+    font-size: 40rpx;
+    line-height: 100rpx;
+    margin-left: 20rpx;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.confirm-service{
+    width: 750rpx;
+    height: 260rpx;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.service-img{
+    width: 200rpx;
+    height: 200rpx;
+}
+
+.service-name{
+    font-size: 36rpx;
+    line-height: 50rpx;
+    margin-left: 40rpx;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.confirm-notice{
+    width: 750rpx;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.notice-title{
+    font-size: 36rpx;
+    line-height: 60rpx;
+    margin-bottom: 10rpx;
+}
+
+.notice-detail{
+    color: #434343;
+    font-size: 32rpx;
+    line-height: 50rpx;
+}
+
+.confirm-submit{
+    width: 750rpx;
+    height: 120rpx;
+    background: #ffffff;
+    position: fixed;
+    bottom: 0;
+}
+
+.submit-btn{
+    height: 120rpx;
+    color: #ffffff;
+    font-size: 36rpx;
+    line-height: 120rpx;
+    padding: 0 40rpx;
+    background: #cfa972;
+    float: right;
+}
+
+.submit-price{
+    color: #cfa972;
+    font-size: 38rpx;
+    line-height: 100rpx;
+    margin-top: 20rpx;
+    margin-right: 40rpx;
+    float: right;
+    text {
+        font-size: 30rpx;
+    }
+}
+</style>
+<template>
+    <view class="container">
+        <navBar navTitle="确认订单" isChildPage="y"></navBar>
+        <view class="confirm-content">
+            <view class="confirm-seller">
+                <image src="{{sellerAvatar}}" class="seller-avatar">
+                    <text class="seller-name">{{sellerName}}</text>
+            </view>
+            <view class="confirm-service">
+                <image src="{{servicePic}}" mode="aspectFill" class="service-img">
+                    <text class="service-name">{{serviceName}}</text>
+            </view>
+            <view class="confirm-notice">
+                <view class="notice-title">注意事项</view>
+                <view class="notice-detail">{{serviceNotice}}</view>
+            </view>
+        </view>
+        <view class="confirm-submit">
+            <view class="submit-btn">提交订单</view>
+            <view class="submit-price"><text>￥</text>{{servicePrice}}</view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import NavBar from '@/components/navBar';
+
+export default class Service extends wepy.page {
+    config = {};
+    components = {
+        navBar: NavBar
+    };
+
+    data = {
+        sellerAvatar: '/icons/assets/user_1.jpg',
+        sellerName: 'Clarenceyang',
+        serviceName: '单人约拍写真',
+        servicePrice: 388,
+        servicePic: '/icons/assets/pic3_3.jpg',
+        serviceNotice:
+            '时间：每周六，日 08:00 - 19:00\n地点：上海 徐汇区 上海任何值得留下影像的城市角落\n\n服务流程：\n' +
+            '1）下单后将自己照片给我' +
+            ' \n ' +
+            '2）商议主题和样式' +
+            ' \n ' +
+            '3）确定服装道具化妆' +
+            ' \n ' +
+            '4）敲定场地、时间' +
+            ' \n ' +
+            '5）2~3小时拍摄' +
+            ' \n ' +
+            '6）10张左右精修照片' +
+            ' \n ' +
+            '服务宗旨：' +
+            ' \n ' +
+            '1、	只选取上海最有吸引力、最好玩的角落拍摄' +
+            ' \n ' +
+            '2、	这是一个年轻人的活动，我们可以一边拍照、一边穿梭在上海的大街小巷' +
+            ' \n ' +
+            '3、	不拍庸俗平凡的照片，只希望能拍出展现我们年轻人生命力的照片'
+    };
+
+    computed = {};
+
+    methods = {
+        chooseType(type, e) {
+            this.currentType = type;
+            this.$apply();
+        },
+
+        picPreview(url, e) {
+            var imageList = e.currentTarget.dataset.list;
+
+            imageList.forEach((item, index) => {
+                this.preImgList.push(item.imgUrl);
+            });
+            this.$apply();
+            wx.previewImage({
+                current: url,
+                urls: this.preImgList
+            });
+        }
+    };
+
+    onLoad(options) {}
+}
+</script>
