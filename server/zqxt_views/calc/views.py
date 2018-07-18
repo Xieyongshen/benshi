@@ -365,37 +365,35 @@ def changeFollowStatus(request):
 	return HttpResponse(res_json)
 
 def changeStarStatus(request):
-	# client_access_token = request.GET['access_token']
-	# client_account_id = request.GET['account_id']
-	# tagName = request.GET['tagName']
-	# isFollowed = 1
-	# if(verify_token(client_access_token)):
-	# 	try:
-	# 		tmpFollow = Follow.objects.get(user__id=client_account_id,followTagName__tagName=tagName)
-	# 		print(tmpFollow)
-	# 		if tmpFollow:
-	# 			print('will delete')
-	# 			tmpFollow.delete()
-	# 			isFollowed = 0
-	# 		if not tmpFollow:
-	# 			print('will add')
-	# 			the_user = User.objects.get(id=client_account_id)
-	# 			the_tag = Tag.objects.get(tagName=tagName)
-	# 			newFollow = Follow.objects.create(user=the_user,followTagName=the_tag)
-	# 			print(newFollow)
-	# 			newFollow.save()
-	# 	except Exception as e:
-	# 		isFollowed = 1
-	# 		the_user = User.objects.get(id=client_account_id)
-	# 		the_tag = Tag.objects.get(tagName=tagName)
-	# 		newFollow = Follow.objects.create(user=the_user,followTagName=the_tag)
-	# 		print(newFollow)
-	# 		newFollow.save()
-	# 	else:
-	# 		pass
-	# 	finally:
-	# 		pass
+	client_access_token = request.GET['access_token']
+	client_account_id = request.GET['account_id']
+	labelId = request.GET['labelId']
+	isStared = 1
+	if(verify_token(client_access_token)):
+		try:
+			tmpStar = Star.objects.get(user__id=client_account_id,label__labelNum=labelId)
+			print(tmpStar)
+			if tmpStar:
+				print('will delete')
+				tmpStar.delete()
+				isStared = 0
+			if not tmpStar:
+				print('will add')
+				the_user = User.objects.get(id=client_account_id)
+				the_label = Label.objects.get(labelNum=labelId)
+				newLabel = Label.objects.create(user=the_user,label=the_label)
+				print(newLabel)
+				newLabel.save()
+		except Exception as e:
+			isStared = 1
+			the_user = User.objects.get(id=client_account_id)
+			the_label = Label.objects.get(labelNum=labelId)
+			newLabel = Label.objects.create(user=the_user,label=the_label)
+			print(newLabel)
+			newLabel.save()
+		else:
+			pass
+		finally:
+			pass
 
-	# res_dict = dict(isFollow=isFollowed)
-	# res_json = json.dumps(res_dict)
-	return HttpResponse('res_json')
+	return HttpResponse('ok')
