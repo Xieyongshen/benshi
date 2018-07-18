@@ -17,6 +17,9 @@ const getIndex = (params) => wxRequest(params, apiBenshi + "/api/get_index/recom
 //获取卖家用户详情
 const getPerson = (params) => wxRequest(params, apiBenshi + "/api/get_person");
 
+//修改个人签名
+const changeDesc = (params) => wxRequest(params, apiBenshi + "/api/changeDesc");
+
 //获取个人关注列表
 const getFollow = (params) => wxRequest(params, apiBenshi + "/api/get_follow");
 //获取个人收藏列表
@@ -27,5 +30,6 @@ export default {
     getPerson,
     login,
     getFollow,
-    getStar
+    getStar,
+    changeDesc
 }

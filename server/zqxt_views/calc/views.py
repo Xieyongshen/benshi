@@ -229,6 +229,19 @@ def login(request):
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
 
+def changeDesc(request):
+	client_access_token = request.POST['access_token']
+	client_account_id = request.POST['account_id']
+	changedDesc = request.POST['changedDesc']
+	res_dict = dict()
+	if(verify_token(client_access_token)):
+		the_user = User.objects.get(id=client_account_id)
+		the_user.user_des = changedDesc
+		the_user.save()
+		res_dict = dict(userDesc=changedDesc)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
 def get_follow(request):
 	client_access_token = request.GET['access_token']
 	client_account_id = request.GET['account_id']
