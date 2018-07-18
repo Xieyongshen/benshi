@@ -133,6 +133,12 @@
     margin-left: 20rpx;
     display: inline-block;
 }
+
+.recommand-more{
+    font-size: 28rpx;
+    line-height: 60rpx;
+    text-align: center;
+}
 </style>
 <template>
     <view class="container">
@@ -171,6 +177,8 @@
                 </navigator>
             </repeat>
         </view>
+
+        <view class="recommand-more" @tap="showMore">{{maxItems <= recommandUsers.length ? '点击查看更多' : ''}}</view>
     </view>
 </template>
 
@@ -181,9 +189,7 @@ import NavBar from '@/components/navBar';
 import { SYSTEM_INFO, USER_SPECICAL_INFO, USER_INFO } from '@/utils/constant';
 
 export default class Index extends wepy.page {
-    config = {
-        
-    };
+    config = {};
     components = {
         navBar: NavBar
     };
@@ -247,8 +253,11 @@ export default class Index extends wepy.page {
     };
 
     methods = {
-        navToUser(uid, name, url, tag, event) {
-            console.log(uid)
+        showMore() {
+            this.maxItems += 10;
+        },
+        navToUser(uid, name, url, label, event) {
+            console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
@@ -257,16 +266,11 @@ export default class Index extends wepy.page {
                     name +
                     '&url=' +
                     url +
-                    '&tag=' +
-                    tag
+                    '&label=' +
+                    label
             });
         }
     };
-
-    onReachBottom(){
-        this.maxItems += 10;
-        this.$apply();
-    }
 
     onShareAppMessage() {
         return {

@@ -41,7 +41,7 @@
     position: relative;
 }
 
-.list-sticky{
+.list-sticky {
     position: fixed;
     top: 150rpx;
 }
@@ -164,7 +164,7 @@
     right: 30rpx;
 }
 
-.service-null{
+.service-null {
     padding-left: 80rpx;
     font-size: 32rpx;
 }
@@ -203,7 +203,7 @@
     display: inline-block;
 }
 
-.label-star{
+.label-star {
     float: right;
     height: 70rpx;
     color: #b28850;
@@ -216,7 +216,7 @@
     float: right;
 }
 
-.label-star:hover{
+.label-star:hover {
     color: #ffffff;
     background: #cfa972;
 }
@@ -280,8 +280,8 @@
                 <text class="fa fa-angle-right more-icon"></text>
             </view>
             <scroll-view class="labelList-content" scroll-x='true' scroll-into-view="{{lScrollInTo}}" scroll-with-animation="true" bindscroll="showLabel" bindscrolltoupper="scrollToLeft" bindscrolltolower="scrollToRight">
-                <repeat for="{{tags}}" key="name">
-                    <view class="labelList-items {{currentLabel == index + 1?'list-current':''}}" id="{{item.id}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}" data-idx="{{index + 1}}">{{item.name}}</view>
+                <repeat for="{{labels}}" key="name">
+                    <view class="labelList-items {{currentLabel == index + 1?'list-current':''}}" id="{{'list-' + item.id}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}" data-idx="{{index + 1}}">{{item.name}}</view>
                 </repeat>
             </scroll-view>
         </view>
@@ -289,7 +289,7 @@
         <view class="user-labelContent">
             <scroll-view class="labelContent-content" scroll-x="true" scroll-into-view="{{scrollInTo}}" scroll-with-animation="true" bindscroll="nextPage">
                 <view class="labelContent-list labelContent-items" id="list">
-                    <repeat for="{{tags}}" key="name">
+                    <repeat for="{{labels}}" key="name">
                         <navigator class="list-items" @tap="toLabel({{index}}, {{item.id}})">
                             <view class="listItem-content">
                                 <text>{{item.name}}</text>
@@ -298,20 +298,21 @@
                         </navigator>
                     </repeat>
                 </view>
-                <repeat for="{{tags}}" key="name">
+                <repeat for="{{labels}}" key="name" index="labelIdx">
                     <view class="labelContent-items" id="{{item.id}}">
                         <view class="labelItem-service">
                             <view class="service-title">服务</view>
                             <view wx:if="{{item.service.length > 0}}" class="service-more" @tap="navToService(0)">查看全部</view>
                             <view wx:if="{{item.service.length == 0}}" class="service-null">暂无服务</view>
                             <repeat for="{{item.service}}" item="service" key="name" index="sIndex">
-                                <view class="service-items" @tap="navToService({{sIndex}})">{{service.name}}</view>
+                                <view class="service-items" @tap="navToService({{labelIdx}})">{{service.name}}</view>
                             </repeat>
                         </view>
                         <view class="labelItem-content">
                             <view class="itemContent-intro">
                                 <view class="intro-title">{{item.name}}</view>
-                                <view class="label-star"><text class="fa fa-star-o"></text> 收藏</view>
+                                <view class="label-star">
+                                    <text class="fa fa-star-o"></text> 收藏</view>
                                 <view class="intro-desc">{{item.desc}}</view>
                             </view>
                             <repeat for="{{item.post}}" item="post" key="postID">
@@ -336,7 +337,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Person extends wepy.page {
     config = {};
@@ -349,8 +350,8 @@ export default class Person extends wepy.page {
         userName: '',
         userUrl: '',
         userDesc: '',
-        chooseTag: '',
-        tags: [
+        chooseLabel: '',
+        labels: [
             // {
             //     id: 'photo',
             //     name: '摄影',
@@ -620,7 +621,8 @@ export default class Person extends wepy.page {
         currentLabel: 0,
         lScrollInTo: '',
         scrollInTo: '',
-        isScrolling: false
+        isScrolling: false,
+        listTop: 0
     };
 
     computed = {};
@@ -661,6 +663,7 @@ export default class Person extends wepy.page {
         clickScrollInTo(e) {
             this.currentLabel = e.currentTarget.dataset.idx;
             this.scrollInTo = e.currentTarget.dataset.id;
+            this.lScrollInTo = 'list-' + this.scrollInTo;
             this.$apply();
         },
         nextPage(e) {
@@ -670,13 +673,13 @@ export default class Person extends wepy.page {
                 var sWidth = wx.getSystemInfoSync().windowWidth;
                 if (scrollX < 0 && scrollX > -sWidth) {
                     this.currentLabel++;
-                    this.lScrollInTo = this.labelIDList[this.currentLabel].id;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                    
                 } else if (scrollX > 0 && scrollX < sWidth) {
                     this.currentLabel--;
-                    this.lScrollInTo = this.labelIDList[this.currentLabel].id;
                     this.scrollInTo = this.labelIDList[this.currentLabel].id;
+                }
+                if (scrollX != 0) {
+                    this.lScrollInTo = 'list-' + this.scrollInTo;
                 }
                 this.$apply();
                 setTimeout(() => {
@@ -689,58 +692,55 @@ export default class Person extends wepy.page {
             this.scrollInTo = id;
             this.$apply();
         },
-        navToService(index, e){
+        navToService(index, e) {
             wx.navigateTo({
-                url:
-                    '/pages/serviceList/serviceList?index=' + index
+                url: '/pages/serviceList/serviceList?index=' + index
             });
         }
     };
 
     onPageScroll(options) {
-        var that = this;
-                if(options.scrollTop <= 140){
-                    that.listSticky = false;
-                }else{
-                    that.listSticky = true;
-                }
-        that.$apply();
-
+        if (options.scrollTop <= 140) {
+            this.listSticky = false;
+        } else {
+            this.listSticky = true;
+        }
+        this.$apply();
     }
 
     async onLoad(options) {
         this.userid = options.id;
         this.userName = options.name;
         this.userUrl = options.url;
-        this.chooseTag = options.tag;
+        this.chooseLabel = options.label;
         this.scrollInTo = 'list';
         this.$apply();
         this.currentLabel = 0;
 
-        this.labelIDList = [];
-        this.labelIDList.push({ id: 'list' });
-        this.tags.forEach((item, index) => {
-            this.labelIDList.push({ id: item.id });
-        });
-        if(this.tags.length <= 4){
-            this.noRight = true;
-        }
-        this.$apply();
-
-        let self = this
+        let self = this;
         let res = await api.getPerson({
             query: {
                 userId: self.userid
             }
-        })
-        console.log('-------------')
-        console.log(res)
-        this.tags = res.data;
-        this.tags.forEach(element => {
+        });
+        console.log('-------------');
+        console.log(res);
+        this.labels = res.data;
+        this.labels.forEach(element => {
             element.id = 'labels' + element.id;
         });
-        console.log('-------------')
-        self.$apply()
+        console.log('-------------');
+        self.$apply();
+
+        this.labelIDList = [];
+        this.labelIDList.push({ id: 'list' });
+        this.labels.forEach((item, index) => {
+            this.labelIDList.push({ id: item.id });
+        });
+        if (this.labels.length <= 4) {
+            this.noRight = true;
+        }
+        this.$apply();
     }
 }
 </script>

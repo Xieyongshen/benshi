@@ -62,7 +62,7 @@
     display: inline-block;
 }
 
-.service-evaluation {
+.service-comment {
     width: 750rpx;
     font-size: 36rpx;
     line-height: 100rpx;
@@ -72,11 +72,11 @@
     box-sizing: border-box;
 }
 
-.evaluation-title {
+.comment-title {
     display: inline-block;
 }
 
-.evaluation-all {
+.comment-all {
     color: #cfa972;
     float: right;
     .fa {
@@ -105,7 +105,7 @@
     line-height: 50rpx;
 }
 
-.service-buy{
+.service-buy {
     width: 750rpx;
     height: 110rpx;
     padding: 20rpx 30rpx;
@@ -116,7 +116,7 @@
     bottom: 0;
 }
 
-.service-btn{
+.service-btn {
     height: 70rpx;
     color: #b28850;
     font-size: 34rpx;
@@ -128,7 +128,7 @@
     float: right;
 }
 
-.service-btn:hover{
+.service-btn:hover {
     color: #ffffff;
     background: #cfa972;
 }
@@ -153,9 +153,9 @@
             <image src="{{sellerAvatar}}" class="seller-avatar">
                 <text class="seller-name">{{sellerName}}</text>
         </view>
-        <view class="service-evaluation">
-            <view class="evaluation-title">服务评价({{evaNum}})</view>
-            <view class="evaluation-all">查看全部
+        <view class="service-comment" @tap="navToComment">
+            <view class="comment-title">服务评价({{commentNum}})</view>
+            <view class="comment-all">查看全部
                 <text class="fa fa-angle-right"></text>
             </view>
         </view>
@@ -166,7 +166,7 @@
         <view class="service-buy">
             <view class="service-price">
                 <text>￥</text>{{servicePrice}}</view>
-            <view class="service-btn">购买</view>
+            <view class="service-btn" @tap="confirmOrder">购买</view>
         </view>
     </view>
 </template>
@@ -200,10 +200,9 @@ export default class Service extends wepy.page {
             }
         ],
         preImgList: [],
-        evaNum: 2,
+        commentNum: 2,
         serviceDetail:
-            '时间：每周六，日 08:00 - 19:00 \n 地点：上海 徐汇区 上海任何值得留下影像的城市角落 \n 服务流程：' +
-            ' \n ' +
+            '时间：每周六，日 08:00 - 19:00\n地点：上海 徐汇区 上海任何值得留下影像的城市角落\n服务流程：\n' +
             '1）下单后将自己照片给我' +
             ' \n ' +
             '2）商议主题和样式' +
@@ -228,6 +227,20 @@ export default class Service extends wepy.page {
     computed = {};
 
     methods = {
+        navToComment(){
+            wx.navigateTo({
+                url:
+                    '/pages/comment/comment'
+            });
+        },
+
+        confirmOrder(){
+            wx.navigateTo({
+                url:
+                    '/pages/confirm/confirm'
+            });
+        },
+
         picPreview(url, e) {
             this.imgList.forEach((item, index) => {
                 this.preImgList.push(item.imageUrl);

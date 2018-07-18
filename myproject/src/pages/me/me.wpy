@@ -147,7 +147,7 @@
                             <text class="userinfo-desc">{{globalData.globalUserInfo.userDesc === '' ? '这家伙比较懒，什么都没有写……' : globalData.globalUserInfo.userDesc}}</text>
                         </block>
                         <block wx:else>
-                            <input type="text" class="userinfo-desc userinfo-edit" value="{{userDesc}}" bindinput="descChange">
+                            <input type="text" class="userinfo-desc userinfo-edit" value="{{globalData.globalUserInfo.userDesc}}" bindinput="descChange">
                         </block>
                         <view class="userinfo-setbtn" @tap="descEdit">
                             <image src="/icons/ic_edit.png">
