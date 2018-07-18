@@ -11,7 +11,8 @@ from calc.models import Tag
 from calc.models import Label
 from calc.models import Service
 from calc.models import Post
-from calc.models import Picture
+from calc.models import PostPicture
+from calc.models import ServicePicture
 import datetime
 import jwt
 import json
@@ -198,7 +199,7 @@ def get_person(request):
 		eve_label_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
 		postObjects = list()
 		for posts in eve_label_posts:
-			pictures = list(Picture.objects.filter(post__postNum=posts.postNum))
+			pictures = list(PostPicture.objects.filter(post__postNum=posts.postNum))
 			imgUrls = list()
 			for pic in pictures:
 				picUrls_dict = dict(imageUrl=pic.url)
