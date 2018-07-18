@@ -49,6 +49,7 @@ class Service(models.Model):
 	serviceNum = models.AutoField(primary_key=True)
 	serviceName = models.TextField()
 	serviceDes = models.TextField()
+	serviceDetail = models.TextField()
 	price = models.IntegerField()
 
 	def __str__(self):
@@ -63,8 +64,16 @@ class Post(models.Model):
 	def __str__(self):
 		return self.postDes
 
-class Picture(models.Model):
+class PostPicture(models.Model):
 	post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	pictureNum = models.AutoField(primary_key=True)
+	url = models.TextField()
+
+	def __str__(self):
+		return self.url
+
+class ServicePicture(models.Model):
+	service = models.ForeignKey(Service, on_delete=models.CASCADE)
 	pictureNum = models.AutoField(primary_key=True)
 	url = models.TextField()
 
@@ -74,10 +83,10 @@ class Picture(models.Model):
 class Follow(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	followNum = models.AutoField(primary_key=True)
-	followTagName = models.TextField()
+	followTagName = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.followNum
+		return str(self.followNum)
 
 class Star(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)

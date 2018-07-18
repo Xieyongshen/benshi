@@ -242,6 +242,7 @@ checkbox .wx-checkbox-input {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Star extends wepy.page {
     config = {};
@@ -410,11 +411,29 @@ export default class Star extends wepy.page {
 
     events = {};
 
-    onLoad() {
+    async onLoad() {
+        var jwt = wx.getStorageSync('jwt');
+        let self = this
+        if (jwt.data.access_token != null) {
+            //检查 jwt 是否存在 如果不存在调用登录
+            // that.login();
+            console.log(jwt.data.account_id);
+            let res = await api.getStar({
+                query: {
+                    access_token: jwt.data.access_token,
+                    account_id: jwt.data.account_id
+                }
+            });
+            console.log('-------------');
+            console.log(res);
+            self.$apply();
+        }
+
         this.typeList.push('全部分类');
         this.star.forEach((item, index) => {
             this.typeList.push(item.type);
         });
+
     }
 }
 </script>
