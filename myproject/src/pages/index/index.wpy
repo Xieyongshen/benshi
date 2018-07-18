@@ -160,7 +160,7 @@
         <view class="index-recommand">
             <view class="recommand-title">标签推荐</view>
             <repeat for="{{recommandUsers}}" key="recommandUsers">
-                <navigator class="recommand-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.tag}})">
+                <navigator wx:if="{{index < maxItems}}" class="recommand-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.tag}})">
                     <image src="{{item.imgUrl}}" class="userItem-img">
                         <view class="userItem-details">
                             <view class="userItem-tag">{{item.tag}}</view>
@@ -181,12 +181,15 @@ import NavBar from '@/components/navBar';
 import { SYSTEM_INFO, USER_SPECICAL_INFO, USER_INFO } from '@/utils/constant';
 
 export default class Index extends wepy.page {
-    config = {};
+    config = {
+        
+    };
     components = {
         navBar: NavBar
     };
 
     data = {
+        maxItems: 10,
         scroll: [
             {
                 url: '',
@@ -205,41 +208,41 @@ export default class Index extends wepy.page {
             }
         ],
         recommandUsers: [
-            {
-                id: 0,
-                name: 'Clarenceyang',
-                imgUrl: '/icons/assets/user_1.jpg',
-                tag: '摄影',
-                description: '爱生活，爱摄影，爱美食的三爱人士'
-            },
-            {
-                id: 1,
-                name: '松鹅',
-                imgUrl: '/icons/assets/user_2.jpg',
-                tag: '用Python解决你的所有问题',
-                description: '最近在学摄影的话痨程序员'
-            },
-            {
-                id: 2,
-                name: '温酒',
-                imgUrl: '/icons/assets/user_3.jpg',
-                tag: '编剧',
-                description: '希望做一个温柔的人，想给你讲一万个故事。'
-            },
-            {
-                id: 3,
-                name: '喻以流年',
-                imgUrl: '/icons/assets/user_4.jpg',
-                tag: '历史',
-                description: '在《资治通鉴》里，探寻当下与未来。'
-            },
-            {
-                id: 4,
-                name: '范臻',
-                imgUrl: '/icons/assets/user_5.jpg',
-                tag: '三国杀',
-                description: '奇策火攻，酒杀不闪。'
-            }
+            // {
+            //     id: 0,
+            //     name: 'Clarenceyang',
+            //     imgUrl: '/icons/assets/user_1.jpg',
+            //     tag: '摄影',
+            //     description: '爱生活，爱摄影，爱美食的三爱人士'
+            // },
+            // {
+            //     id: 1,
+            //     name: '松鹅',
+            //     imgUrl: '/icons/assets/user_2.jpg',
+            //     tag: '用Python解决你的所有问题',
+            //     description: '最近在学摄影的话痨程序员'
+            // },
+            // {
+            //     id: 2,
+            //     name: '温酒',
+            //     imgUrl: '/icons/assets/user_3.jpg',
+            //     tag: '编剧',
+            //     description: '希望做一个温柔的人，想给你讲一万个故事。'
+            // },
+            // {
+            //     id: 3,
+            //     name: '喻以流年',
+            //     imgUrl: '/icons/assets/user_4.jpg',
+            //     tag: '历史',
+            //     description: '在《资治通鉴》里，探寻当下与未来。'
+            // },
+            // {
+            //     userId: 4,
+            //     name: '范臻',
+            //     imgUrl: '/icons/assets/user_5.jpg',
+            //     tag: '三国杀',
+            //     description: '奇策火攻，酒杀不闪。'
+            // }
         ]
     };
 
@@ -259,6 +262,11 @@ export default class Index extends wepy.page {
             });
         }
     };
+
+    onReachBottom(){
+        this.maxItems += 10;
+        this.$apply();
+    }
 
     onShareAppMessage() {
         return {

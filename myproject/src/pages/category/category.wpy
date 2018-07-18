@@ -1,8 +1,4 @@
 <style lang="less">
-page {
-    background: #fafafa;
-}
-
 .search-container {
     width: 100%;
     padding: 20rpx 0;
@@ -130,10 +126,10 @@ page {
             </navigator>
         </view>
 
-        <scroll-view class="cs-fix" scroll-y="true">
+        <scroll-view class="cs-fix" scroll-y="true" scroll-into-view="{{cScrollInTo}}" scroll-with-animation="true">
             <view>
                 <repeat for="{{categories}}" key="index">
-                    <view class="cate {{currentCategory==index?'selected':''}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}">{{item.name}}</view>
+                    <view class="cate {{currentCategory==index?'selected':''}}" id="{{item.id}}" @tap.stop="clickScrollInTo" data-id="{{item.id}}">{{item.name}}</view>
                 </repeat>
             </view>
         </scroll-view>
@@ -292,6 +288,7 @@ export default class Category extends wepy.page {
         // 用于存储每次滚动结束之后的距离, 可用来判断滚动的方向
         moveStartPos: 0,
         // 点击分类的名称, 用于点击跳转
+        cScrollInTo: '',
         scrollInTo: ''
     };
 
@@ -308,10 +305,11 @@ export default class Category extends wepy.page {
             // 遍历每个商品距离顶部的距离
             this.productsTop.forEach((item, index) => {
                 // 如果滚动的距离大于某个商品到顶部的距离说明该商品到了顶部, 减10是为了减少触发距离
-                if (scrollTop > item.top - 30) {
+                if (scrollTop > item.top - 10) {
                     // 当前分类的索引小于满足条件的商品索引就赋值, 跳到下一个分类
                     if (this.currentCategory < index) {
                         this.currentCategory = index;
+                        this.cScrollInTo = this.categories[this.currentCategory].id;
                     }
                 }
             });
@@ -320,9 +318,10 @@ export default class Category extends wepy.page {
         } else if (scrollTop < this.moveStartPos) {
             this.moveStartPos = scrollTop;
             this.productsTop.forEach((item, index) => {
-                if (scrollTop < item.top - 30) {
+                if (scrollTop < item.top - 10) {
                     if (this.currentCategory >= index) {
                         this.currentCategory = index ? index - 1 : index;
+                        this.cScrollInTo = this.categories[this.currentCategory].id;
                     }
                 }
             });
@@ -359,6 +358,7 @@ export default class Category extends wepy.page {
             });
             this.$apply();
         });
+        console.log(this.productsTop)
 
         query
             .selectAll('.cs-fix')
