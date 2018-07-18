@@ -221,12 +221,12 @@
     background: #cfa972;
 }
 
-.star-true{
+.star-true {
     color: #535353;
     border: 1rpx solid #535353;
 }
 
-.star-true:hover{
+.star-true:hover {
     color: #ffffff;
     background: #535353;
 }
@@ -321,8 +321,9 @@
                         <view class="labelItem-content">
                             <view class="itemContent-intro">
                                 <view class="intro-title">{{item.name}}</view>
-                                <view class="label-star {{isStar?'star-true':''}}" @tap="starLabel">
-                                    <block wx:if="{{!isStar}}"><text class="fa fa-star-o"></text> 收藏</block>
+                                <view class="label-star {{item.isStarted?'star-true':''}}" @tap="starLabel" id="{{item.id}}">
+                                    <block wx:if="{{!item.isStarted}}">
+                                        <text class="fa fa-star-o"></text> 收藏</block>
                                     <block wx:else>已收藏</block>
                                 </view>
                                 <view class="intro-desc">{{item.desc}}</view>
@@ -710,9 +711,28 @@ export default class Person extends wepy.page {
                 url: '/pages/serviceList/serviceList?index=' + index
             });
         },
-        starLabel(){
-            this.isStar = !this.isStar;
-            this.$apply();
+        async starLabel(e) {
+            // this.isStar = !this.isStar;
+            console.log(e)
+            var jwt = wx.getStorageSync('jwt');
+            let self = this;
+            var idStr = e.currentTarget.id.substring(6)
+            var labelID = parseInt(idStr)
+            if (jwt.data.access_token != null) {
+                console.log(jwt.data.account_id);
+                let res = await api.changeStarStatus({
+                    query: {
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id,
+                        labelId: labelID
+                    }
+                });
+                console.log('-------------');
+                console.log(res);
+                // self.isFollow = res.data.isFollow;
+                self.$apply();
+            }
+            self.$apply();
         }
     };
 
@@ -734,15 +754,21 @@ export default class Person extends wepy.page {
         this.$apply();
         this.currentLabel = 0;
 
+        var jwt = wx.getStorageSync('jwt');
         let self = this;
-        let res = await api.getPerson({
-            query: {
-                userId: self.userid
-            }
-        });
-        console.log('-------------');
-        console.log(res);
-        this.labels = res.data;
+        if (jwt.data.access_token != null) {
+            let res = await api.getPerson({
+                query: {
+                    userId: self.userid,
+                    access_token: jwt.data.access_token,
+                    account_id: jwt.data.account_id
+                }
+            });
+            console.log('-------------');
+            console.log(res);
+            this.labels = res.data;
+        }
+
         this.labels.forEach(element => {
             element.id = 'labels' + element.id;
         });

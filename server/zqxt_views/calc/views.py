@@ -186,31 +186,47 @@ def get_index_recommand(request):
 
 def get_person(request):
 	request_user_id = request.GET['userId']
-	# print(request_user_id)
+	client_access_token = request.GET['access_token']
+	client_account_id = request.GET['account_id']
 	user_all_labels = list(Label.objects.filter(user__id=request_user_id))
 	print(user_all_labels)
 	labels_all_dict = list()
-	for labels in user_all_labels:
-		# 获取service
-		eve_label_services = list(Service.objects.filter(label__labelNum=labels.labelNum))
-		serviceNames = list()
-		for services in eve_label_services:
-			serviceNames_dict = dict(name=services.serviceName)
-			serviceNames.append(serviceNames_dict)
-		# 获取post
-		eve_label_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
-		postObjects = list()
-		for posts in eve_label_posts:
-			pictures = list(PostPicture.objects.filter(post__postNum=posts.postNum))
-			imgUrls = list()
-			for pic in pictures:
-				picUrls_dict = dict(imageUrl=pic.url)
-				imgUrls.append(picUrls_dict)
-			str_date = posts.date.strftime("%Y-%m-%d")
-			postObjects_dict = dict(postID=posts.postNum,time=str_date,desc=posts.postDes,imgList=imgUrls)
-			postObjects.append(postObjects_dict)
-		eve_dict = dict(id=labels.labelNum,name=labels.labelName,desc=labels.labelDes,service=serviceNames,post=postObjects)
-		labels_all_dict.append(eve_dict)
+	if(verify_token(client_access_token)):
+		for labels in user_all_labels:
+			# 获取该用户是否已收藏这些标签
+			isStarted = 0
+			try:
+				tmpStar = Star.objects.get(user__id=client_account_id,label__labelName=labels.labelName)
+				if tmpStar:
+					isStarted = 1
+			except Exception as e:
+				isStarted = 0
+			else:
+				pass
+			finally:
+				pass
+			# 获取service
+			eve_label_services = list(Service.objects.filter(label__labelNum=labels.labelNum))
+			serviceNames = list()
+			for services in eve_label_services:
+				serviceNames_dict = dict(name=services.serviceName)
+				serviceNames.append(serviceNames_dict)
+			# 获取post
+			eve_label_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
+			postObjects = list()
+			for posts in eve_label_posts:
+				pictures = list(PostPicture.objects.filter(post__postNum=posts.postNum))
+				imgUrls = list()
+				for pic in pictures:
+					picUrls_dict = dict(imageUrl=pic.url)
+					imgUrls.append(picUrls_dict)
+				str_date = posts.date.strftime("%Y-%m-%d")
+				postObjects_dict = dict(postID=posts.postNum,time=str_date,desc=posts.postDes,imgList=imgUrls)
+				postObjects.append(postObjects_dict)
+			eve_dict = dict(id=labels.labelNum,isStarted=isStarted,name=labels.labelName,desc=labels.labelDes,service=serviceNames,post=postObjects)
+			labels_all_dict.append(eve_dict)
+	
+	
 	res_json = json.dumps(labels_all_dict)
 	return HttpResponse(res_json)
 
@@ -276,8 +292,17 @@ def get_star(request):
 			for j in range(i,len(labelList)):
 				if(labelList[j]['labelType']==label_type):
 					tagList.append(dict(name=labelList[j]['name'],imgUrl=labelList[j]['imgUrl'],label=labelList[j]['label'],description=labelList[j]['description']))
-			eve_dict = dict(type=label_type,tagList=tagList)
-			res_dict.append(eve_dict)
+			eve_dict = dict(type=label_type,labelList=tagList)
+			isRepeat = False
+			if(len(res_dict)>0):
+				for dicts in res_dict:
+					if(eve_dict['type']==dicts['type']):
+						isRepeat = True
+						print(eve_dict)
+			if(isRepeat==False):
+				res_dict.append(eve_dict)
+
+		print(res_dict)	
 		
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
@@ -338,3 +363,39 @@ def changeFollowStatus(request):
 	res_dict = dict(isFollow=isFollowed)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
+
+def changeStarStatus(request):
+	# client_access_token = request.GET['access_token']
+	# client_account_id = request.GET['account_id']
+	# tagName = request.GET['tagName']
+	# isFollowed = 1
+	# if(verify_token(client_access_token)):
+	# 	try:
+	# 		tmpFollow = Follow.objects.get(user__id=client_account_id,followTagName__tagName=tagName)
+	# 		print(tmpFollow)
+	# 		if tmpFollow:
+	# 			print('will delete')
+	# 			tmpFollow.delete()
+	# 			isFollowed = 0
+	# 		if not tmpFollow:
+	# 			print('will add')
+	# 			the_user = User.objects.get(id=client_account_id)
+	# 			the_tag = Tag.objects.get(tagName=tagName)
+	# 			newFollow = Follow.objects.create(user=the_user,followTagName=the_tag)
+	# 			print(newFollow)
+	# 			newFollow.save()
+	# 	except Exception as e:
+	# 		isFollowed = 1
+	# 		the_user = User.objects.get(id=client_account_id)
+	# 		the_tag = Tag.objects.get(tagName=tagName)
+	# 		newFollow = Follow.objects.create(user=the_user,followTagName=the_tag)
+	# 		print(newFollow)
+	# 		newFollow.save()
+	# 	else:
+	# 		pass
+	# 	finally:
+	# 		pass
+
+	# res_dict = dict(isFollow=isFollowed)
+	# res_json = json.dumps(res_dict)
+	return HttpResponse('res_json')
