@@ -13,6 +13,8 @@ from calc.models import Service
 from calc.models import Post
 from calc.models import PostPicture
 from calc.models import ServicePicture
+from calc.models import Follow
+from calc.models import Star
 import datetime
 import jwt
 import json
@@ -224,5 +226,46 @@ def login(request):
 		res_dict = dict(nickName=the_user.nickname,avatarUrl=the_user.avatar,userDesc=the_user.user_des)
 	else:
 		print('false')
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+def get_follow(request):
+	client_access_token = request.GET['access_token']
+	client_account_id = request.GET['account_id']
+	res_dict = list()
+	if(verify_token(client_access_token)):
+		# the_user = User.objects.get(id=client_account_id)
+		user_all_follows = list(Follow.objects.filter(user__id=client_account_id))
+		for follows in user_all_follows:
+			res_dict.append(follows.followTagName.tagName)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+def get_star(request):
+	client_access_token = request.GET['access_token']
+	client_account_id = request.GET['account_id']
+	res_dict = list()
+	if(verify_token(client_access_token)):
+		# the_user = User.objects.get(id=client_account_id)
+		user_all_stars = list(Star.objects.filter(user__id=client_account_id))
+		labelList = list()
+		for stars in user_all_stars:
+			label_types = stars.label.tag.category.categoryName
+			label_user_name = stars.label.user.nickname
+			label_user_avatar = stars.label.user.avatar
+			label_name = stars.label.labelName
+			label_des = stars.label.labelDes
+			eve_label = dict(labelType=label_types,name=label_user_name,imgUrl=label_user_avatar,label=label_name,description=label_des)
+			labelList.append(eve_label)
+		for i in range(len(labelList)):
+			label_type = labelList[i]['labelType']
+			tagList = list()
+			for j in range(i,len(labelList)):
+				if(labelList[j]['labelType']==label_type):
+					tagList.append(dict(name=labelList[j]['name'],imgUrl=labelList[j]['imgUrl'],label=labelList[j]['label'],description=labelList[j]['description']))
+			eve_dict = dict(type=label_type,tagList=tagList)
+			res_dict.append(eve_dict)
+		
+		print(res_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)

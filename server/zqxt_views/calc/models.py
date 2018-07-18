@@ -83,10 +83,10 @@ class ServicePicture(models.Model):
 class Follow(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	followNum = models.AutoField(primary_key=True)
-	followTagName = models.TextField()
+	followTagName = models.ForeignKey(Tag, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.followNum
+		return str(self.followNum)
 
 class Star(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)

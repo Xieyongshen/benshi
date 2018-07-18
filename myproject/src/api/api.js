@@ -17,10 +17,15 @@ const getIndex = (params) => wxRequest(params, apiBenshi + "/api/get_index/recom
 //获取卖家用户详情
 const getPerson = (params) => wxRequest(params, apiBenshi + "/api/get_person");
 
-
+//获取个人关注列表
+const getFollow = (params) => wxRequest(params, apiBenshi + "/api/get_follow");
+//获取个人收藏列表
+const getStar = (params) => wxRequest(params, apiBenshi + "/api/get_star");
 export default {
     getCategory,
     getIndex,
     getPerson,
-    login
+    login,
+    getFollow,
+    getStar
 }
