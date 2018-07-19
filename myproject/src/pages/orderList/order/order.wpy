@@ -235,7 +235,7 @@ export default class Success extends wepy.page {
         orderID: '161760188950953458',
         orderContent: {
             order: {
-                orderStatus: 3,
+                orderStatus: 2,
                 sellerAvatar: '/icons/assets/user_1.jpg',
                 sellerName: 'Clarenceyang',
                 serviceName: '单人约拍写真',
