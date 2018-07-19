@@ -208,7 +208,7 @@ checkbox .wx-checkbox-input {
                                         </view>
                                     </label>
                                 </view>
-                                <navigator wx:else class="labelList-items" @tap="navToUser({{labelList.name}}, {{labelList.imgUrl}}, {{labelList.label}}, {{labelList.description}})">
+                                <navigator wx:else class="labelList-items" @tap="navToUser({{labelList.userId}}, {{labelList.name}}, {{labelList.imgUrl}}, {{labelList.label}})">
                                     <image src="{{labelList.imgUrl}}" class="labelItem-img">
                                         <view class="labelItem-details">
                                             <view class="labelItem-label">{{labelList.label}}</view>
@@ -348,17 +348,18 @@ export default class Star extends wepy.page {
             console.log('Select: ' + this.selectList);
         },
 
-        navToUser(name, url, label, desc, event) {
+        navToUser(uid, name, url, label, event) {
+            console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
+                    uid +
+                    '&name=' +
                     name +
                     '&url=' +
                     url +
                     '&label=' +
-                    label +
-                    '&desc=' +
-                    desc
+                    label
             });
         },
 
