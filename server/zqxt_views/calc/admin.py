@@ -9,6 +9,8 @@ from .models import PostPicture
 from .models import ServicePicture
 from .models import Follow
 from .models import Star
+from .models import Order
+from .models import Comment
 # Register your models here.
 
 
@@ -22,3 +24,5 @@ admin.site.register(PostPicture)
 admin.site.register(ServicePicture)
 admin.site.register(Follow)
 admin.site.register(Star)
+admin.site.register(Order)
+admin.site.register(Comment)

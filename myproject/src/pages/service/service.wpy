@@ -175,6 +175,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Service extends wepy.page {
     config = {};
@@ -255,9 +256,18 @@ export default class Service extends wepy.page {
         }
     };
 
-    onLoad(options) {
+    async onLoad(options) {
         this.service.serviceID = options.serviceID;
         console.log(options.serviceID);
+
+        let res = await api.getServiceDetail({
+            query: {
+                serviceId: this.service.serviceID
+            }
+        });
+        console.log('-------------');
+        console.log(res);
+        // this.imgList = options.list;
         this.$apply();
     }
 }
