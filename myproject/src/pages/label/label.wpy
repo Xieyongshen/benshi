@@ -330,6 +330,15 @@ export default class Label extends wepy.page {
             console.log(res);
             self.isFollow = res.data.isFollow;
             self.$apply();
+
+            let res2 = await api.getLabelOfTag({
+                query: {
+                    tagName: this.label
+                }
+            });
+            console.log(res2)
+            self.tags = res2.data
+            self.$apply()
         }
         this.$apply();
     }
