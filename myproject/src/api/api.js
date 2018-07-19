@@ -39,6 +39,9 @@ const changeFollowStatus = (params) => wxRequest(params, apiBenshi + "/api/chang
 const changeStarStatus = (params) => wxRequest(params, apiBenshi + "/api/change_starstatus");
 //删除收藏列表中的某些标签
 const deleteStar = (params) => wxRequest(params, apiBenshi + "/api/delete_star");
+
+//用户提交订单
+const submitTheOrder = (params) => wxRequest(params, apiBenshi + "/api/submitTheOrder");
 export default {
     getCategory,
     getIndex,
@@ -53,5 +56,6 @@ export default {
     getLabelOfTag,
     deleteStar,
     getLabelServices,
-    getServiceDetail
+    getServiceDetail,
+    submitTheOrder
 }

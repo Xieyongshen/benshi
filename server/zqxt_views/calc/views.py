@@ -15,6 +15,8 @@ from calc.models import PostPicture
 from calc.models import ServicePicture
 from calc.models import Follow
 from calc.models import Star
+from calc.models import Order
+from calc.models import Comment
 import datetime
 import jwt
 import json
@@ -264,6 +266,22 @@ def getServiceDetail(request):
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
 
+def submitTheOrder(request):
+	client_access_token = request.POST['access_token']
+	client_account_id = request.POST['account_id']
+	serviceId = request.POST['serviceId']
+	the_service = Service.objects.get(serviceNum=serviceId)
+	if(verify_token(client_access_token)):
+		the_user = User.objects.get(id=client_account_id)
+		newOrder = Order()
+		newOrder.service = the_service
+		newOrder.user = the_user
+		newOrder.status = 0
+		newOrder.createTime = datetime.now()
+		newOrder.serviceTime = datetime.now()
+		newOrder.completeTime = datetime.now()
+		newOrder.save()
+	return HttpResponse('ok')
 
 def login(request):
 	client_access_token = request.GET['access_token']

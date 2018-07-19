@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+import uuid
 # Create your models here.
 
 
@@ -93,7 +94,7 @@ class Star(models.Model):
 	label = models.ForeignKey(Label, on_delete=models.CASCADE)
 
 class Order(models.Model):
-	orderId = models.UUIDField(primary_key=True)
+	orderId = models.UUIDField(primary_key=True, auto_created=True,default=uuid.uuid4,editable=False)
 	service = models.ForeignKey(Service, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	status = models.IntegerField()

@@ -129,6 +129,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Confirm extends wepy.page {
     config = {};
@@ -168,13 +169,30 @@ export default class Confirm extends wepy.page {
     computed = {};
 
     methods = {
-        submitOrder() {
+        async submitOrder() {
             wx.showModal({
                 title: '确认订单',
                 content: '确认提交订单吗？',
                 success: function(res) {
                     if (res.confirm) {
                         console.log("success");
+                        var jwt = wx.getStorageSync('jwt');
+                        let self = this;
+                        if (jwt.data.access_token != null) {
+                            let res = api.submitTheOrder({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    serviceId: 1
+                                },
+                                method: 'POST',
+                                header: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+                            });
+                            
+                        }
+
                         wx.navigateTo({
                             url: '/pages/confirm/success/success'
                         });
@@ -186,6 +204,14 @@ export default class Confirm extends wepy.page {
         }
     };
 
-    onLoad(options) {}
+    async onLoad(options) {
+        let res = await api.getServiceDetail({
+            query: {
+                serviceId: 1
+            }
+        });
+        console.log('-------------');
+        console.log(res);
+    }
 }
 </script>
