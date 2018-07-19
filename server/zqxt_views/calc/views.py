@@ -284,14 +284,15 @@ def get_star(request):
 			label_user_avatar = stars.label.user.avatar
 			label_name = stars.label.labelName
 			label_des = stars.label.labelDes
-			eve_label = dict(labelType=label_types,name=label_user_name,imgUrl=label_user_avatar,label=label_name,description=label_des)
+			label_id = stars.label.labelNum
+			eve_label = dict(labelType=label_types,name=label_user_name,imgUrl=label_user_avatar,label=label_name,description=label_des,labelId=label_id)
 			labelList.append(eve_label)
 		for i in range(len(labelList)):
 			label_type = labelList[i]['labelType']
 			tagList = list()
 			for j in range(i,len(labelList)):
 				if(labelList[j]['labelType']==label_type):
-					tagList.append(dict(name=labelList[j]['name'],imgUrl=labelList[j]['imgUrl'],label=labelList[j]['label'],description=labelList[j]['description']))
+					tagList.append(dict(name=labelList[j]['name'],imgUrl=labelList[j]['imgUrl'],labelId=labelList[j]['labelId'],label=labelList[j]['label'],description=labelList[j]['description']))
 			eve_dict = dict(type=label_type,labelList=tagList)
 			isRepeat = False
 			if(len(res_dict)>0):
@@ -402,7 +403,9 @@ def deleteStar(request):
 	client_access_token = request.GET['access_token']
 	client_account_id = request.GET['account_id']
 	selectList = request.GET['selectList']
-
+	for labelName in selectList:
+		selectLabel = Label.objects.get()
+	return HttpResponse('ok')
 
 
 def getLabelOfTag(request):

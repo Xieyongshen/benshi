@@ -242,7 +242,7 @@ checkbox .wx-checkbox-input {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Star extends wepy.page {
     config = {};
@@ -375,10 +375,14 @@ export default class Star extends wepy.page {
             this.$apply();
         },
 
-        deleteLabel() {
+        async deleteLabel() {
             for (let i = 0; i < this.star.length; i++) {
                 const item = this.star[i];
-                for (let labelIndex = item.labelList.length - 1; labelIndex >= 0; labelIndex--) {
+                for (
+                    let labelIndex = item.labelList.length - 1;
+                    labelIndex >= 0;
+                    labelIndex--
+                ) {
                     const labelItem = item.labelList[labelIndex];
                     this.selectList.every((element, eleIndex) => {
                         console.log(
@@ -396,7 +400,10 @@ export default class Star extends wepy.page {
                                 'Find to delete: ' + eleIndex + ' - ' + element
                             );
                             console.log(
-                                'Delete: ' + labelIndex + ' - ' + labelItem.label
+                                'Delete: ' +
+                                    labelIndex +
+                                    ' - ' +
+                                    labelItem.label
                             );
                             item.labelList.splice(labelIndex, 1);
                             return false;
@@ -404,10 +411,27 @@ export default class Star extends wepy.page {
                         return true;
                     });
                 }
-
             }
-            console.log('selectList:')
-            console.log(this.selectList)
+            console.log('selectList:');
+            console.log(this.selectList);
+
+            var jwt = wx.getStorageSync('jwt');
+            let self = this;
+            // if (jwt.data.access_token != null) {
+            //     console.log(jwt.data.account_id);
+            //     let res = await api.deleteStar({
+            //         query: {
+            //             access_token: jwt.data.access_token,
+            //             account_id: jwt.data.account_id,
+            //             selectList: self.selectList
+            //         }
+            //     });
+            //     console.log('-------------');
+            //     console.log(res);
+            //     self.star = res.data;
+            //     console.log(self.star);
+            //     self.$apply();
+            // }
 
             this.selectList = [];
         }
@@ -417,7 +441,7 @@ export default class Star extends wepy.page {
 
     async onLoad() {
         var jwt = wx.getStorageSync('jwt');
-        let self = this
+        let self = this;
         if (jwt.data.access_token != null) {
             //检查 jwt 是否存在 如果不存在调用登录
             // that.login();
@@ -438,10 +462,9 @@ export default class Star extends wepy.page {
         this.star.forEach((item, index) => {
             this.typeList.push(item.type);
         });
-
     }
 
-    onReady(){
+    onReady() {
         this.typeList.push('全部分类');
     }
 }
