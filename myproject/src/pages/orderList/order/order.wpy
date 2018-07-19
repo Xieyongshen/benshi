@@ -175,6 +175,9 @@
 }
 
 .comment-submit {
+    color: #b28850;
+    border: 1rpx solid #cfa972;
+    background: #ffffff;
     font-size: 34rpx;
     line-height: 68rpx;
     margin: 20rpx;
@@ -182,6 +185,11 @@
     border-radius: 10rpx;
     box-sizing: border-box;
     float: right;
+}
+
+.comment-submit:hover {
+    color: #ffffff;
+    background: #cfa972;
 }
 
 .comment-detail {
@@ -221,19 +229,19 @@
         <view class="order-detail">
             <view>订单编号：{{orderID}}</view>
             <view>创建时间：{{orderContent.order.createTime}}</view>
-            <view wx:if="{{orderContent.order.orderStatus > 0}}">服务时间：{{orderContent.order.serviceTime}}</view>
-            <view wx:if="{{orderContent.order.orderStatus > 1}}">完成时间：{{orderContent.order.completeTime}}</view>
+            <view wx:if="{{orderContent.order.orderStatus > 0 && orderContent.order.orderStatus < 4}}">服务时间：{{orderContent.order.serviceTime}}</view>
+            <view wx:if="{{orderContent.order.orderStatus > 1 && orderContent.order.orderStatus < 4}}">完成时间：{{orderContent.order.completeTime}}</view>
         </view>
         <view class="comment-content">
             <form wx:if="{{showComment}}" class="comment-form" bindsubmit="commentSubmit">
                 <textarea name="comment" auto-focus="{{showComment}}" class="comment-input">
                     <radio-group class="comment-type" bindchange="changeType">
                         <label class="type-choose">
-                            <radio value=1 color/>
+                            <radio value=1 color="#dbc29c" />
                             <text>好评</text>
                         </label>
                         <label class="type-choose">
-                            <radio value=0 />
+                            <radio value=0 color="#6d6d6d" />
                             <text>差评</text>
                         </label>
                     </radio-group>
@@ -315,9 +323,8 @@ export default class Success extends wepy.page {
             this.orderContent.comment.desc = e.detail.value.comment;
             let self = this;
             var jwt = wx.getStorageSync('jwt');
-            console.log(self.orderContent.comment.type)
+            console.log(self.orderContent.comment.type);
             if (jwt.data.access_token != null) {
-                self.orderContent.order.orderStatus = 3;
                 let res = api.submitComment({
                     query: {
                         access_token: jwt.data.access_token,
@@ -333,11 +340,11 @@ export default class Success extends wepy.page {
                     }
                 });
                 console.log(res);
+                self.orderContent.order.orderStatus = 3;
                 this.showComment = false;
-                
                 self.$apply();
             }
-            
+
             // console.log(this.orderContent.comment);
             this.$apply();
         },
