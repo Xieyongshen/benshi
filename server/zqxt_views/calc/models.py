@@ -92,4 +92,7 @@ class Star(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	label = models.ForeignKey(Label, on_delete=models.CASCADE)
 
+class Order(models.Model):
+	orderNum = models.UUIDField(primary_key=True)
+	
 

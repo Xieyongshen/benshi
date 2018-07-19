@@ -33,6 +33,8 @@ const getFollowStatus = (params) => wxRequest(params, apiBenshi + "/api/get_foll
 const changeFollowStatus = (params) => wxRequest(params, apiBenshi + "/api/change_followstatus");
 //改变某个label的收藏状态
 const changeStarStatus = (params) => wxRequest(params, apiBenshi + "/api/change_starstatus");
+//删除收藏列表中的某些标签
+const deleteStar = (params) => wxRequest(params, apiBenshi + "/api/delete_star");
 export default {
     getCategory,
     getIndex,
@@ -44,5 +46,6 @@ export default {
     getFollowStatus,
     changeFollowStatus,
     changeStarStatus,
-    getLabelOfTag
+    getLabelOfTag,
+    deleteStar
 }

@@ -281,17 +281,19 @@ def get_star(request):
 		for stars in user_all_stars:
 			label_types = stars.label.tag.category.categoryName
 			label_user_name = stars.label.user.nickname
+			label_user_id = stars.label.user.id
 			label_user_avatar = stars.label.user.avatar
 			label_name = stars.label.labelName
 			label_des = stars.label.labelDes
-			eve_label = dict(labelType=label_types,name=label_user_name,imgUrl=label_user_avatar,label=label_name,description=label_des)
+			label_id = stars.label.labelNum
+			eve_label = dict(labelType=label_types,name=label_user_name,imgUrl=label_user_avatar,label=label_name,description=label_des,labelId=label_id,userId=label_user_id)
 			labelList.append(eve_label)
 		for i in range(len(labelList)):
 			label_type = labelList[i]['labelType']
 			tagList = list()
 			for j in range(i,len(labelList)):
 				if(labelList[j]['labelType']==label_type):
-					tagList.append(dict(name=labelList[j]['name'],imgUrl=labelList[j]['imgUrl'],label=labelList[j]['label'],description=labelList[j]['description']))
+					tagList.append(dict(name=labelList[j]['name'],imgUrl=labelList[j]['imgUrl'],labelId=labelList[j]['labelId'],label=labelList[j]['label'],description=labelList[j]['description'],userId=labelList[j]['userId']))
 			eve_dict = dict(type=label_type,labelList=tagList)
 			isRepeat = False
 			if(len(res_dict)>0):
@@ -401,8 +403,18 @@ def changeStarStatus(request):
 def deleteStar(request):
 	client_access_token = request.GET['access_token']
 	client_account_id = request.GET['account_id']
+	deleteList = list()
 	selectList = request.GET['selectList']
-
+	selectList = selectList[1:-1]
+	selectList = selectList.replace('"', '')
+	deleteList = selectList.split(',')
+	print(selectList)
+	print(deleteList)
+	if(verify_token(client_access_token)):
+		for labelId in deleteList:
+			tmpStar = Star.objects.get(user__id=client_account_id,label__labelNum=labelId)
+			tmpStar.delete()
+	return HttpResponse('ok')
 
 
 def getLabelOfTag(request):

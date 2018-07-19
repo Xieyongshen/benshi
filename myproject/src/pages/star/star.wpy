@@ -257,68 +257,7 @@ export default class Star extends wepy.page {
         isChoosing: false,
         isManaging: false,
         selectAll: false,
-        star: [
-            // {
-            //     type: '外语类',
-            //     labelList: [
-            //         {
-            //             name: 'Jarvis',
-            //             imgUrl: '/icons/assets/user_5.jpg',
-            //             label: '100天奋战TOEFL',
-            //             description: '备考进行中！'
-            //         }
-            //     ]
-            // },
-            // {
-            //     type: '才艺类',
-            //     labelList: []
-            // },
-            // {
-            //     type: '生活技能',
-            //     labelList: [
-            //         {
-            //             name: 'Clarenceyang',
-            //             imgUrl: '/icons/assets/user_1.jpg',
-            //             label: '摄影',
-            //             description: '爱生活，爱摄影，爱美食的三爱人士'
-            //         }
-            //     ]
-            // },
-            // {
-            //     type: '经验分享',
-            //     labelList: [
-            //         {
-            //             name: '范臻',
-            //             imgUrl: '/icons/assets/user_5.jpg',
-            //             label: '三国杀',
-            //             description: '奇策火攻，酒杀不闪。'
-            //         }
-            //     ]
-            // },
-            // {
-            //     type: '专业知识',
-            //     labelList: [
-            //         {
-            //             name: '松鹅',
-            //             imgUrl: '/icons/assets/user_2.jpg',
-            //             label: '用Python解决你的所有问题',
-            //             description: '最近在学摄影的话痨程序员'
-            //         },
-            //         {
-            //             name: '温酒',
-            //             imgUrl: '/icons/assets/user_3.jpg',
-            //             label: '编剧',
-            //             description: '希望做一个温柔的人，想给你讲一万个故事。'
-            //         },
-            //         {
-            //             name: '喻以流年',
-            //             imgUrl: '/icons/assets/user_4.jpg',
-            //             label: '历史',
-            //             description: '在《资治通鉴》里，探寻当下与未来。'
-            //         }
-            //     ]
-            // }
-        ]
+        star: []
     };
 
     computed = {};
@@ -376,7 +315,7 @@ export default class Star extends wepy.page {
             this.$apply();
         },
 
-        deleteLabel() {
+        async deleteLabel() {
             for (let i = this.star.length - 1; i >= 0; i--) {
                 const item = this.star[i];
                 for (
@@ -410,7 +349,23 @@ export default class Star extends wepy.page {
             }
             console.log('selectList: ' + this.selectList);
             console.log(this.star);
-
+            var jwt = wx.getStorageSync('jwt');
+            let self = this;
+            if (jwt.data.access_token != null) {
+                console.log(jwt.data.account_id);
+                let res = await api.deleteStar({
+                    query: {
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id,
+                        selectList: self.selectList
+                    }
+                });
+                console.log('-------------');
+                // console.log(res);
+                self.star = res.data;
+                // console.log(self.star);
+                self.$apply();
+            }
             this.selectList = [];
         }
     };
