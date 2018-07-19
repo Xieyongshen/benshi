@@ -404,7 +404,11 @@ export default class Star extends wepy.page {
                         return true;
                     });
                 }
+
             }
+            console.log('selectList:')
+            console.log(this.selectList)
+
             this.selectList = [];
         }
     };

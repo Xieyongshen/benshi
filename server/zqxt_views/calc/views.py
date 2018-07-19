@@ -398,6 +398,13 @@ def changeStarStatus(request):
 
 	return HttpResponse('ok')
 
+def deleteStar(request):
+	client_access_token = request.GET['access_token']
+	client_account_id = request.GET['account_id']
+	selectList = request.GET['selectList']
+
+
+
 def getLabelOfTag(request):
 	res_dict = list()
 	tagName = request.GET['tagName']
@@ -410,8 +417,9 @@ def getLabelOfTag(request):
 			post_pictures = list(PostPicture.objects.filter(post__postNum=posts.postNum))
 			for pics in post_pictures:
 				imgDict = dict(imageUrl=pics.url)
-				imageList.append(imgDict)
-		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList)
+				if(len(imageList)<=3):
+					imageList.append(imgDict)
+		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList,userId=labels.user.id)
 		res_dict.append(eve_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)

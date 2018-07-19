@@ -754,7 +754,8 @@ export default class Person extends wepy.page {
         this.scrollInTo = 'list';
         this.$apply();
         this.currentLabel = 0;
-
+        console.log('userID::')
+        console.log(this.userid)
         var jwt = wx.getStorageSync('jwt');
         let self = this;
         if (jwt.data.access_token != null) {
