@@ -197,8 +197,8 @@
         <view class="order-detail">
             <view>订单编号：{{order.serviceNum}}</view>
             <view>创建时间：{{order.createTime}}</view>
-            <view>服务时间：{{order.serviceTime}}</view>
-            <view>完成时间：{{order.completeTime}}</view>
+            <view wx:if="{{order.orderStatus > 0}}">服务时间：{{order.serviceTime}}</view>
+            <view wx:if="{{order.orderStatus > 1}}">完成时间：{{order.completeTime}}</view>
         </view>
         <view class="comment-content">
             <form wx:if="{{showComment}}" class="comment-form" bindsubmit="commentSubmit">

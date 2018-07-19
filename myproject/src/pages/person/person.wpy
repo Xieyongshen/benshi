@@ -259,9 +259,9 @@
 }
 
 .post-listImg {
-    width: 150rpx;
-    height: 150rpx;
-    margin-top: 30rpx;
+    width: 300rpx;
+    height: 300rpx;
+    margin-top: 20rpx;
     margin-right: 20rpx;
     z-index: 10;
 }
@@ -334,7 +334,7 @@
                                     <view class="post-content">
                                         <view class="post-desc">{{post.desc}}</view>
                                         <repeat for="{{post.imgList}}" item="imgList" key="imageUrl">
-                                            <image src="{{imgList.imageUrl}}" class="post-listImg" data-list="{{post.imgList}}" @tap.stop="picPreview({{imgList.imageUrl}})">
+                                            <image src="{{imgList.imageUrl}}" mode="aspectFill" class="post-listImg" data-list="{{post.imgList}}" @tap.stop="picPreview({{imgList.imageUrl}})">
                                         </repeat>
                                     </view>
                                 </view>
