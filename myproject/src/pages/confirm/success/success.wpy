@@ -135,7 +135,7 @@ export default class Success extends wepy.page {
 
     methods = {
         navToOrder() {
-            wx.switchTab({
+            wx.reLaunch({
                 url: '/pages/orderList/orderList'
             });
         },
