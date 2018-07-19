@@ -178,11 +178,11 @@
             <view wx:else class="follow-btn follow-yes" @tap="followTag">已关注</view>
         </view>
         <view class="label-content">
-            <repeat for="{{tags}}" key="tag">
-                <navigator class="label-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.tag}})">
+            <repeat for="{{tags}}" key="label">
+                <navigator class="label-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.label}})">
                     <image class="item-avatar" src="{{item.imgUrl}}">
                         <view class="item-content">
-                            <view class="item-tag">{{item.tag}}</view>
+                            <view class="item-label">{{item.label}}</view>
                             <view class="item-detail">{{item.name}}
                                 <view class="item-userdesc">{{item.userdesc}}</view>
                             </view>
@@ -216,7 +216,7 @@ export default class Label extends wepy.page {
         tags: [
             {
                 name: 'Clarenceyang',
-                tag: '摄影',
+                label: '摄影',
                 imgUrl: '/icons/assets/user_1.jpg',
                 userdesc: '爱生活，爱摄影，爱美食',
                 desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
@@ -234,7 +234,7 @@ export default class Label extends wepy.page {
             },
             {
                 name: '雪白的狐狸',
-                tag: '美食摄影',
+                label: '美食摄影',
                 imgUrl: '/icons/assets/user_2.jpg',
                 userdesc: '拍照片儿的，一本正经的卖萌',
                 desc:
