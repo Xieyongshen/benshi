@@ -275,6 +275,26 @@ export default class Success extends wepy.page {
                     if (res.confirm) {
                         console.log('cancel success');
                         self.orderContent.order.orderStatus = 4;
+                        var jwt = wx.getStorageSync('jwt');
+                        if (jwt.data.access_token != null) {
+                            console.log(jwt.data.account_id);
+                            let res = api.changeOrderStatus({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    orderId: this.orderID,
+                                    orderStatus: self.orderContent.order.orderStatus
+                                },
+                                method: 'POST',
+                                header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            });
+                            console.log(res)
+            
+                            self.$apply();
+                        }
                         self.$apply();
                     } else if (res.cancel) {
                         console.log('cancel');

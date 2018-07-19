@@ -228,6 +228,31 @@ export default class OrderList extends wepy.page {
 
     computed = {};
 
+    // async changeOrderStatusFun:(function(id,status){
+    //         let self = this
+    //         var jwt = wx.getStorageSync('jwt');
+    //         if (jwt.data.access_token != null) {
+    //             console.log(jwt.data.account_id);
+    //             let res = await api.changeOrderStatus({
+    //                 query: {
+    //                     access_token: jwt.data.access_token,
+    //                     account_id: jwt.data.account_id,
+    //                     orderId: id,
+    //                     orderStatus: status
+    //                 },
+    //                 method: 'POST',
+    //                 header: {
+    //                     'Content-Type': 'application/x-www-form-urlencoded'
+    //                 }
+
+    //             });
+    //             console.log(res)
+            
+    //             self.$apply();
+    //         }
+            
+    // });
+
     methods = {
         chooseType(type, e) {
             this.currentType = type;
@@ -241,6 +266,8 @@ export default class OrderList extends wepy.page {
             });
         },
 
+        
+
         cancelOrder(index, event) {
             var self = this;
             wx.showModal({
@@ -250,6 +277,27 @@ export default class OrderList extends wepy.page {
                     if (res.confirm) {
                         console.log('cancel success');
                         self.orderList[index].status = 4;
+                        var jwt = wx.getStorageSync('jwt');
+                        if (jwt.data.access_token != null) {
+                            console.log(jwt.data.account_id);
+                            let res = api.changeOrderStatus({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    orderId: self.orderList[index].orderId,
+                                    orderStatus: self.orderList[index].status
+                                },
+                                method: 'POST',
+                                header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            });
+                            console.log(res)
+            
+                            self.$apply();
+                        }
+                        // changeOrderStatusFun(self.orderList[index].orderId,self.orderList[index].status)
                         self.$apply();
                     } else if (res.cancel) {
                         console.log('cancel');
@@ -267,6 +315,27 @@ export default class OrderList extends wepy.page {
                     if (res.confirm) {
                         console.log('confirm success');
                         self.orderList[index].status = 3;
+                        var jwt = wx.getStorageSync('jwt');
+                        if (jwt.data.access_token != null) {
+                            console.log(jwt.data.account_id);
+                            let res = api.changeOrderStatus({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    orderId: self.orderList[index].orderId,
+                                    orderStatus: self.orderList[index].status
+                                },
+                                method: 'POST',
+                                header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            });
+                            console.log(res)
+            
+                            self.$apply();
+                        }
+                        // changeOrderStatusFun(self.orderList[index].orderId,self.orderList[index].status)
                         self.$apply();
                     } else if (res.cancel) {
                         console.log('confirm cancel');
@@ -291,6 +360,26 @@ export default class OrderList extends wepy.page {
                 success: function(res) {
                     if (res.confirm) {
                         console.log('delete success');
+                        console.log(self.orderList[index].orderId)
+                        var jwt = wx.getStorageSync('jwt');
+                        if (jwt.data.access_token != null) {
+                            console.log(jwt.data.account_id);
+                            let res = api.deleteTheOrder({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    orderId: self.orderList[index].orderId,
+                                },
+                                method: 'POST',
+                                header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            });
+                            console.log(res)
+            
+                            self.$apply();
+                        }
                         self.orderList.splice(index, 1);
                         self.$apply();
                     } else if (res.cancel) {

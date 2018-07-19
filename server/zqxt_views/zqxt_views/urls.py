@@ -40,5 +40,7 @@ urlpatterns = [
     path('api/get_labelServices',calc_views.getLabelServices),
     path('api/submitTheOrder', calc_views.submitTheOrder),
     path('api/getOrders', calc_views.getOrders),
-    path('api/getOrderDetail',calc_views.getOrderDetail)
+    path('api/getOrderDetail',calc_views.getOrderDetail),
+    path('api/changeOrderStatus', calc_views.changeOrderStatus),
+    path('api/deleteTheOrder',calc_views.deleteTheOrder)
 ]

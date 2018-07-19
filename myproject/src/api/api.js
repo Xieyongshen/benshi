@@ -44,6 +44,12 @@ const deleteStar = (params) => wxRequest(params, apiBenshi + "/api/delete_star")
 const submitTheOrder = (params) => wxRequest(params, apiBenshi + "/api/submitTheOrder");
 //获取用户所有订单
 const getOrders = (params) => wxRequest(params, apiBenshi + "/api/getOrders");
+//获取单个订单详情
+const getOrderDetail = (params) => wxRequest(params, apiBenshi + "/api/getOrderDetail");
+//更改订单状态
+const changeOrderStatus = (params) => wxRequest(params, apiBenshi + "/api/changeOrderStatus");
+//删除订单
+const deleteTheOrder = (params) => wxRequest(params, apiBenshi + "/api/deleteTheOrder");
 export default {
     getCategory,
     getIndex,
@@ -60,5 +66,8 @@ export default {
     getLabelServices,
     getServiceDetail,
     submitTheOrder,
-    getOrders
+    getOrders,
+    getOrderDetail,
+    changeOrderStatus,
+    deleteTheOrder
 }
