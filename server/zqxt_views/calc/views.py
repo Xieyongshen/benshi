@@ -230,6 +230,26 @@ def get_person(request):
 	res_json = json.dumps(labels_all_dict)
 	return HttpResponse(res_json)
 
+def getLabelServices(request):
+	userId = request.GET['userId']
+	res_dict = list()
+	user_all_labels = list(Label.objects.filter(user__id=userId))
+	for labels in user_all_labels:
+		label_all_service = list(Service.objects.filter(label__labelNum=labels.labelNum))
+		label_serviceList = list()
+		for services in label_all_service:
+			imgList = list()
+			service_all_pic = list(ServicePicture.objects.filter(service__serviceNum=services.serviceNum))
+			for pics in service_all_pic:
+				imgDict = dict(imageUrl=pics.url)
+				imgList.append(imgDict)
+			eve_service = dict(name=services.serviceName,price=services.price,description=services.serviceDes,imageList=imgList)
+			label_serviceList.append(eve_service)
+		eve_dict = dict(label=labels.labelName,service=label_serviceList)
+		res_dict.append(eve_dict)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
 def login(request):
 	client_access_token = request.GET['access_token']
 	client_account_id = request.GET['account_id']
