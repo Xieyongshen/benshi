@@ -22,7 +22,8 @@ const getLabelServices = (params) => wxRequest(params, apiBenshi + "/api/get_lab
 const getServiceDetail = (params) => wxRequest(params, apiBenshi + "/api/get_serviceDetail");
 //按分类获取标签详情
 const getLabelOfTag = (params) => wxRequest(params, apiBenshi + "/api/get_labeloftag");
-
+//获取服务下评价列表
+const getComment = (params) => wxRequest(params, apiBenshi + "/api/getComment");
 
 //修改个人签名
 const changeDesc = (params) => wxRequest(params, apiBenshi + "/api/changeDesc");
@@ -72,5 +73,6 @@ export default {
     getOrderDetail,
     changeOrderStatus,
     deleteTheOrder,
-    submitComment
+    submitComment,
+    getComment
 }
