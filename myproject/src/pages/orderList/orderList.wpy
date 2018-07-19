@@ -348,7 +348,7 @@ export default class OrderList extends wepy.page {
             var orderID = this.orderList[index].orderId;
             wx.navigateTo({
                 url:
-                    '/pages/orderList/order/order?orderID=' + orderID
+                    '/pages/orderList/order/order?orderID=' + orderID + '&comment=1'
             });
         },
 
