@@ -155,7 +155,7 @@
                 </block>
             </view>
             <view class="user-items">
-                <navigator class="userItem-content" url="/pages/orderList/orderList">
+                <navigator class="userItem-content">
                     <view class="userItem-details">
                         <text>我的订单</text>
                         <text class="fa fa-angle-right user-navto"></text>

@@ -110,18 +110,18 @@
                     <text class="seller-name">{{service.sellerName}}</text>
             </view>
             <view class="confirm-service">
-                <image src="{{service.picture}}" mode="aspectFill" class="service-img">
-                    <text class="service-name">{{service.name}}</text>
+                <image src="{{service.imgList[0].imageUrl}}" mode="aspectFill" class="service-img">
+                    <text class="service-name">{{service.serviceName}}</text>
             </view>
             <view class="confirm-notice">
                 <view class="notice-title">注意事项</view>
-                <view class="notice-detail">{{service.notice}}</view>
+                <view class="notice-detail">{{service.serviceDetail}}</view>
             </view>
         </view>
         <view class="confirm-submit">
             <view class="submit-btn" @tap="submitOrder">提交订单</view>
             <view class="submit-price">
-                <text>￥</text>{{service.price}}</view>
+                <text>￥</text>{{service.servicePrice}}</view>
         </view>
     </view>
 </template>
@@ -129,7 +129,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Confirm extends wepy.page {
     config = {};
@@ -138,34 +138,14 @@ export default class Confirm extends wepy.page {
     };
 
     data = {
+        serviceID: '',
         service: {
-            serviceID: '',
-            sellerAvatar: '/icons/assets/user_1.jpg',
-            sellerName: 'Clarenceyang',
-            name: '单人约拍写真',
-            price: 388,
-            picture: '/icons/assets/pic3_3.jpg',
-            notice:
-                '时间：每周六，日 08:00 - 19:00\n地点：上海 徐汇区 上海任何值得留下影像的城市角落\n\n服务流程：\n' +
-                '1）下单后将自己照片给我' +
-                ' \n ' +
-                '2）商议主题和样式' +
-                ' \n ' +
-                '3）确定服装道具化妆' +
-                ' \n ' +
-                '4）敲定场地、时间' +
-                ' \n ' +
-                '5）2~3小时拍摄' +
-                ' \n ' +
-                '6）10张左右精修照片' +
-                ' \n ' +
-                '服务宗旨：' +
-                ' \n ' +
-                '1、	只选取上海最有吸引力、最好玩的角落拍摄' +
-                ' \n ' +
-                '2、	这是一个年轻人的活动，我们可以一边拍照、一边穿梭在上海的大街小巷' +
-                ' \n ' +
-                '3、	不拍庸俗平凡的照片，只希望能拍出展现我们年轻人生命力的照片'
+            sellerAvatar: '',
+            sellerName: '',
+            serviceName: '',
+            servicePrice: 388,
+            imgList: [],
+            serviceDetail: ''
         }
     };
 
@@ -173,12 +153,15 @@ export default class Confirm extends wepy.page {
 
     methods = {
         async submitOrder() {
+            console.log(this.serviceID);
+            var sID = this.serviceID;
+            var service = this.service;
             wx.showModal({
                 title: '确认订单',
                 content: '确认提交订单吗？',
                 success: function(res) {
                     if (res.confirm) {
-                        console.log("success");
+                        console.log('success');
                         var jwt = wx.getStorageSync('jwt');
                         let self = this;
                         if (jwt.data.access_token != null) {
@@ -186,20 +169,24 @@ export default class Confirm extends wepy.page {
                                 query: {
                                     access_token: jwt.data.access_token,
                                     account_id: jwt.data.account_id,
-                                    serviceId: 1
+                                    serviceId: sID
                                 },
                                 method: 'POST',
                                 header: {
-                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type':
+                                        'application/x-www-form-urlencoded'
                                 }
                             });
-                            
                         }
 
                         wx.navigateTo({
-                            url: '/pages/confirm/success/success?name=' + this.service.name + '&pic=' + this.service.picture
+                            url:
+                                '/pages/confirm/success/success?name=' +
+                                service.serviceName +
+                                '&pic=' +
+                                service.imgList[0].imageUrl
                         });
-                    } else if (res.confirm) {
+                    } else if (res.cancel) {
                         console.log('cancel');
                     }
                 }
@@ -208,15 +195,17 @@ export default class Confirm extends wepy.page {
     };
 
     async onLoad(options) {
-        this.service.serviceID = options.serviceID;
+        this.serviceID = options.serviceID;
+        console.log(options.serviceID);
         let res = await api.getServiceDetail({
             query: {
-                serviceId: this.service.serviceID
+                serviceId: this.serviceID
             }
         });
         console.log('-------------');
         console.log(res);
-        this.$apply();  
+        this.service = res.data;
+        this.$apply();
     }
 }
 </script>

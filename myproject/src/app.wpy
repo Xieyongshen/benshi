@@ -2400,10 +2400,10 @@ export default class extends wepy.app {
                     text: '分类'
                 },
                 {
-                    pagePath: 'pages/message/message',
+                    pagePath: 'pages/orderList/orderList',
                     iconPath: 'icons/tabbar/ic_message.png',
                     selectedIconPath: 'icons/tabbar/ic_message_selected.png',
-                    text: '消息'
+                    text: '订单'
                 },
                 {
                     pagePath: 'pages/me/me',

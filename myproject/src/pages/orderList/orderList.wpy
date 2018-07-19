@@ -135,7 +135,7 @@
 </style>
 <template>
     <view class="container">
-        <navBar navTitle="我的订单" isChildPage="y"></navBar>
+        <navBar navTitle="订单"></navBar>
         <view class="order-type">
             <repeat for="{{type}}" key="{{index}}">
                 <view class="type-items {{currentType == index ? 'type-choose' : ''}}" @tap="chooseType({{index}})">{{item}}</view>

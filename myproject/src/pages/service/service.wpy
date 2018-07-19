@@ -210,7 +210,7 @@ export default class Service extends wepy.page {
 
         confirmOrder() {
             wx.navigateTo({
-                url: '/pages/confirm/confirm?serviceID=' + this.service.serviceID
+                url: '/pages/confirm/confirm?serviceID=' + this.serviceID
             });
         },
 
