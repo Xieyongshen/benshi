@@ -181,40 +181,40 @@
 <template>
     <view class="container">
         <navBar navTitle="订单详情" isChildPage="y"></navBar>
-        <view class="order-status">{{status[order.orderStatus]}}</view>
+        <view class="order-status">{{status[orderContent.order.orderStatus]}}</view>
         <view class="order-content">
             <view class="order-seller">
-                <image class="seller-avatar" src="{{order.sellerAvatar}}">
-                    <view class="seller-name">{{order.sellerName}}</view>
+                <image class="seller-avatar" src="{{orderContent.order.sellerAvatar}}">
+                    <view class="seller-name">{{orderContent.order.sellerName}}</view>
             </view>
             <view class="order-service">
-                <image src="{{order.servicePic}}" mode="aspectFill" class="service-img">
-                    <text class="service-name">{{order.serviceName}}</text>
+                <image src="{{orderContent.order.servicePic}}" mode="aspectFill" class="service-img">
+                    <text class="service-name">{{orderContent.order.serviceName}}</text>
                     <view class="service-price">
-                        <text>￥</text>{{order.servicePrice}}</view>
+                        <text>￥</text>{{orderContent.order.servicePrice}}</view>
             </view>
         </view>
         <view class="order-detail">
             <view>订单编号：{{orderID}}</view>
-            <view>创建时间：{{order.createTime}}</view>
-            <view wx:if="{{order.orderStatus > 0}}">服务时间：{{order.serviceTime}}</view>
-            <view wx:if="{{order.orderStatus > 1}}">完成时间：{{order.completeTime}}</view>
+            <view>创建时间：{{orderContent.order.createTime}}</view>
+            <view wx:if="{{orderContent.order.orderStatus > 0}}">服务时间：{{orderContent.order.serviceTime}}</view>
+            <view wx:if="{{orderContent.order.orderStatus > 1}}">完成时间：{{orderContent.order.completeTime}}</view>
         </view>
         <view class="comment-content">
             <form wx:if="{{showComment}}" class="comment-form" bindsubmit="commentSubmit">
                 <textarea name="comment" class="comment-input">
                     <button class="comment-submit" form-type="submit">提交评价</button>
             </form>
-            <view wx:if="{{order.orderStatus == 3}}" class="comment-detail">
-                <view class="comment-desc">{{comment.desc}}</view>
-                <view class="comment-time">{{comment.time}}</view>
+            <view wx:if="{{orderContent.order.orderStatus == 3}}" class="comment-detail">
+                <view class="comment-desc">{{orderContent.comment.desc}}</view>
+                <view class="comment-time">{{orderContent.comment.time}}</view>
             </view>
         </view>
         <view class="order-handle">
-            <view wx:if="{{order.orderStatus == 0}}" class="order-cancel order-btn" @tap.stop="cancelOrder">取消订单</view>
-            <view wx:if="{{order.orderStatus == 1}}" class="order-confirm order-btn" @tap.stop="confirmOrder">确认服务</view>
-            <view wx:if="{{order.orderStatus == 2}}" class="order-comment order-btn" @tap.stop="commentOrder">评价服务</view>
-            <view wx:if="{{order.orderStatus >= 3}}" class="order-delete order-btn" @tap.stop="deleteOrder">删除订单</view>
+            <view wx:if="{{orderContent.order.orderStatus == 0}}" class="order-cancel order-btn" @tap.stop="cancelOrder">取消订单</view>
+            <view wx:if="{{orderContent.order.orderStatus == 1}}" class="order-confirm order-btn" @tap.stop="confirmOrder">确认服务</view>
+            <view wx:if="{{orderContent.order.orderStatus == 2}}" class="order-comment order-btn" @tap.stop="commentOrder">评价服务</view>
+            <view wx:if="{{orderContent.order.orderStatus >= 3}}" class="order-delete order-btn" @tap.stop="deleteOrder">删除订单</view>
         </view>
     </view>
 </template>
@@ -233,21 +233,23 @@ export default class Success extends wepy.page {
         showComment: false,
         status: ['等待服务', '等待确认', '等待评价', '交易成功', '交易取消'],
         orderID: '161760188950953458',
-        order: {
-            orderStatus: 3,
-            sellerAvatar: '/icons/assets/user_1.jpg',
-            sellerName: 'Clarenceyang',
-            serviceName: '单人约拍写真',
-            servicePrice: 388,
-            servicePic: '/icons/assets/pic3_3.jpg',
-            createTime: '2018.07.10 16:51:43',
-            serviceTime: '2018.07.16 17:01:21',
-            completeTime: '2018.07.17 13:21:10'
-        },
-        comment: {
-            time: '2018.07.07',
-            desc:
-                '拍得很满意，摄影小哥哥人超好！！因为平时比较忙，约了好多次时间终于拍到啦，很快就拿到照片了，超喜欢！会推荐给身边的朋友的w'
+        orderContent: {
+            order: {
+                orderStatus: 3,
+                sellerAvatar: '/icons/assets/user_1.jpg',
+                sellerName: 'Clarenceyang',
+                serviceName: '单人约拍写真',
+                servicePrice: 388,
+                servicePic: '/icons/assets/pic3_3.jpg',
+                createTime: '2018.07.10 16:51:43',
+                serviceTime: '2018.07.16 17:01:21',
+                completeTime: '2018.07.17 13:21:10'
+            },
+            comment: {
+                time: '2018.07.07',
+                desc:
+                    '拍得很满意，摄影小哥哥人超好！！因为平时比较忙，约了好多次时间终于拍到啦，很快就拿到照片了，超喜欢！会推荐给身边的朋友的w'
+            }
         }
     };
 
@@ -271,7 +273,7 @@ export default class Success extends wepy.page {
                 success: function(res) {
                     if (res.confirm) {
                         console.log('cancel success');
-                        self.order.orderStatus = 4;
+                        self.orderContent.order.orderStatus = 4;
                         self.$apply();
                     } else if (res.cancel) {
                         console.log('cancel');
@@ -288,7 +290,7 @@ export default class Success extends wepy.page {
                 success: function(res) {
                     if (res.confirm) {
                         console.log('confirm success');
-                        self.order.orderStatus = 3;
+                        self.orderContent.order.orderStatus = 3;
                         self.$apply();
                     } else if (res.cancel) {
                         console.log('confirm cancel');
