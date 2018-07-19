@@ -532,3 +532,26 @@ def getOrderDetail(request):
 		res_dict = dict(order=order_dict,comment=comment_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
+
+def changeOrderStatus(request):
+	client_access_token = request.POST['access_token']
+	client_account_id = request.POST['account_id']
+	orderIdstr = request.POST['orderId']
+	orderId = uuid.UUID(orderIdstr)
+	orderStatus = request.POST['orderStatus']
+	if(verify_token(client_access_token)):
+		the_order = Order.objects.get(orderId=orderId)
+		the_order.status = orderStatus
+		the_order.save()
+	return HttpResponse('ok')
+
+def deleteTheOrder(request):
+	client_access_token = request.POST['access_token']
+	client_account_id = request.POST['account_id']
+	orderIdstr = request.POST['orderId']
+	orderId = uuid.UUID(orderIdstr)
+	if(verify_token(client_access_token)):
+		the_order = Order.objects.get(orderId=orderId)
+		the_order.delete()
+
+	return HttpResponse('ok')

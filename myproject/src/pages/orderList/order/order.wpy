@@ -264,6 +264,7 @@ export default class Success extends wepy.page {
 
         commentSubmit(e) {
             console.log(e.detail.value);
+            
         },
 
         cancelOrder() {
@@ -275,6 +276,26 @@ export default class Success extends wepy.page {
                     if (res.confirm) {
                         console.log('cancel success');
                         self.orderContent.order.orderStatus = 4;
+                        var jwt = wx.getStorageSync('jwt');
+                        if (jwt.data.access_token != null) {
+                            console.log(jwt.data.account_id);
+                            let res = api.changeOrderStatus({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    orderId: self.orderID,
+                                    orderStatus: self.orderContent.order.orderStatus
+                                },
+                                method: 'POST',
+                                header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            });
+                            console.log(res)
+            
+                            self.$apply();
+                        }
                         self.$apply();
                     } else if (res.cancel) {
                         console.log('cancel');
@@ -292,6 +313,26 @@ export default class Success extends wepy.page {
                     if (res.confirm) {
                         console.log('confirm success');
                         self.orderContent.order.orderStatus = 3;
+                        var jwt = wx.getStorageSync('jwt');
+                        if (jwt.data.access_token != null) {
+                            console.log(jwt.data.account_id);
+                            let res = api.changeOrderStatus({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    orderId: self.orderID,
+                                    orderStatus: self.orderContent.order.orderStatus
+                                },
+                                method: 'POST',
+                                header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            });
+                            console.log(res)
+            
+                            self.$apply();
+                        }
                         self.$apply();
                     } else if (res.cancel) {
                         console.log('confirm cancel');
@@ -308,6 +349,24 @@ export default class Success extends wepy.page {
                 success: function(res) {
                     if (res.confirm) {
                         console.log('delete success');
+                        var jwt = wx.getStorageSync('jwt');
+                        if (jwt.data.access_token != null) {
+                            let res = api.deleteTheOrder({
+                                query: {
+                                    access_token: jwt.data.access_token,
+                                    account_id: jwt.data.account_id,
+                                    orderId: self.orderID,
+                                },
+                                method: 'POST',
+                                header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                                }
+
+                            });
+                            console.log(res)
+            
+                            self.$apply();
+                        }
                         wx.navigateBack({
                             delta: 1
                         });
