@@ -15,7 +15,7 @@
     background: #dbc29c;
 }
 
-.status-cancel{
+.status-cancel {
     background: #535353;
 }
 
@@ -154,6 +154,26 @@
     display: inline-block;
 }
 
+.comment-type {
+    height: 70rpx;
+    margin: 20rpx;
+    display: inline-block;
+}
+
+.type-choose {
+    font-size: 34rpx;
+    line-height: 68rpx;
+    margin-right: 50rpx;
+    display: inline-block;
+    radio {
+        margin-right: 20rpx;
+    }
+    text {
+        font-size: 34rpx;
+        line-height: 68rpx;
+    }
+}
+
 .comment-submit {
     font-size: 34rpx;
     line-height: 68rpx;
@@ -207,6 +227,16 @@
         <view class="comment-content">
             <form wx:if="{{showComment}}" class="comment-form" bindsubmit="commentSubmit">
                 <textarea name="comment" auto-focus="{{showComment}}" class="comment-input">
+                    <radio-group class="comment-type" bindchange="changeType">
+                        <label class="type-choose">
+                            <radio value=true color/>
+                            <text>好评</text>
+                        </label>
+                        <label class="type-choose">
+                            <radio value=false />
+                            <text>差评</text>
+                        </label>
+                    </radio-group>
                     <button class="comment-submit" form-type="submit">提交评价</button>
             </form>
             <view wx:if="{{orderContent.order.orderStatus == 3}}" class="comment-detail">
@@ -226,7 +256,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Success extends wepy.page {
     config = {};
@@ -250,7 +280,10 @@ export default class Success extends wepy.page {
                 serviceTime: '',
                 completeTime: ''
             },
-            comment: {}
+            comment: {
+                type: null,
+                desc: ''
+            }
         }
     };
 
@@ -262,9 +295,25 @@ export default class Success extends wepy.page {
             this.$apply();
         },
 
-        commentSubmit(e) {
+        changeType(e) {
             console.log(e.detail.value);
-            
+            this.orderContent.comment.type = e.detail.value;
+            this.$apply();
+        },
+
+        commentSubmit(e) {
+            if (this.orderContent.comment.type == null || e.detail.value == '') {
+                wx.showToast({
+                    title: '请选择评价类型',
+                    icon: 'none',
+                    duration: 1000
+                });
+                return;
+            }
+            console.log(e.detail.value);
+            this.orderContent.comment.desc = e.detail.value;
+            console.log(this.orderContent.comment);
+            this.$apply();
         },
 
         cancelOrder() {
@@ -284,16 +333,17 @@ export default class Success extends wepy.page {
                                     access_token: jwt.data.access_token,
                                     account_id: jwt.data.account_id,
                                     orderId: self.orderID,
-                                    orderStatus: self.orderContent.order.orderStatus
+                                    orderStatus:
+                                        self.orderContent.order.orderStatus
                                 },
                                 method: 'POST',
                                 header: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type':
+                                        'application/x-www-form-urlencoded'
                                 }
-
                             });
-                            console.log(res)
-            
+                            console.log(res);
+
                             self.$apply();
                         }
                         self.$apply();
@@ -321,16 +371,17 @@ export default class Success extends wepy.page {
                                     access_token: jwt.data.access_token,
                                     account_id: jwt.data.account_id,
                                     orderId: self.orderID,
-                                    orderStatus: self.orderContent.order.orderStatus
+                                    orderStatus:
+                                        self.orderContent.order.orderStatus
                                 },
                                 method: 'POST',
                                 header: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type':
+                                        'application/x-www-form-urlencoded'
                                 }
-
                             });
-                            console.log(res)
-            
+                            console.log(res);
+
                             self.$apply();
                         }
                         self.$apply();
@@ -355,16 +406,16 @@ export default class Success extends wepy.page {
                                 query: {
                                     access_token: jwt.data.access_token,
                                     account_id: jwt.data.account_id,
-                                    orderId: self.orderID,
+                                    orderId: self.orderID
                                 },
                                 method: 'POST',
                                 header: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type':
+                                        'application/x-www-form-urlencoded'
                                 }
-
                             });
-                            console.log(res)
-            
+                            console.log(res);
+
                             self.$apply();
                         }
                         wx.navigateBack({
@@ -381,7 +432,7 @@ export default class Success extends wepy.page {
 
     async onLoad(options) {
         this.orderID = options.orderID;
-        if(options.comment == 1){
+        if (options.comment == 1) {
             this.showComment = true;
         }
         this.$apply();
