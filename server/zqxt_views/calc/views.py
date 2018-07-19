@@ -258,12 +258,27 @@ def getServiceDetail(request):
 	res_dict = dict()
 	the_service = Service.objects.get(serviceNum=serviceId)
 	service_seller = the_service.label.user
+	service_comments = list(Comment.objects.filter(order__service=the_service))
+	commentNumbers = len(service_comments)
 	service_all_pic = list(ServicePicture.objects.filter(service__serviceNum=the_service.serviceNum))
 	imgList = list()
 	for pics in service_all_pic:
 		imgDict = dict(imageUrl=pics.url)
 		imgList.append(imgDict)
-	res_dict = dict(commentNum=2,sellerAvatar=service_seller.avatar,sellerName=service_seller.nickname,serviceName=the_service.serviceName,servicePrice=the_service.price,serviceDesc=the_service.serviceDes,imgList=imgList,serviceDetail=the_service.serviceDetail)
+	res_dict = dict(sellerAvatar=service_seller.avatar,sellerName=service_seller.nickname,serviceName=the_service.serviceName,servicePrice=the_service.price,serviceDesc=the_service.serviceDes,imgList=imgList,serviceDetail=the_service.serviceDetail,commentNum=commentNumbers)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+def getComment(request):
+	serviceId = request.GET['serviceId']
+	res_dict = list()
+	the_service = Service.objects.get(serviceNum=serviceId)
+	service_seller = the_service.label.user
+	service_comments = list(Comment.objects.filter(order__service=the_service))	
+	for comment in service_comments:
+		comment_user = comment.user
+		eve_dict = dict(user=comment_user.nickname,userAvatar=comment_user.avatar,type=comment.commentType,time=comment.time.strftime("%Y-%m-%d %H:%M:%S"),desc=comment.desc)
+		res_dict.append(eve_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
 
@@ -577,7 +592,7 @@ def submitComment(request):
 		the_order.save()
 		the_user = User.objects.get(id=client_account_id)
 		new_comment = Comment.objects.create(order=the_order,user=the_user,commentType=commentType,time=datetime.now(),desc=commentDes)
-		res_dict = dict(commentType=commentType,commentTime=new_comment.time.strftime("%Y-%m-%d %H:%M:%S"),commentDes=commentDes,orderStatus=orderStatus)
+		res_dict = dict(commentTime=new_comment.time.strftime("%Y-%m-%d %H:%M:%S"))
 		new_comment.save()
 	res_json = json.dumps(res_dict) 	
 	return HttpResponse(res_json)

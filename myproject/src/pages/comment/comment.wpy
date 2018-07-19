@@ -109,6 +109,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Comment extends wepy.page {
     config = {};
@@ -117,6 +118,7 @@ export default class Comment extends wepy.page {
     };
 
     data = {
+        serviceID: 1,
         currentType: 0,
         goodCon: 0,
         badCon: 0,
@@ -176,7 +178,7 @@ export default class Comment extends wepy.page {
         },
     };
 
-    onLoad(options) {
+    async onLoad(options) {
         this.comment.forEach(element => {
             if(element.type){
                 this.goodCon++;
@@ -185,6 +187,13 @@ export default class Comment extends wepy.page {
             }
         })
         this.$apply();
+        let res = await api.getComment({
+            query: {
+                serviceId: this.serviceID
+            }
+        });
+        console.log('-------------');
+        console.log(res);
     }
 }
 </script>
