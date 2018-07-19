@@ -403,9 +403,17 @@ def changeStarStatus(request):
 def deleteStar(request):
 	client_access_token = request.GET['access_token']
 	client_account_id = request.GET['account_id']
+	deleteList = list()
 	selectList = request.GET['selectList']
-	for labelName in selectList:
-		selectLabel = Label.objects.get()
+	selectList = selectList[1:-1]
+	selectList = selectList.replace('"', '')
+	deleteList = selectList.split(',')
+	print(selectList)
+	print(deleteList)
+	if(verify_token(client_access_token)):
+		for labelId in deleteList:
+			tmpStar = Star.objects.get(user__id=client_account_id,label__labelNum=labelId)
+			tmpStar.delete()
 	return HttpResponse('ok')
 
 

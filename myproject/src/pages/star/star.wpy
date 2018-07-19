@@ -195,7 +195,7 @@ checkbox .wx-checkbox-input {
                                 <view wx:if="{{isManaging == true}}" class="manage-selectCur">
                                     <label>
                                         <view class="selectCur-choose">
-                                            <checkbox value="{{labelList.label}}" checked="{{selectAll}}" />
+                                            <checkbox value="{{labelList.labelId}}" checked="{{selectAll}}" />
                                         </view>
                                         <view class="labelList-items">
                                             <image src="{{labelList.imgUrl}}" class="labelItem-img">
@@ -208,7 +208,7 @@ checkbox .wx-checkbox-input {
                                         </view>
                                     </label>
                                 </view>
-                                <navigator wx:else class="labelList-items" @tap="navToUser({{labelList.name}}, {{labelList.imgUrl}}, {{labelList.label}}, {{labelList.description}})">
+                                <navigator wx:else class="labelList-items" @tap="navToUser({{labelList.userId}}, {{labelList.name}}, {{labelList.imgUrl}}, {{labelList.label}})">
                                     <image src="{{labelList.imgUrl}}" class="labelItem-img">
                                         <view class="labelItem-details">
                                             <view class="labelItem-label">{{labelList.label}}</view>
@@ -257,9 +257,7 @@ export default class Star extends wepy.page {
         isChoosing: false,
         isManaging: false,
         selectAll: false,
-        star: [
-            
-        ]
+        star: []
     };
 
     computed = {};
@@ -289,17 +287,18 @@ export default class Star extends wepy.page {
             console.log('Select: ' + this.selectList);
         },
 
-        navToUser(name, url, label, desc, event) {
+        navToUser(uid, name, url, label, event) {
+            console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
+                    uid +
+                    '&name=' +
                     name +
                     '&url=' +
                     url +
                     '&label=' +
-                    label +
-                    '&desc=' +
-                    desc
+                    label
             });
         },
 
@@ -309,7 +308,7 @@ export default class Star extends wepy.page {
             if (this.selectAll) {
                 this.star.forEach((item, index) => {
                     item.labelList.forEach((labelItem, labelIndex) => {
-                        this.selectList.push(labelItem.label);
+                        this.selectList.push(labelItem.labelId);
                     });
                 });
             }
@@ -317,7 +316,7 @@ export default class Star extends wepy.page {
         },
 
         async deleteLabel() {
-            for (let i = 0; i < this.star.length; i++) {
+            for (let i = this.star.length - 1; i >= 0; i--) {
                 const item = this.star[i];
                 for (
                     let labelIndex = item.labelList.length - 1;
@@ -326,36 +325,30 @@ export default class Star extends wepy.page {
                 ) {
                     const labelItem = item.labelList[labelIndex];
                     this.selectList.every((element, eleIndex) => {
-                        console.log(
-                            'Cur: ' +
-                                labelIndex +
-                                ' - ' +
-                                labelItem.label +
-                                ' to ' +
-                                eleIndex +
-                                ' - ' +
-                                element
-                        );
-                        if (element == labelItem.label) {
+                        if (element == labelItem.labelId) {
                             console.log(
                                 'Find to delete: ' + eleIndex + ' - ' + element
                             );
                             console.log(
                                 'Delete: ' +
-                                    labelIndex +
+                                    labelItem.label +
                                     ' - ' +
-                                    labelItem.label
+                                    labelItem.labelId
                             );
                             item.labelList.splice(labelIndex, 1);
+                            if (item.labelList.length == 0) {
+                                this.star.splice(i, 1);
+                                this.typeList.splice(i + 1, 1);
+                            }
+                            this.$apply();
                             return false;
                         }
                         return true;
                     });
                 }
             }
-            console.log('selectList:');
-            console.log(this.selectList);
-
+            console.log('selectList: ' + this.selectList);
+            console.log(this.star);
             var jwt = wx.getStorageSync('jwt');
             let self = this;
             if (jwt.data.access_token != null) {
@@ -368,12 +361,11 @@ export default class Star extends wepy.page {
                     }
                 });
                 console.log('-------------');
-                console.log(res);
+                // console.log(res);
                 self.star = res.data;
-                console.log(self.star);
+                // console.log(self.star);
                 self.$apply();
             }
-
             this.selectList = [];
         }
     };
