@@ -29,26 +29,26 @@
     border-bottom: 5rpx solid #cfa972;
 }
 
-.order-items{
+.order-items {
     width: 750rpx;
     margin-top: 30rpx;
     background: #ffffff;
 }
 
-.item-header{
+.item-header {
     width: 750rpx;
     height: 130rpx;
     padding: 30rpx 30rpx 20rpx 30rpx;
     box-sizing: border-box;
 }
 
-.user-avatar{
+.user-avatar {
     width: 80rpx;
     height: 80rpx;
     border-radius: 50%;
 }
 
-.user-name{
+.user-name {
     font-size: 36rpx;
     line-height: 60rpx;
     vertical-align: top;
@@ -57,7 +57,7 @@
     display: inline-block;
 }
 
-.item-status{
+.item-status {
     color: #b28850;
     font-size: 32rpx;
     line-height: 60rpx;
@@ -66,7 +66,11 @@
     float: right;
 }
 
-.item-content{
+.status-cancel {
+    color: #535353;
+}
+
+.item-content {
     width: 750rpx;
     color: #434343;
     padding: 20rpx 30rpx;
@@ -88,7 +92,7 @@
     display: inline-block;
 }
 
-.service-price{
+.service-price {
     font-size: 38rpx;
     float: right;
     text {
@@ -96,14 +100,14 @@
     }
 }
 
-.item-handle{
+.item-handle {
     width: 750rpx;
     height: 110rpx;
     padding: 20rpx 30rpx;
     box-sizing: border-box;
 }
 
-.order-btn{
+.order-btn {
     height: 70rpx;
     font-size: 34rpx;
     line-height: 68rpx;
@@ -113,22 +117,26 @@
     float: right;
 }
 
-.order-cancel, .order-delete{
+.order-cancel,
+.order-delete {
     color: #535353;
     border: 1rpx solid #535353;
 }
 
-.order-cancel:hover, .order-delete:hover {
+.order-cancel:hover,
+.order-delete:hover {
     color: #ffffff;
     background: #535353;
 }
 
-.order-confirm, .order-comment {
+.order-confirm,
+.order-comment {
     color: #b28850;
     border: 1rpx solid #cfa972;
 }
 
-.order-confirm:hover, .order-comment:hover {
+.order-confirm:hover,
+.order-comment:hover {
     color: #ffffff;
     background: #cfa972;
 }
@@ -143,11 +151,11 @@
         </view>
         <view class="order-content">
             <repeat for="{{orderList}}" key="index">
-                <navigator wx:if="{{currentType == 0 || item.status == currentType - 1 || (currentType == 4 && item.status == 4)}}" class="order-items" @tap="navToOrder({{item.serviceName}}, {{item.servicePrice}}, {{item.servicePic}}, {{item.status}})">
+                <navigator wx:if="{{currentType == 0 || item.status == currentType - 1 || (currentType == 4 && item.status == 4)}}" class="order-items" @tap="navToOrder({{item.orderId}})">
                     <view class="item-header">
                         <image class="user-avatar" src="{{item.userAvatar}}">
                             <view class="user-name">{{item.user}}</view>
-                            <view class="item-status">{{status[item.status]}}</view>
+                            <view class="item-status {{item.status == 4 ? 'status-cancel' : ''}}">{{status[item.status]}}</view>
                     </view>
                     <view class="item-content">
                         <image src="{{item.servicePic}}" mode="aspectFill" class="service-img">
@@ -156,10 +164,10 @@
                                 <text>￥</text>{{item.servicePrice}}</view>
                     </view>
                     <view class="item-handle">
-                        <view wx:if="{{item.status == 0}}" class="order-cancel order-btn" @tap.stop="cancelOrder">取消订单</view>
-                        <view wx:if="{{item.status == 1}}" class="order-confirm order-btn" @tap.stop="confirmOrder">确认服务</view>
-                        <view wx:if="{{item.status == 2}}" class="order-comment order-btn" @tap.stop="commentOrder">评价服务</view>
-                        <view wx:if="{{item.status >= 3}}" class="order-delete order-btn" @tap.stop="deleteOrder">删除订单</view>
+                        <view wx:if="{{item.status == 0}}" class="order-cancel order-btn" @tap.stop="cancelOrder({{index}})">取消订单</view>
+                        <view wx:if="{{item.status == 1}}" class="order-confirm order-btn" @tap.stop="confirmOrder({{index}})">确认服务</view>
+                        <view wx:if="{{item.status == 2}}" class="order-comment order-btn" @tap.stop="commentOrder({{index}})">评价服务</view>
+                        <view wx:if="{{item.status >= 3}}" class="order-delete order-btn" @tap.stop="deleteOrder({{index}})">删除订单</view>
                     </view>
                 </navigator>
             </repeat>
@@ -170,7 +178,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class OrderList extends wepy.page {
     config = {};
@@ -183,38 +191,38 @@ export default class OrderList extends wepy.page {
         type: ['全部', '待服务', '待确认', '待评价', '已完成'],
         status: ['等待服务', '等待确认', '等待评价', '交易成功', '交易取消'],
         orderList: [
-            {
-                user: 'wooAini',
-                userAvatar: '/icons/assets/user_3.jpg',
-                status: 1,
-                serviceName: '单人约拍写真',
-                servicePrice: 388,
-                servicePic: '/icons/assets/pic3_3.jpg'
-            },
-            {
-                user: '闲花花',
-                userAvatar: '/icons/assets/user_5.jpg',
-                status: 3,
-                serviceName: '单人约拍写真',
-                servicePrice: 388,
-                servicePic: '/icons/assets/pic3_3.jpg'
-            },
-            {
-                user: '嘤嘤嘤',
-                userAvatar: '/icons/assets/user_2.jpg',
-                status: 2,
-                serviceName: '单人约拍写真',
-                servicePrice: 388,
-                servicePic: '/icons/assets/pic3_3.jpg'
-            },
-            {
-                user: 'Clarenceyang',
-                userAvatar: '/icons/assets/user_1.jpg',
-                status: 4,
-                serviceName: '单人约拍写真',
-                servicePrice: 388,
-                servicePic: '/icons/assets/pic3_3.jpg'
-            }
+            // {
+            //     user: 'wooAini',
+            //     userAvatar: '/icons/assets/user_3.jpg',
+            //     status: 1,
+            //     serviceName: '单人约拍写真',
+            //     servicePrice: 388,
+            //     servicePic: '/icons/assets/pic3_3.jpg'
+            // },
+            // {
+            //     user: '闲花花',
+            //     userAvatar: '/icons/assets/user_5.jpg',
+            //     status: 3,
+            //     serviceName: '单人约拍写真',
+            //     servicePrice: 388,
+            //     servicePic: '/icons/assets/pic3_3.jpg'
+            // },
+            // {
+            //     user: '嘤嘤嘤',
+            //     userAvatar: '/icons/assets/user_2.jpg',
+            //     status: 2,
+            //     serviceName: '单人约拍写真',
+            //     servicePrice: 388,
+            //     servicePic: '/icons/assets/pic3_3.jpg'
+            // },
+            // {
+            //     user: 'Clarenceyang',
+            //     userAvatar: '/icons/assets/user_1.jpg',
+            //     status: 4,
+            //     serviceName: '单人约拍写真',
+            //     servicePrice: 388,
+            //     servicePic: '/icons/assets/pic3_3.jpg'
+            // }
         ]
     };
 
@@ -226,16 +234,74 @@ export default class OrderList extends wepy.page {
             this.$apply();
         },
 
-        navToOrder(name, price, pic, status, event){
+        navToOrder(orderId, event) {
             wx.navigateTo({
                 url:
-                    '/pages/orderList/order/order?name=' + name + '&price=' + price + '&pic=' + pic + '&status=' + status
+                    '/pages/orderList/order/order?orderID=' + orderId
+            });
+        },
+
+        cancelOrder(index, event) {
+            var self = this;
+            wx.showModal({
+                title: '取消订单',
+                content: '订单尚未服务，确认取消当前订单吗？',
+                success: function(res) {
+                    if (res.confirm) {
+                        console.log('cancel success');
+                        self.orderList[index].status = 4;
+                        self.$apply();
+                    } else if (res.cancel) {
+                        console.log('cancel');
+                    }
+                }
+            });
+        },
+
+        confirmOrder(index, event) {
+            var self = this;
+            wx.showModal({
+                title: '确认订单',
+                content: '确认已经收到服务，完成当前订单吗？',
+                success: function(res) {
+                    if (res.confirm) {
+                        console.log('confirm success');
+                        self.orderList[index].status = 3;
+                        self.$apply();
+                    } else if (res.cancel) {
+                        console.log('confirm cancel');
+                    }
+                }
+            });
+        },
+
+        commentOrder(index, event) {
+            var orderID = this.orderList[index].orderId;
+            wx.navigateTo({
+                url:
+                    '/pages/orderList/order/order?orderID=' + orderID
+            });
+        },
+
+        deleteOrder(index, event) {
+            var self = this;
+            wx.showModal({
+                title: '删除订单',
+                content: '确认删除当前订单吗？',
+                success: function(res) {
+                    if (res.confirm) {
+                        console.log('delete success');
+                        self.orderList.splice(index, 1);
+                        self.$apply();
+                    } else if (res.cancel) {
+                        console.log('delete cancel');
+                    }
+                }
             });
         }
     };
 
     async onLoad(options) {
-
         var jwt = wx.getStorageSync('jwt');
         let self = this;
         if (jwt.data.access_token != null) {
@@ -246,8 +312,8 @@ export default class OrderList extends wepy.page {
                     account_id: jwt.data.account_id
                 }
             });
-            console.log(res)
-            
+            console.log(res);
+            this.orderList = res.data;
             self.$apply();
         }
     }
