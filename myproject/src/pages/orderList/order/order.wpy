@@ -1,6 +1,7 @@
 <style lang="less">
 .container {
     padding-top: 150rpx;
+    padding-bottom: 140rpx;
 }
 
 .order-status {
@@ -126,6 +127,56 @@
     color: #ffffff;
     background: #cfa972;
 }
+
+.comment-form{
+    width: 750rpx;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.comment-input{
+    width: 690rpx;
+    height: 200rpx;
+    color: #434343;
+    font-size: 32rpx;
+    line-height: 50rpx;
+    padding: 20rpx;
+    border: 1rpx solid #cfa972;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.comment-submit{
+    font-size: 34rpx;
+    line-height: 68rpx;
+    margin: 20rpx;
+    padding: 0 30rpx;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    float: right;
+}
+
+.comment-detail{
+    width: 750rpx;
+    color: #434343;
+    font-size: 32rpx;
+    line-height: 50rpx;
+    margin-top: 30rpx;
+    padding: 30rpx;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.comment-time{
+    color: #888888;
+    font-size: 32rpx;
+    line-height: 60rpx;
+    margin-top: 20rpx;
+}
 </style>
 <template>
     <view class="container">
@@ -149,17 +200,14 @@
             <view>服务时间：{{order.serviceTime}}</view>
             <view>完成时间：{{order.completeTime}}</view>
         </view>
-        <view class="order-comment">
+        <view class="comment-content">
             <form wx:if="{{showComment}}" class="comment-form" bindsubmit="commentSubmit">
-                <input type="text" class="comment-input">
-                <button class="comment-submit" form-type="submit">
+                <textarea name="comment" class="comment-input">
+                <button class="comment-submit" form-type="submit">提交评价</button>
             </form>
-            <view wx:if="{{order.orderStatus == 3}}" class="comment-content">
-                <view class="item-time">{{item.time}}</view>
-                <view class="item-desc">{{item.desc}}</view>
-                <repeat for="{{item.imgList}}" item="imgList" key="imgUrl">
-                    <image src="{{imgList.imgUrl}}" mode="aspectFill" class="item-img" data-list="{{item.imgList}}" @tap.stop="picPreview({{imgList.imgUrl}})">
-                </repeat>
+            <view wx:if="{{order.orderStatus == 3}}" class="comment-detail">
+                <view class="comment-desc">{{comment.desc}}</view>
+                <view class="comment-time">{{comment.time}}</view>
             </view>
         </view>
         <view class="order-handle">
@@ -197,19 +245,8 @@ export default class Success extends wepy.page {
             completeTime: '2018.07.17 13:21:10'
         },
         comment: {
-            commentTime: '2018.07.07',
-            commentDesc: '拍得很满意，摄影小哥哥人超好！！因为平时比较忙，约了好多次时间终于拍到啦，很快就拿到照片了，超喜欢！会推荐给身边的朋友的w',
-            commentImg: [
-                {
-                    imgUrl: '/icons/assets/pic3_3.jpg'
-                },
-                {
-                    imgUrl: '/icons/assets/pic3_1.jpg'
-                },
-                {
-                    imgUrl: '/icons/assets/pic3_2.jpg'
-                }
-            ]
+            time: '2018.07.07',
+            desc: '拍得很满意，摄影小哥哥人超好！！因为平时比较忙，约了好多次时间终于拍到啦，很快就拿到照片了，超喜欢！会推荐给身边的朋友的w'
         }
     };
 
@@ -219,6 +256,10 @@ export default class Success extends wepy.page {
         commentOrder() {
             this.showComment = !this.showComment;
             this.$apply();
+        },
+
+        commentSubmit(e){
+            console.log(e.detail.value);
         }
     };
 
