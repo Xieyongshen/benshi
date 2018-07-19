@@ -182,6 +182,12 @@ export default class Success extends wepy.page {
 
     methods = {};
 
-    onLoad(options) {}
+    onLoad(options) {
+        this.orderStatus = options.status;
+        this.serviceName = options.name;
+        this.servicePrice = options.price;
+        this.servicePic = options.pic;
+        this.$apply();
+    }
 }
 </script>
