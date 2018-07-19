@@ -488,3 +488,18 @@ def getLabelOfTag(request):
 		res_dict.append(eve_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
+
+def getOrders(request):
+	client_access_token = request.GET['access_token']
+	client_account_id = request.GET['account_id']
+	res_dict = list()
+	if(verify_token(client_access_token)):
+		user_all_orders = list(Order.objects.filter(user__id=client_account_id))
+		for orders in user_all_orders:
+			seller = orders.service.label.user
+			servicePics = list(ServicePicture.objects.filter(service__serviceNum=orders.service.serviceNum))
+			servicePic = servicePics[0].url
+			eve_dict = dict(user=seller.nickname,userAvatar=seller.avatar,orderId=str(orders.orderId),status=orders.status,serviceName=orders.service.serviceName,servicePrice=orders.service.price,servicePic=servicePic)
+			res_dict.append(eve_dict)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
