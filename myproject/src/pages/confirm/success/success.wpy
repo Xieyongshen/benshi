@@ -152,6 +152,10 @@ export default class Success extends wepy.page {
         }
     };
 
-    onLoad(options) {}
+    onLoad(options) {
+        this.serviceName = options.name;
+        this.servicePic = options.pic;
+        this.$apply();
+    }
 }
 </script>

@@ -1,6 +1,7 @@
 <style lang="less">
 .container {
     padding-top: 150rpx;
+    padding-bottom: 140rpx;
 }
 
 .topScroll {
@@ -135,7 +136,7 @@
 </style>
 <template>
     <view class="container">
-        <navBar :navTitle.sync="serviceName" isChildPage="y"></navBar>
+        <navBar :navTitle.sync="name" isChildPage="y"></navBar>
         <swiper indicator-dots="true" indicator-active-color="#ffffff" circular="true" class="topScroll">
             <repeat for="{{service.imgList}}" key="imageUrl">
                 <swiper-item class="scrollItem">
@@ -183,46 +184,17 @@ export default class Service extends wepy.page {
     };
 
     data = {
+        name: '',
+        serviceID: '',
         service: {
-            sellerAvatar: '/icons/assets/user_1.jpg',
-            sellerName: 'Clarenceyang',
-            serviceName: '单人约拍写真',
-            servicePrice: 388,
-            serviceDesc:
-                '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
-            imgList: [
-                {
-                    imageUrl: '/icons/assets/pic3_3.jpg'
-                },
-                {
-                    imageUrl: '/icons/assets/pic3_1.jpg'
-                },
-                {
-                    imageUrl: '/icons/assets/pic3_2.jpg'
-                }
-            ],
-            commentNum: 2,
-            serviceDetail:
-                '时间：每周六，日 08:00 - 19:00\n地点：上海 徐汇区 上海任何值得留下影像的城市角落\n服务流程：\n' +
-                '1）下单后将自己照片给我' +
-                ' \n ' +
-                '2）商议主题和样式' +
-                ' \n ' +
-                '3）确定服装道具化妆' +
-                ' \n ' +
-                '4）敲定场地、时间' +
-                ' \n ' +
-                '5）2~3小时拍摄' +
-                ' \n ' +
-                '6）10张左右精修照片' +
-                ' \n ' +
-                '服务宗旨：' +
-                ' \n ' +
-                '1、	只选取上海最有吸引力、最好玩的角落拍摄' +
-                ' \n ' +
-                '2、	这是一个年轻人的活动，我们可以一边拍照、一边穿梭在上海的大街小巷' +
-                ' \n ' +
-                '3、	不拍庸俗平凡的照片，只希望能拍出展现我们年轻人生命力的照片'
+            sellerAvatar: '',
+            sellerName: '',
+            serviceName: '',
+            servicePrice: 0,
+            serviceDesc: '',
+            imgList: [],
+            commentNum: 0,
+            serviceDetail: ''
         },
         preImgList: []
     };
@@ -238,12 +210,12 @@ export default class Service extends wepy.page {
 
         confirmOrder() {
             wx.navigateTo({
-                url: '/pages/confirm/confirm'
+                url: '/pages/confirm/confirm?serviceID=' + this.service.serviceID
             });
         },
 
         picPreview(url, e) {
-            this.imgList.forEach((item, index) => {
+            this.service.imgList.forEach((item, index) => {
                 this.preImgList.push(item.imageUrl);
             });
             this.$apply();
@@ -255,18 +227,18 @@ export default class Service extends wepy.page {
     };
 
     async onLoad(options) {
-        this.serviceName = options.name;
-        this.servicePrice = options.price;
-        this.serviceDesc = options.desc;
+        this.serviceID = options.serviceID;
+        console.log(options.serviceID);
 
         let res = await api.getServiceDetail({
             query: {
-                serviceId: 1
+                serviceId: this.serviceID
             }
         });
         console.log('-------------');
         console.log(res);
-        // this.imgList = options.list;
+        this.service = res.data;
+        this.name = this.service.serviceName;
         this.$apply();
     }
 }
