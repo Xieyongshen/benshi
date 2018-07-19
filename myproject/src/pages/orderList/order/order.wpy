@@ -233,24 +233,20 @@ export default class Success extends wepy.page {
     data = {
         showComment: false,
         status: ['等待服务', '等待确认', '等待评价', '交易成功', '交易取消'],
-        orderID: '161760188950953458',
+        orderID: '',
         orderContent: {
             order: {
-                orderStatus: 3,
-                sellerAvatar: '/icons/assets/user_1.jpg',
-                sellerName: 'Clarenceyang',
-                serviceName: '单人约拍写真',
-                servicePrice: 388,
-                servicePic: '/icons/assets/pic3_3.jpg',
-                createTime: '2018.07.10 16:51:43',
-                serviceTime: '2018.07.16 17:01:21',
-                completeTime: '2018.07.17 13:21:10'
+                orderStatus: 0,
+                sellerAvatar: '',
+                sellerName: '',
+                serviceName: '',
+                servicePrice: 0,
+                servicePic: '',
+                createTime: '',
+                serviceTime: '',
+                completeTime: ''
             },
-            comment: {
-                time: '2018.07.07',
-                desc:
-                    '拍得很满意，摄影小哥哥人超好！！因为平时比较忙，约了好多次时间终于拍到啦，很快就拿到照片了，超喜欢！会推荐给身边的朋友的w'
-            }
+            comment: {}
         }
     };
 
@@ -355,8 +351,8 @@ export default class Success extends wepy.page {
                     orderId: this.orderID
                 }
             });
-            console.log(res)
-            
+            console.log(res);
+            self.orderContent = res.data;
             self.$apply();
         }
     }
