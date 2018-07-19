@@ -178,7 +178,6 @@ export default class Confirm extends wepy.page {
                 content: '确认提交订单吗？',
                 success: function(res) {
                     if (res.confirm) {
-<<<<<<< HEAD
                         console.log("success");
                         var jwt = wx.getStorageSync('jwt');
                         let self = this;
@@ -197,9 +196,6 @@ export default class Confirm extends wepy.page {
                             
                         }
 
-=======
-                        console.log('success');
->>>>>>> cb58befd44409219fa2cbb1654d23438f5f7e69f
                         wx.navigateTo({
                             url: '/pages/confirm/success/success?name=' + this.service.name + '&pic=' + this.service.picture
                         });
@@ -211,20 +207,16 @@ export default class Confirm extends wepy.page {
         }
     };
 
-<<<<<<< HEAD
     async onLoad(options) {
+        this.service.serviceID = options.serviceID;
         let res = await api.getServiceDetail({
             query: {
-                serviceId: 1
+                serviceId: this.service.serviceID
             }
         });
         console.log('-------------');
         console.log(res);
-=======
-    onLoad(options) {
-        this.service.serviceID = options.serviceID;
-        this.$apply();
->>>>>>> cb58befd44409219fa2cbb1654d23438f5f7e69f
+        this.$apply();  
     }
 }
 </script>
