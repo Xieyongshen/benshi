@@ -195,7 +195,7 @@ checkbox .wx-checkbox-input {
                                 <view wx:if="{{isManaging == true}}" class="manage-selectCur">
                                     <label>
                                         <view class="selectCur-choose">
-                                            <checkbox value="{{labelList.label}}" checked="{{selectAll}}" />
+                                            <checkbox value="{{labelList.labelId}}" checked="{{selectAll}}" />
                                         </view>
                                         <view class="labelList-items">
                                             <image src="{{labelList.imgUrl}}" class="labelItem-img">
@@ -242,7 +242,7 @@ checkbox .wx-checkbox-input {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Star extends wepy.page {
     config = {};
@@ -368,7 +368,7 @@ export default class Star extends wepy.page {
             if (this.selectAll) {
                 this.star.forEach((item, index) => {
                     item.labelList.forEach((labelItem, labelIndex) => {
-                        this.selectList.push(labelItem.label);
+                        this.selectList.push(labelItem.labelId);
                     });
                 });
             }
@@ -376,38 +376,39 @@ export default class Star extends wepy.page {
         },
 
         deleteLabel() {
-            for (let i = 0; i < this.star.length; i++) {
+            for (let i = this.star.length - 1; i >= 0; i--) {
                 const item = this.star[i];
-                for (let labelIndex = item.labelList.length - 1; labelIndex >= 0; labelIndex--) {
+                for (
+                    let labelIndex = item.labelList.length - 1;
+                    labelIndex >= 0;
+                    labelIndex--
+                ) {
                     const labelItem = item.labelList[labelIndex];
                     this.selectList.every((element, eleIndex) => {
-                        console.log(
-                            'Cur: ' +
-                                labelIndex +
-                                ' - ' +
-                                labelItem.label +
-                                ' to ' +
-                                eleIndex +
-                                ' - ' +
-                                element
-                        );
-                        if (element == labelItem.label) {
+                        if (element == labelItem.labelId) {
                             console.log(
                                 'Find to delete: ' + eleIndex + ' - ' + element
                             );
                             console.log(
-                                'Delete: ' + labelIndex + ' - ' + labelItem.label
+                                'Delete: ' +
+                                    labelItem.label +
+                                    ' - ' +
+                                    labelItem.labelId
                             );
                             item.labelList.splice(labelIndex, 1);
+                            if (item.labelList.length == 0) {
+                                this.star.splice(i, 1);
+                                this.typeList.splice(i + 1, 1);
+                            }
+                            this.$apply();
                             return false;
                         }
                         return true;
                     });
                 }
-
             }
-            console.log('selectList:')
-            console.log(this.selectList)
+            console.log('selectList: ' + this.selectList);
+            console.log(this.star);
 
             this.selectList = [];
         }
@@ -417,7 +418,7 @@ export default class Star extends wepy.page {
 
     async onLoad() {
         var jwt = wx.getStorageSync('jwt');
-        let self = this
+        let self = this;
         if (jwt.data.access_token != null) {
             //检查 jwt 是否存在 如果不存在调用登录
             // that.login();
@@ -438,10 +439,9 @@ export default class Star extends wepy.page {
         this.star.forEach((item, index) => {
             this.typeList.push(item.type);
         });
-
     }
 
-    onReady(){
+    onReady() {
         this.typeList.push('全部分类');
     }
 }

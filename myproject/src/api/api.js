@@ -2,7 +2,7 @@ import {
     wxRequest
 } from '@/utils/wxRequest';
 
-const apiBenshi = 'http://192.168.23.1:8000'
+const apiBenshi = 'http://192.168.137.241:8000'
 
 
 //测试能否连接本地服务器
