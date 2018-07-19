@@ -179,7 +179,7 @@
         </view>
         <view class="label-content">
             <repeat for="{{tags}}" key="tag">
-                <navigator class="label-items" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.userdesc}})">
+                <navigator class="label-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.tag}})">
                     <image class="item-avatar" src="{{item.imgUrl}}">
                         <view class="item-content">
                             <view class="item-tag">{{item.tag}}</view>
@@ -294,18 +294,18 @@ export default class Label extends wepy.page {
                 urls: this.preImgList
             });
         },
-
-        navToUser(name, url, tag, desc, event) {
+        navToUser(uid, name, url, label, event) {
+            console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
+                    uid +
+                    '&name=' +
                     name +
                     '&url=' +
                     url +
-                    '&tag=' +
-                    tag +
-                    '&desc=' +
-                    desc
+                    '&label=' +
+                    label
             });
         }
     };
