@@ -1,6 +1,7 @@
 <style lang="less">
 .container {
     padding-top: 150rpx;
+    padding-bottom: 140rpx;
 }
 
 .topScroll {
@@ -135,9 +136,9 @@
 </style>
 <template>
     <view class="container">
-        <navBar :navTitle.sync="serviceName" isChildPage="y"></navBar>
+        <navBar :navTitle.sync="service.serviceName" isChildPage="y"></navBar>
         <swiper indicator-dots="true" indicator-active-color="#ffffff" circular="true" class="topScroll">
-            <repeat for="{{imgList}}" key="imageUrl">
+            <repeat for="{{service.imgList}}" key="imageUrl">
                 <swiper-item class="scrollItem">
                     <image src="{{item.imageUrl}}" mode="aspectFill" class="scrollImg" @tap="picPreview({{item.imageUrl}})">
                 </swiper-item>
@@ -145,27 +146,27 @@
         </swiper>
         <view class="service-content">
             <view class="service-price">
-                <text>￥</text>{{servicePrice}}</view>
-            <view class="service-name">{{serviceName}}</view>
-            <view class="service-desc">{{serviceDesc}}</view>
+                <text>￥</text>{{service.servicePrice}}</view>
+            <view class="service-name">{{service.serviceName}}</view>
+            <view class="service-desc">{{service.serviceDesc}}</view>
         </view>
         <view class="service-seller">
-            <image src="{{sellerAvatar}}" class="seller-avatar">
-                <text class="seller-name">{{sellerName}}</text>
+            <image src="{{service.sellerAvatar}}" class="seller-avatar">
+                <text class="seller-name">{{service.sellerName}}</text>
         </view>
         <view class="service-comment" @tap="navToComment">
-            <view class="comment-title">服务评价({{commentNum}})</view>
+            <view class="comment-title">服务评价({{service.commentNum}})</view>
             <view class="comment-all">查看全部
                 <text class="fa fa-angle-right"></text>
             </view>
         </view>
         <view class="service-detail">
             <view class="detail-title">服务详情</view>
-            <text class="detail-content">{{serviceDetail}}</text>
+            <text class="detail-content">{{service.serviceDetail}}</text>
         </view>
         <view class="service-buy">
             <view class="service-price">
-                <text>￥</text>{{servicePrice}}</view>
+                <text>￥</text>{{service.servicePrice}}</view>
             <view class="service-btn" @tap="confirmOrder">购买</view>
         </view>
     </view>
@@ -183,6 +184,7 @@ export default class Service extends wepy.page {
 
     data = {
         service: {
+            serviceID: '',
             sellerAvatar: '/icons/assets/user_1.jpg',
             sellerName: 'Clarenceyang',
             serviceName: '单人约拍写真',
@@ -190,15 +192,15 @@ export default class Service extends wepy.page {
             serviceDesc:
                 '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
             imgList: [
-                {
-                    imageUrl: '/icons/assets/pic3_3.jpg'
-                },
-                {
-                    imageUrl: '/icons/assets/pic3_1.jpg'
-                },
-                {
-                    imageUrl: '/icons/assets/pic3_2.jpg'
-                }
+                // {
+                //     imageUrl: '/icons/assets/pic3_3.jpg'
+                // },
+                // {
+                //     imageUrl: '/icons/assets/pic3_1.jpg'
+                // },
+                // {
+                //     imageUrl: '/icons/assets/pic3_2.jpg'
+                // }
             ],
             commentNum: 2,
             serviceDetail:
@@ -237,7 +239,7 @@ export default class Service extends wepy.page {
 
         confirmOrder() {
             wx.navigateTo({
-                url: '/pages/confirm/confirm'
+                url: '/pages/confirm/confirm?serviceID=' + this.service.serviceID
             });
         },
 
@@ -254,10 +256,8 @@ export default class Service extends wepy.page {
     };
 
     onLoad(options) {
-        this.serviceName = options.name;
-        this.servicePrice = options.price;
-        this.serviceDesc = options.desc;
-        // this.imgList = options.list;
+        this.service.serviceID = options.serviceID;
+        console.log(options.serviceID);
         this.$apply();
     }
 }

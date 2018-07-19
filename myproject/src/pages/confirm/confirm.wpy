@@ -106,22 +106,22 @@
         <navBar navTitle="确认订单" isChildPage="y"></navBar>
         <view class="confirm-content">
             <view class="confirm-seller">
-                <image src="{{sellerAvatar}}" class="seller-avatar">
-                    <text class="seller-name">{{sellerName}}</text>
+                <image src="{{service.sellerAvatar}}" class="seller-avatar">
+                    <text class="seller-name">{{service.sellerName}}</text>
             </view>
             <view class="confirm-service">
-                <image src="{{servicePic}}" mode="aspectFill" class="service-img">
-                    <text class="service-name">{{serviceName}}</text>
+                <image src="{{service.picture}}" mode="aspectFill" class="service-img">
+                    <text class="service-name">{{service.name}}</text>
             </view>
             <view class="confirm-notice">
                 <view class="notice-title">注意事项</view>
-                <view class="notice-detail">{{serviceNotice}}</view>
+                <view class="notice-detail">{{service.notice}}</view>
             </view>
         </view>
         <view class="confirm-submit">
             <view class="submit-btn" @tap="submitOrder">提交订单</view>
             <view class="submit-price">
-                <text>￥</text>{{servicePrice}}</view>
+                <text>￥</text>{{service.price}}</view>
         </view>
     </view>
 </template>
@@ -137,32 +137,35 @@ export default class Confirm extends wepy.page {
     };
 
     data = {
-        sellerAvatar: '/icons/assets/user_1.jpg',
-        sellerName: 'Clarenceyang',
-        serviceName: '单人约拍写真',
-        servicePrice: 388,
-        servicePic: '/icons/assets/pic3_3.jpg',
-        serviceNotice:
-            '时间：每周六，日 08:00 - 19:00\n地点：上海 徐汇区 上海任何值得留下影像的城市角落\n\n服务流程：\n' +
-            '1）下单后将自己照片给我' +
-            ' \n ' +
-            '2）商议主题和样式' +
-            ' \n ' +
-            '3）确定服装道具化妆' +
-            ' \n ' +
-            '4）敲定场地、时间' +
-            ' \n ' +
-            '5）2~3小时拍摄' +
-            ' \n ' +
-            '6）10张左右精修照片' +
-            ' \n ' +
-            '服务宗旨：' +
-            ' \n ' +
-            '1、	只选取上海最有吸引力、最好玩的角落拍摄' +
-            ' \n ' +
-            '2、	这是一个年轻人的活动，我们可以一边拍照、一边穿梭在上海的大街小巷' +
-            ' \n ' +
-            '3、	不拍庸俗平凡的照片，只希望能拍出展现我们年轻人生命力的照片'
+        service: {
+            serviceID: '',
+            sellerAvatar: '/icons/assets/user_1.jpg',
+            sellerName: 'Clarenceyang',
+            name: '单人约拍写真',
+            price: 388,
+            picture: '/icons/assets/pic3_3.jpg',
+            notice:
+                '时间：每周六，日 08:00 - 19:00\n地点：上海 徐汇区 上海任何值得留下影像的城市角落\n\n服务流程：\n' +
+                '1）下单后将自己照片给我' +
+                ' \n ' +
+                '2）商议主题和样式' +
+                ' \n ' +
+                '3）确定服装道具化妆' +
+                ' \n ' +
+                '4）敲定场地、时间' +
+                ' \n ' +
+                '5）2~3小时拍摄' +
+                ' \n ' +
+                '6）10张左右精修照片' +
+                ' \n ' +
+                '服务宗旨：' +
+                ' \n ' +
+                '1、	只选取上海最有吸引力、最好玩的角落拍摄' +
+                ' \n ' +
+                '2、	这是一个年轻人的活动，我们可以一边拍照、一边穿梭在上海的大街小巷' +
+                ' \n ' +
+                '3、	不拍庸俗平凡的照片，只希望能拍出展现我们年轻人生命力的照片'
+        }
     };
 
     computed = {};
@@ -174,18 +177,21 @@ export default class Confirm extends wepy.page {
                 content: '确认提交订单吗？',
                 success: function(res) {
                     if (res.confirm) {
-                        console.log("success");
+                        console.log('success');
                         wx.navigateTo({
-                            url: '/pages/confirm/success/success'
+                            url: '/pages/confirm/success/success?name=' + this.service.name + '&pic=' + this.service.picture
                         });
-                    }else if(res.confirm){
-                        console.log("cancel");
+                    } else if (res.confirm) {
+                        console.log('cancel');
                     }
                 }
             });
         }
     };
 
-    onLoad(options) {}
+    onLoad(options) {
+        this.service.serviceID = options.serviceID;
+        this.$apply();
+    }
 }
 </script>

@@ -312,10 +312,10 @@
                     <view class="labelContent-items" id="{{item.id}}">
                         <view class="labelItem-service">
                             <view class="service-title">服务</view>
-                            <view wx:if="{{item.service.length > 0}}" class="service-more" @tap="navToService(0)">查看全部</view>
+                            <view wx:if="{{item.service.length > 0}}" class="service-more" @tap="navToService(0, {{userid}})">查看全部</view>
                             <view wx:if="{{item.service.length == 0}}" class="service-null">暂无服务</view>
                             <repeat for="{{item.service}}" item="service" key="name" index="sIndex">
-                                <view class="service-items" @tap="navToService({{labelIdx}},{{this.userid}})">{{service.name}}</view>
+                                <view class="service-items" @tap="navToService({{labelIdx}},{{userid}})">{{service.name}}</view>
                             </repeat>
                         </view>
                         <view class="labelItem-content">
@@ -706,7 +706,7 @@ export default class Person extends wepy.page {
             this.scrollInTo = id;
             this.$apply();
         },
-        navToService(index,userId, e) {
+        navToService(index, userId, e) {
             wx.navigateTo({
                 url: '/pages/serviceList/serviceList?index=' + index + '&userId=' + userId
             });

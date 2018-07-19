@@ -115,7 +115,7 @@
                 <repeat for="{{serviceList}}" key="label" index="idx">
                     <block wx:if="{{idx == currentIndex}}">
                         <repeat for="{{item.service}}" item="service" key="name" index="serviceIndex">
-                            <navigator class="service-items" data-imglist="{{service.imageList}}" @tap="navToService({{service.name}}, {{service.price}}, {{service.description}})">
+                            <navigator class="service-items" @tap="navToService({{idx}}, {{serviceIndex}})">
                                 <view class="service-name">{{service.name}}</view>
                                 <view class="service-price">
                                     <text>￥</text>{{service.price}}</view>
@@ -156,62 +156,56 @@ export default class ServiceList extends wepy.page {
         isChoosing: false,
         userId: '',
         serviceList: [
-            {
-                label: '摄影',
-                service: [
-                    {
-                        name: '单人约拍写真',
-                        price: 388,
-                        description:
-                            '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
-                        imageList: [
-                            {
-                                imageUrl: '/icons/assets/pic3_1.jpg'
-                            },
-                            {
-                                imageUrl: '/icons/assets/pic3_2.jpg'
-                            },
-                            {
-                                imageUrl: '/icons/assets/pic3_3.jpg'
-                            }
-                        ]
-                    },
-                    {
-                        name: '毕业照定制',
-                        price: 688,
-                        description:
-                            '熟悉的食堂、图书馆、自习室、宿舍、操场......学校好多个角落都留下过你和他们的故事。可以拍一组外拍，跟别的同学不一样，选择松江有代表性的景点，拍一组有温度有故事的毕业照，势在必行',
-                        imageList: [
-                            {
-                                imageUrl: '/icons/assets/pic4_1.jpg'
-                            },
-                            {
-                                imageUrl: '/icons/assets/pic4_2.jpg'
-                            },
-                            {
-                                imageUrl: '/icons/assets/pic4_3.jpg'
-                            }
-                        ]
-                    },
-                    {
-                        name: '情侣约拍写真',
-                        price: 488,
-                        description:
-                            '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
-                        imageList: []
-                    }
-                ]
-            },
-            {
-                label: '烹饪',
-                service: [
-                    {
-                        name: '手把手教你学做菜',
-                        price: 200,
-                        description: '厨艺大师教你学做菜！'
-                    }
-                ]
-            }
+            // {
+            //     label: '摄影',
+            //     service: [
+            //         {
+            //             name: '单人约拍写真',
+            //             price: 388,
+            //             description:
+            //                 '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
+            //             imageList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/pic3_1.jpg'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/pic3_2.jpg'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/pic3_3.jpg'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             name: '毕业照定制',
+            //             price: 688,
+            //             description:
+            //                 '熟悉的食堂、图书馆、自习室、宿舍、操场......学校好多个角落都留下过你和他们的故事。可以拍一组外拍，跟别的同学不一样，选择松江有代表性的景点，拍一组有温度有故事的毕业照，势在必行',
+            //             imageList: [
+            //                 {
+            //                     imageUrl: '/icons/assets/pic4_1.jpg'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/pic4_2.jpg'
+            //                 },
+            //                 {
+            //                     imageUrl: '/icons/assets/pic4_3.jpg'
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             name: '情侣约拍写真',
+            //             price: 488,
+            //             description:
+            //                 '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
+            //             imageList: []
+            //         }
+            //     ]
+            // },
+            // {
+            //     label: '烹饪',
+            //     service: []
+            // }
         ]
     };
 
@@ -242,18 +236,12 @@ export default class ServiceList extends wepy.page {
             });
         },
 
-        navToService(name, price, desc, event) {
-            var imgList = event.currentTarget.dataset.imglist;
+        navToService(listIndex, serviceIndex, event) {
+            var curService = this.serviceList[listIndex].service[serviceIndex];
+            console.log(curService);
             wx.navigateTo({
                 url:
-                    '/pages/service/service?name=' +
-                    name +
-                    '&price=' +
-                    price +
-                    '&desc=' +
-                    desc +
-                    '&list=' +
-                    imgList
+                    '/pages/service/service?serviceID=' + curService.serviceId
             });
         }
     };
@@ -261,11 +249,9 @@ export default class ServiceList extends wepy.page {
     events = {};
 
     async onLoad(options) {
-        this.serviceList.forEach((item, index) => {
-            this.labelList.push(item.label);
-        });
         this.currentIndex = options.index;
-        this.userId = 'oeBe45QWXVk782YCP8MtvLR8LDGE'
+        this.userId = options.userId;
+        console.log(options);
         
         let res = await api.getLabelServices({
             query: {
@@ -274,6 +260,13 @@ export default class ServiceList extends wepy.page {
         });
         console.log('-------------');
         console.log(res);
+        this.serviceList = res.data;
+        this.serviceList.forEach((item, index) => {
+            if(item.service.length > 0){
+                this.labelList.push(item.label);
+            }
+        });
+        this.$apply();
     }
 }
 </script>
