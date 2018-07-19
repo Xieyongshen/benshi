@@ -517,11 +517,11 @@ def getOrderDetail(request):
 		seller = the_order.service.label.user
 		servicePics = list(ServicePicture.objects.filter(service__serviceNum=the_order.service.serviceNum))
 		servicePic = servicePics[0].url
-		order_dict = dict(orderStatus=the_order.status,sellerAvatar=seller.avatar,sellerName=seller.nickname,serviceName=the_order.service.serviceName,servicePrice=the_order.service.price,servicePic=servicePic,createTime=the_order.createTime.strftime("%Y-%m-%d"),serviceTime=the_order.serviceTime.strftime("%Y-%m-%d"),completeTime=the_order.completeTime.strftime("%Y-%m-%d"))
+		order_dict = dict(orderStatus=the_order.status,sellerAvatar=seller.avatar,sellerName=seller.nickname,serviceName=the_order.service.serviceName,servicePrice=the_order.service.price,servicePic=servicePic,createTime=the_order.createTime.strftime("%Y-%m-%d %H:%M:%S"),serviceTime=the_order.serviceTime.strftime("%Y-%m-%d %H:%M:%S"),completeTime=the_order.completeTime.strftime("%Y-%m-%d %H:%M:%S"))
 		comment_dict = dict()
 		try:
 			the_comment = Comment.objects.get(order__orderId=the_order.orderId)
-			comment_dict = dict(time=the_comment.time.strftime("%Y-%m-%d"),desc=the_comment.desc,commentType=the_comment.commentType)
+			comment_dict = dict(time=the_comment.time.strftime("%Y-%m-%d %H:%M:%S"),desc=the_comment.desc,commentType=the_comment.commentType)
 		except Exception as e:
 			pass
 		else:
