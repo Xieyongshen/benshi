@@ -50,6 +50,8 @@ const getOrderDetail = (params) => wxRequest(params, apiBenshi + "/api/getOrderD
 const changeOrderStatus = (params) => wxRequest(params, apiBenshi + "/api/changeOrderStatus");
 //删除订单
 const deleteTheOrder = (params) => wxRequest(params, apiBenshi + "/api/deleteTheOrder");
+//评价订单
+const submitComment = (params) => wxRequest(params, apiBenshi + "/api/submitComment");
 export default {
     getCategory,
     getIndex,
@@ -69,5 +71,6 @@ export default {
     getOrders,
     getOrderDetail,
     changeOrderStatus,
-    deleteTheOrder
+    deleteTheOrder,
+    submitComment
 }

@@ -555,3 +555,21 @@ def deleteTheOrder(request):
 		the_order.delete()
 
 	return HttpResponse('ok')
+
+def submitComment(request):
+	client_access_token = request.POST['access_token']
+	client_account_id = request.POST['account_id']
+	orderIdstr = request.POST['orderId']
+	orderId = uuid.UUID(orderIdstr)
+	commentDes = request.POST['commentDes']
+	commentTypeInt = request.POST['commentType']
+	commentType = False
+	if(commentTypeInt=='1'):
+		commentType = True
+	print(commentType)
+	if(verify_token(client_access_token)):
+		the_order = Order.objects.get(orderId=orderId)
+		the_user = User.objects.get(id=client_account_id)
+		new_comment = Comment.objects.create(order=the_order,user=the_user,commentType=commentType,time=datetime.now(),desc=commentDes)
+		new_comment.save()
+	return HttpResponse('ok')
