@@ -38,5 +38,6 @@ urlpatterns = [
     path('api/delete_star', calc_views.deleteStar),
     path('api/get_serviceDetail',calc_views.getServiceDetail),
     path('api/get_labelServices',calc_views.getLabelServices),
-    path('api/submitTheOrder', calc_views.submitTheOrder)
+    path('api/submitTheOrder', calc_views.submitTheOrder),
+    path('api/getOrders', calc_views.getOrders)
 ]
