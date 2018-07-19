@@ -154,6 +154,26 @@
     display: inline-block;
 }
 
+.comment-type {
+    height: 70rpx;
+    margin: 20rpx;
+    display: inline-block;
+}
+
+.type-choose {
+    font-size: 34rpx;
+    line-height: 68rpx;
+    margin-right: 50rpx;
+    display: inline-block;
+    radio {
+        margin-right: 20rpx;
+    }
+    text {
+        font-size: 34rpx;
+        line-height: 68rpx;
+    }
+}
+
 .comment-submit {
     font-size: 34rpx;
     line-height: 68rpx;
@@ -207,6 +227,16 @@
         <view class="comment-content">
             <form wx:if="{{showComment}}" class="comment-form" bindsubmit="commentSubmit">
                 <textarea name="comment" auto-focus="{{showComment}}" class="comment-input">
+                    <radio-group class="comment-type" bindchange="changeType">
+                        <label class="type-choose">
+                            <radio value=1 color/>
+                            <text>好评</text>
+                        </label>
+                        <label class="type-choose">
+                            <radio value=0 />
+                            <text>差评</text>
+                        </label>
+                    </radio-group>
                     <button class="comment-submit" form-type="submit">提交评价</button>
             </form>
             <view wx:if="{{orderContent.order.orderStatus == 3}}" class="comment-detail">
@@ -250,7 +280,11 @@ export default class Success extends wepy.page {
                 serviceTime: '',
                 completeTime: ''
             },
-            comment: {}
+            comment: {
+                type: -1,
+                desc: '',
+                time: '2018.07.20 19:35:55'
+            }
         }
     };
 
@@ -262,18 +296,36 @@ export default class Success extends wepy.page {
             this.$apply();
         },
 
-        commentSubmit(e) {
+        changeType(e) {
             console.log(e.detail.value);
+            this.orderContent.comment.type = e.detail.value;
+            this.$apply();
+        },
+
+        commentSubmit(e) {
+            if (this.orderContent.comment.type == -1 || e.detail.value === '') {
+                wx.showToast({
+                    title: '请选择评价内容与类型',
+                    icon: 'none',
+                    duration: 1000
+                });
+                return;
+            }
+            // console.log(e.detail.value);
+            this.orderContent.comment.desc = e.detail.value.comment;
             let self = this;
             var jwt = wx.getStorageSync('jwt');
+            console.log(self.orderContent.comment.type)
             if (jwt.data.access_token != null) {
+                self.orderContent.order.orderStatus = 3;
                 let res = api.submitComment({
                     query: {
                         access_token: jwt.data.access_token,
                         account_id: jwt.data.account_id,
                         orderId: self.orderID,
-                        commentDes: 'lalalal',
-                        commentType: 1
+                        commentDes: self.orderContent.comment.desc,
+                        commentType: self.orderContent.comment.type,
+                        orderStatus: self.orderContent.order.orderStatus
                     },
                     method: 'POST',
                     header: {
@@ -281,9 +333,13 @@ export default class Success extends wepy.page {
                     }
                 });
                 console.log(res);
-
+                this.showComment = false;
+                
                 self.$apply();
             }
+            
+            // console.log(this.orderContent.comment);
+            this.$apply();
         },
 
         cancelOrder() {

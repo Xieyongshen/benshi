@@ -562,14 +562,22 @@ def submitComment(request):
 	orderIdstr = request.POST['orderId']
 	orderId = uuid.UUID(orderIdstr)
 	commentDes = request.POST['commentDes']
+	orderStatus = request.POST['orderStatus']
 	commentTypeInt = request.POST['commentType']
+	res_dict = dict()
+	print(commentTypeInt)
+	print(type(commentTypeInt))
 	commentType = False
 	if(commentTypeInt=='1'):
 		commentType = True
 	print(commentType)
 	if(verify_token(client_access_token)):
 		the_order = Order.objects.get(orderId=orderId)
+		the_order.status = orderStatus
+		the_order.save()
 		the_user = User.objects.get(id=client_account_id)
 		new_comment = Comment.objects.create(order=the_order,user=the_user,commentType=commentType,time=datetime.now(),desc=commentDes)
+		res_dict = dict(commentType=commentType,commentTime=new_comment.time.strftime("%Y-%m-%d %H:%M:%S"),commentDes=commentDes,orderStatus=orderStatus)
 		new_comment.save()
-	return HttpResponse('ok')
+	res_json = json.dumps(res_dict) 	
+	return HttpResponse(res_json)
