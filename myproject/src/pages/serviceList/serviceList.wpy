@@ -50,7 +50,7 @@
     font-size: 38rpx;
     line-height: 60rpx;
     float: right;
-    text{
+    text {
         font-size: 30rpx;
     }
 }
@@ -117,7 +117,8 @@
                         <repeat for="{{item.service}}" item="service" key="name" index="serviceIndex">
                             <navigator class="service-items" data-imglist="{{service.imageList}}" @tap="navToService({{service.name}}, {{service.price}}, {{service.description}})">
                                 <view class="service-name">{{service.name}}</view>
-                                <view class="service-price"><text>￥</text>{{service.price}}</view>
+                                <view class="service-price">
+                                    <text>￥</text>{{service.price}}</view>
                                 <view class="service-content">
                                     <view class="service-desc">{{service.description}}</view>
                                     <repeat for="{{service.imageList}}" item="imgList" key="imageUrl">
@@ -141,6 +142,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class ServiceList extends wepy.page {
     config = {};
@@ -152,6 +154,7 @@ export default class ServiceList extends wepy.page {
         currentIndex: 0,
         labelList: [],
         isChoosing: false,
+        userId: '',
         serviceList: [
             {
                 label: '摄影',
@@ -257,11 +260,20 @@ export default class ServiceList extends wepy.page {
 
     events = {};
 
-    onLoad(options) {
+    async onLoad(options) {
         this.serviceList.forEach((item, index) => {
             this.labelList.push(item.label);
         });
         this.currentIndex = options.index;
+        this.userId = 'oeBe45QWXVk782YCP8MtvLR8LDGE'
+        
+        let res = await api.getLabelServices({
+            query: {
+                userId: this.userId
+            }
+        });
+        console.log('-------------');
+        console.log(res);
     }
 }
 </script>
