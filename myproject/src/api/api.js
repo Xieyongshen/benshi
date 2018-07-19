@@ -2,7 +2,7 @@ import {
     wxRequest
 } from '@/utils/wxRequest';
 
-const apiBenshi = 'http://192.168.137.241:8000'
+const apiBenshi = 'http://192.168.23.1:8000'
 
 
 //测试能否连接本地服务器
@@ -16,6 +16,9 @@ const getCategory = (params) => wxRequest(params, apiBenshi + "/api/get_category
 const getIndex = (params) => wxRequest(params, apiBenshi + "/api/get_index/recommand");
 //获取卖家用户详情
 const getPerson = (params) => wxRequest(params, apiBenshi + "/api/get_person");
+//按分类获取标签详情
+const getLabelOfTag = (params) => wxRequest(params, apiBenshi + "/api/get_labeloftag");
+
 
 //修改个人签名
 const changeDesc = (params) => wxRequest(params, apiBenshi + "/api/changeDesc");
@@ -40,5 +43,6 @@ export default {
     changeDesc,
     getFollowStatus,
     changeFollowStatus,
-    changeStarStatus
+    changeStarStatus,
+    getLabelOfTag
 }

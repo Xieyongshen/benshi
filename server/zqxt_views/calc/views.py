@@ -397,3 +397,21 @@ def changeStarStatus(request):
 			pass
 
 	return HttpResponse('ok')
+
+def getLabelOfTag(request):
+	res_dict = list()
+	tagName = request.GET['tagName']
+	tag_all_labels = list(Label.objects.filter(tag__tagName=tagName))
+	print(tag_all_labels)
+	for labels in tag_all_labels:
+		label_all_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
+		imageList = list()
+		for posts in label_all_posts:
+			post_pictures = list(PostPicture.objects.filter(post__postNum=posts.postNum))
+			for pics in post_pictures:
+				imgDict = dict(imageUrl=pics.url)
+				imageList.append(imgDict)
+		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList)
+		res_dict.append(eve_dict)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)

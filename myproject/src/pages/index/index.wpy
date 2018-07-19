@@ -178,7 +178,7 @@
             </repeat>
         </view>
 
-        <view class="recommand-more" @tap="showMore">{{maxItems <= recommandUsers.length ? '点击查看更多' : ''}}</view>
+        <!-- <view class="recommand-more" @tap="showMore">{{maxItems <= recommandUsers.length ? '点击查看更多' : ''}}</view> -->
     </view>
 </template>
 
