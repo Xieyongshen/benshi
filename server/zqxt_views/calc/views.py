@@ -23,6 +23,7 @@ import json
 from django.core import serializers
 from datetime import datetime
 import time
+import uuid
 
 APP_ID = '1'
 APP_SECRET = '2'
@@ -501,5 +502,33 @@ def getOrders(request):
 			servicePic = servicePics[0].url
 			eve_dict = dict(user=seller.nickname,userAvatar=seller.avatar,orderId=str(orders.orderId),status=orders.status,serviceName=orders.service.serviceName,servicePrice=orders.service.price,servicePic=servicePic)
 			res_dict.append(eve_dict)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+def getOrderDetail(request):
+	client_access_token = request.GET['access_token']
+	client_account_id = request.GET['account_id']
+	orderIdstr = request.GET['orderId']
+	orderId = uuid.UUID(orderIdstr)
+	res_dict = dict()
+	
+	if(verify_token(client_access_token)):
+		the_order = Order.objects.get(orderId=orderId)
+		seller = the_order.service.label.user
+		servicePics = list(ServicePicture.objects.filter(service__serviceNum=the_order.service.serviceNum))
+		servicePic = servicePics[0].url
+		order_dict = dict(orderStatus=the_order.status,sellerAvatar=seller.avatar,sellerName=seller.nickname,serviceName=the_order.service.serviceName,servicePrice=the_order.service.price,servicePic=servicePic,createTime=the_order.createTime.strftime("%Y-%m-%d"),serviceTime=the_order.serviceTime.strftime("%Y-%m-%d"),completeTime=the_order.completeTime.strftime("%Y-%m-%d"))
+		comment_dict = dict()
+		try:
+			the_comment = Comment.objects.get(order__orderId=the_order.orderId)
+			comment_dict = dict(time=the_comment.time.strftime("%Y-%m-%d"),desc=the_comment.desc,commentType=the_comment.commentType)
+		except Exception as e:
+			pass
+		else:
+			pass
+		finally:
+			pass
+
+		res_dict = dict(order=order_dict,comment=comment_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)

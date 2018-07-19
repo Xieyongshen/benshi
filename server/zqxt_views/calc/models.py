@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from datetime import datetime
 import uuid
 # Create your models here.
 
@@ -106,4 +107,5 @@ class Comment(models.Model):
 	order = models.ForeignKey(Order, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	commentType = models.BooleanField()
+	time = models.DateTimeField(blank=True,default=datetime.now())
 	desc = models.TextField()

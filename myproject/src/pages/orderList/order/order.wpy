@@ -222,6 +222,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Success extends wepy.page {
     config = {};
@@ -319,9 +320,25 @@ export default class Success extends wepy.page {
         }
     };
 
-    onLoad(options) {
+    async onLoad(options) {
         this.orderID = options.orderID;
         this.$apply();
+
+        var jwt = wx.getStorageSync('jwt');
+        let self = this;
+        if (jwt.data.access_token != null) {
+            console.log(jwt.data.account_id);
+            let res = await api.getOrderDetail({
+                query: {
+                    access_token: jwt.data.access_token,
+                    account_id: jwt.data.account_id,
+                    orderId: this.orderID
+                }
+            });
+            console.log(res)
+            
+            self.$apply();
+        }
     }
 }
 </script>
