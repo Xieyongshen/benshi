@@ -243,12 +243,27 @@ def getLabelServices(request):
 			for pics in service_all_pic:
 				imgDict = dict(imageUrl=pics.url)
 				imgList.append(imgDict)
-			eve_service = dict(name=services.serviceName,price=services.price,description=services.serviceDes,imageList=imgList)
+			eve_service = dict(name=services.serviceName,price=services.price,description=services.serviceDes,imageList=imgList,serviceId=services.serviceNum)
 			label_serviceList.append(eve_service)
 		eve_dict = dict(label=labels.labelName,service=label_serviceList)
 		res_dict.append(eve_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
+
+def getServiceDetail(request):
+	serviceId = request.GET['serviceId']
+	res_dict = dict()
+	the_service = Service.objects.get(serviceNum=serviceId)
+	service_seller = the_service.label.user
+	service_all_pic = list(ServicePicture.objects.filter(service__serviceNum=the_service.serviceNum))
+	imgList = list()
+	for pics in service_all_pic:
+		imgDict = dict(imageUrl=pics.url)
+		imgList.append(imgDict)
+	res_dict = dict(commentNum=2,sellerAvatar=service_seller.avatar,sellerName=service_seller.nickname,serviceName=the_service.serviceName,servicePrice=the_service.price,serviceDesc=the_service.serviceDes,imgList=imgList,serviceDetail=the_service.serviceDetail)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
 
 def login(request):
 	client_access_token = request.GET['access_token']

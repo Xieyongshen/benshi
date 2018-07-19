@@ -18,7 +18,8 @@ const getIndex = (params) => wxRequest(params, apiBenshi + "/api/get_index/recom
 const getPerson = (params) => wxRequest(params, apiBenshi + "/api/get_person");
 //获取卖家label下service详情
 const getLabelServices = (params) => wxRequest(params, apiBenshi + "/api/get_labelServices");
-
+//获取服务详情
+const getServiceDetail = (params) => wxRequest(params, apiBenshi + "/api/get_serviceDetail");
 //按分类获取标签详情
 const getLabelOfTag = (params) => wxRequest(params, apiBenshi + "/api/get_labeloftag");
 
@@ -51,5 +52,6 @@ export default {
     changeStarStatus,
     getLabelOfTag,
     deleteStar,
-    getLabelServices
+    getLabelServices,
+    getServiceDetail
 }

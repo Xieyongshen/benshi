@@ -93,6 +93,16 @@ class Star(models.Model):
 	label = models.ForeignKey(Label, on_delete=models.CASCADE)
 
 class Order(models.Model):
-	orderNum = models.UUIDField(primary_key=True)
-	
+	orderId = models.UUIDField(primary_key=True)
+	service = models.ForeignKey(Service, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	status = models.IntegerField()
+	createTime = models.DateTimeField()
+	serviceTime = models.DateTimeField()
+	completeTime = models.DateTimeField()
 
+class Comment(models.Model):
+	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	commentType = models.BooleanField()
+	desc = models.TextField()
