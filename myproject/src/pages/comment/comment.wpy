@@ -71,14 +71,6 @@
     font-size: 32rpx;
     line-height: 50rpx;
 }
-
-.item-img{
-    width: 150rpx;
-    height: 150rpx;
-    margin-top: 30rpx;
-    margin-right: 20rpx;
-    z-index: 10;
-}
 </style>
 <template>
     <view class="container">
@@ -97,9 +89,6 @@
                     </view>
                     <view class="item-time">{{item.time}}</view>
                     <view class="item-desc">{{item.desc}}</view>
-                    <repeat for="{{item.imgList}}" item="imgList" key="imgUrl">
-                        <image src="{{imgList.imgUrl}}" mode="aspectFill" class="item-img" data-list="{{item.imgList}}" @tap.stop="picPreview({{imgList.imgUrl}})">
-                    </repeat>
                 </view>
             </repeat>
         </view>
@@ -123,37 +112,7 @@ export default class Comment extends wepy.page {
         goodCon: 0,
         badCon: 0,
         preImgList: [],
-        comment: [{
-            user: 'wooAini',
-            userAvatar: '/icons/assets/user_3.jpg',
-            type: true,
-            time: '2018.07.07',
-            desc: '拍得很满意，摄影小哥哥人超好！！因为平时比较忙，约了好多次时间终于拍到啦，很快就拿到照片了，超喜欢！会推荐给身边的朋友的w',
-            imgList: []
-        }, {
-            user: '闲花花',
-            userAvatar: '/icons/assets/user_5.jpg',
-            type: true,
-            time: '2018.06.21',
-            desc: '很喜欢拍的片子，穿着什么的小哥哥提了很多有用的建议，总算有一组满意的写真啦！！推荐！',
-            imgList: [
-            {
-                imgUrl: '/icons/assets/pic3_3.jpg'
-            },
-            {
-                imgUrl: '/icons/assets/pic3_1.jpg'
-            },
-            {
-                imgUrl: '/icons/assets/pic3_2.jpg'
-            }]
-        }, {
-            user: '嘤嘤嘤',
-            userAvatar: '/icons/assets/user_2.jpg',
-            type: false,
-            time: '2018.06.20',
-            desc: '嘤嘤嘤，人家就是不喜欢啦',
-            imgList: []
-        }]
+        comment: []
     };
 
     computed = {};
@@ -179,14 +138,7 @@ export default class Comment extends wepy.page {
     };
 
     async onLoad(options) {
-        this.comment.forEach(element => {
-            if(element.type){
-                this.goodCon++;
-            }else{
-                this.badCon++;
-            }
-        })
-        this.$apply();
+        this.serviceID = options.serviceID;
         let res = await api.getComment({
             query: {
                 serviceId: this.serviceID
@@ -194,6 +146,15 @@ export default class Comment extends wepy.page {
         });
         console.log('-------------');
         console.log(res);
+        this.comment = res.data;
+        this.comment.forEach(element => {
+            if(element.type === true){
+                this.goodCon++;
+            }else{
+                this.badCon++;
+            }
+        })
+        this.$apply();
     }
 }
 </script>

@@ -204,7 +204,7 @@ export default class Service extends wepy.page {
     methods = {
         navToComment() {
             wx.navigateTo({
-                url: '/pages/comment/comment'
+                url: '/pages/comment/comment?serviceID=' + this.serviceID
             });
         },
 
