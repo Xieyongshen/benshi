@@ -260,6 +260,7 @@ page {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
+import api from '@/api/api'
 
 export default class Search extends wepy.page {
     config = {
@@ -404,7 +405,19 @@ export default class Search extends wepy.page {
             this.$apply();
         },
 
-        searchResult(e) {
+        async searchResult(e) {
+
+            console.log(this.searchValue)
+            let res = await api.getSearchResult({
+                query: {
+                    searchValue: this.searchValue,
+                    searchType: 1
+                },
+                        
+            });
+            console.log('-------------');
+            console.log(res.data);
+
             this.showResult = true;
             this.keywordDone = this.searchValue;
             this.searchDone = true;

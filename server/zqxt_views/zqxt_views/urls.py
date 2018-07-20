@@ -44,5 +44,6 @@ urlpatterns = [
     path('api/changeOrderStatus', calc_views.changeOrderStatus),
     path('api/deleteTheOrder',calc_views.deleteTheOrder),
     path('api/submitComment', calc_views.submitComment),
-    path('api/getComment', calc_views.getComment)
+    path('api/getComment', calc_views.getComment),
+    path('api/getSearchResult', calc_views.getSearchResult)
 ]
