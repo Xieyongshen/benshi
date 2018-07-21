@@ -120,6 +120,7 @@
     width: 540rpx;
     font-size: 36rpx;
     line-height: 50rpx;
+    margin-bottom: 10rpx;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -145,7 +146,6 @@
 
 .item-desc {
     width: 540rpx;
-    height: 150rpx;
     color: #434343;
     font-size: 32rpx;
     line-height: 50rpx;
@@ -187,11 +187,11 @@
         </view>
         <view class="label-content">
             <view wx:if="{{tags.length == 0}}" class="label-null">暂无相关标签</view>
-            <repeat for="{{tags}}" key="label">
-                <navigator class="label-items" @tap="navToUser({{item.userId}}, {{item.label}})">
+            <repeat for="{{tags}}" key="tag">
+                <navigator class="label-items" @tap="navToUser({{item.userId}}, {{item.tag}})">
                     <image class="item-avatar" src="{{item.imgUrl}}">
                         <view class="item-content">
-                            <view class="item-label">{{item.label}}</view>
+                            <view class="item-tag">{{item.tag}}</view>
                             <view class="item-detail">{{item.name}}
                                 <view class="item-userdesc">{{item.userdesc}}</view>
                             </view>
@@ -222,46 +222,7 @@ export default class Label extends wepy.page {
     data = {
         isFollow: false,
         label: '',
-        tags: [
-            {
-                name: 'Clarenceyang',
-                label: '摄影',
-                imgUrl: '/icons/assets/user_1.jpg',
-                userdesc: '爱生活，爱摄影，爱美食',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                imageList: [
-                    {
-                        imageUrl: '/icons/assets/label1_pic_1.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label1_pic_2.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label1_pic_3.png'
-                    }
-                ]
-            },
-            {
-                name: '雪白的狐狸',
-                label: '美食摄影',
-                imgUrl: '/icons/assets/user_2.jpg',
-                userdesc: '拍照片儿的，一本正经的卖萌',
-                desc:
-                    '职业美食摄影师，生长工作于北京 美食摄影是通过摄影师拍的照片这个载体，展现食物本身提供的信息，很多信息是普通大众不会去注意的，同样一种美食，从不同的角度去拍，展现的效果也是不同的',
-                imageList: [
-                    {
-                        imageUrl: '/icons/assets/label2_pic_1.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label2_pic_2.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label2_pic_3.png'
-                    }
-                ]
-            }
-        ],
+        tags: [],
         preImgList: []
     };
 

@@ -22,7 +22,7 @@
 .search-icon {
     height: 70rpx;
     line-height: 70rpx;
-    padding: 20rpx 0;
+    padding: 18rpx 0;
     box-sizing: border-box;
     vertical-align: top;
 }
@@ -70,6 +70,9 @@
     height: 70rpx;
     padding: 15rpx 15rpx;
     box-sizing: border-box;
+    .fa{
+        margin-right: 10rpx;
+    }
 }
 
 .index-recommand {
@@ -134,10 +137,17 @@
     display: inline-block;
 }
 
-.recommand-more{
+.recommand-more {
+    width: 750rpx;
+    color: #999999;
     font-size: 28rpx;
-    line-height: 60rpx;
+    line-height: 100rpx;
     text-align: center;
+}
+
+.recommand-more:hover {
+    background: #e5e5e5;
+    opacity: 0.5;
 }
 </style>
 <template>
@@ -159,8 +169,8 @@
             </swiper-item>
         </swiper>
 
-        <navigator class="updateMessages">
-            <text>> 5分钟前 Jarvis 更新了标签 玩转Ubuntu</text>
+        <navigator class="updateMessages" @tap="navToUser({{currentUpdate.userId}}, {{currentUpdate.tag}})">
+            <view><text class="fa fa-angle-right"></text> {{currentUpdate.name}} 更新了标签 {{currentUpdate.tag}}</view>
         </navigator>
 
         <view class="index-recommand">
@@ -178,7 +188,7 @@
             </repeat>
         </view>
 
-        <!-- <view class="recommand-more" @tap="showMore">{{maxItems <= recommandUsers.length ? '点击查看更多' : ''}}</view> -->
+        <view class="recommand-more" @tap="showMore">{{maxItems <= recommandUsers.length ? '点击查看更多' : '暂无更多推荐'}}</view>
     </view>
 </template>
 
@@ -213,43 +223,8 @@ export default class Index extends wepy.page {
                 desc: '银河猎人：专访星空摄影师Will Chou'
             }
         ],
-        recommandUsers: [
-            // {
-            //     id: 0,
-            //     name: 'Clarenceyang',
-            //     imgUrl: '/icons/assets/user_1.jpg',
-            //     tag: '摄影',
-            //     description: '爱生活，爱摄影，爱美食的三爱人士'
-            // },
-            // {
-            //     id: 1,
-            //     name: '松鹅',
-            //     imgUrl: '/icons/assets/user_2.jpg',
-            //     tag: '用Python解决你的所有问题',
-            //     description: '最近在学摄影的话痨程序员'
-            // },
-            // {
-            //     id: 2,
-            //     name: '温酒',
-            //     imgUrl: '/icons/assets/user_3.jpg',
-            //     tag: '编剧',
-            //     description: '希望做一个温柔的人，想给你讲一万个故事。'
-            // },
-            // {
-            //     id: 3,
-            //     name: '喻以流年',
-            //     imgUrl: '/icons/assets/user_4.jpg',
-            //     tag: '历史',
-            //     description: '在《资治通鉴》里，探寻当下与未来。'
-            // },
-            // {
-            //     userId: 4,
-            //     name: '范臻',
-            //     imgUrl: '/icons/assets/user_5.jpg',
-            //     tag: '三国杀',
-            //     description: '奇策火攻，酒杀不闪。'
-            // }
-        ]
+        recommandUsers: [],
+        currentUpdate: {}
     };
 
     methods = {
@@ -259,11 +234,7 @@ export default class Index extends wepy.page {
         navToUser(uid, label, event) {
             console.log(uid);
             wx.navigateTo({
-                url:
-                    '/pages/person/person?id=' +
-                    uid +
-                    '&label=' +
-                    label
+                url: '/pages/person/person?id=' + uid + '&label=' + label
             });
         }
     };
@@ -275,16 +246,33 @@ export default class Index extends wepy.page {
         };
     }
 
+    refreshUpdate() {
+        var recommand = this.recommandUsers;
+        var i = Math.round(Math.random() * recommand.length);
+        this.currentUpdate = recommand[i];
+        console.log(this.currentUpdate);
+        this.$apply();
+    }
+
     async onLoad() {
         let self = this;
-        let res = await api.getIndex({});
+        let res = await api.getIndex();
         console.log('-------------');
         console.log(res);
         console.log('-------------');
         self.recommandUsers = res.data;
         console.log(res.data);
         // self.categories = res.data
+        self.currentUpdate = self.recommandUsers[0];
         self.$apply();
+        setInterval(function() {
+            var recommand = self.recommandUsers;
+            var i = Math.round(Math.random() * recommand.length);
+            self.currentUpdate = recommand[i];
+            self.$apply();
+        }, 5000);
     }
+
+    onReady() {}
 }
 </script>

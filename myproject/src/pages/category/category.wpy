@@ -158,6 +158,11 @@ export default class Category extends wepy.page {
         navBar: NavBar
     };
 
+    data = {
+        categories: [],
+        hot: []
+    }
+
     async onLoad() {
         let self = this;
         let res = await api.getCategory();
@@ -165,6 +170,12 @@ export default class Category extends wepy.page {
         console.log(res.data);
         console.log('-------------');
         self.categories = res.data;
+        self.$apply();
+
+        let result = await api.getHotSearch();
+        console.log('-------------');
+        console.log(result.data);
+        self.categories[0].labels = result.data;
         self.$apply();
 
         var query = wx.createSelectorQuery();
