@@ -27,7 +27,7 @@
     border: 1rpx solid #d1c0a5;
 }
 
-.follow-null{
+.follow-null {
     width: 750rpx;
     text-align: center;
     color: #d2d2d2;
@@ -39,7 +39,7 @@
     <view class="container">
         <navBar navTitle="我的关注" isChildPage="y"></navBar>
         <view class="follow-tagList">
-                <view wx:if="{{tags.length == 0}}" class="follow-null">暂无关注</view>
+            <view wx:if="{{tags.length == 0}}" class="follow-null">暂无关注</view>
             <repeat for="{{tags}}" key="index" index="idx">
                 <view class="tagList-items" @tap="selectTag({{idx}})">{{item}}</view>
             </repeat>
@@ -50,7 +50,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Follow extends wepy.page {
     config = {};
@@ -66,7 +66,7 @@ export default class Follow extends wepy.page {
     computed = {};
 
     methods = {
-        selectTag(index, e){
+        selectTag(index, e) {
             var tag = this.tags[index];
             wx.navigateTo({
                 url: '/pages/label/label?id=' + tag
@@ -78,23 +78,26 @@ export default class Follow extends wepy.page {
 
     async onShow() {
         var jwt = wx.getStorageSync('jwt');
-        let self = this
-        if (jwt.data.access_token != null) {
-            //检查 jwt 是否存在 如果不存在调用登录
-            // that.login();
-            console.log(jwt.data.account_id);
-            let res = await api.getFollow({
-                query: {
-                    access_token: jwt.data.access_token,
-                    account_id: jwt.data.account_id
-                }
-            });
-            console.log('-------------');
-            console.log(res);
-            self.tags = res.data;
-            self.$apply();
+        let self = this;
+        try {
+            if (jwt.data.access_token != null) {
+                //检查 jwt 是否存在 如果不存在调用登录
+                // that.login();
+                console.log(jwt.data.account_id);
+                let res = await api.getFollow({
+                    query: {
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id
+                    }
+                });
+                console.log('-------------');
+                console.log(res);
+                self.tags = res.data;
+                self.$apply();
+            }
+        } catch (e) {
+            console.log("jwt is null")
         }
-        
     }
 }
 </script>

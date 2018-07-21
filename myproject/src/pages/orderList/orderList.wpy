@@ -141,7 +141,7 @@
     background: #cfa972;
 }
 
-.order-null{
+.order-null {
     width: 750rpx;
     text-align: center;
     color: #d2d2d2;
@@ -256,10 +256,10 @@ export default class OrderList extends wepy.page {
 
     //             });
     //             console.log(res)
-            
+
     //             self.$apply();
     //         }
-            
+
     // });
 
     methods = {
@@ -270,12 +270,9 @@ export default class OrderList extends wepy.page {
 
         navToOrder(orderId, event) {
             wx.navigateTo({
-                url:
-                    '/pages/orderList/order/order?orderID=' + orderId
+                url: '/pages/orderList/order/order?orderID=' + orderId
             });
         },
-
-        
 
         cancelOrder(index, event) {
             var self = this;
@@ -298,12 +295,12 @@ export default class OrderList extends wepy.page {
                                 },
                                 method: 'POST',
                                 header: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type':
+                                        'application/x-www-form-urlencoded'
                                 }
-
                             });
-                            console.log(res)
-            
+                            console.log(res);
+
                             self.$apply();
                         }
                         // changeOrderStatusFun(self.orderList[index].orderId,self.orderList[index].status)
@@ -336,12 +333,12 @@ export default class OrderList extends wepy.page {
                                 },
                                 method: 'POST',
                                 header: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type':
+                                        'application/x-www-form-urlencoded'
                                 }
-
                             });
-                            console.log(res)
-            
+                            console.log(res);
+
                             self.$apply();
                         }
                         // changeOrderStatusFun(self.orderList[index].orderId,self.orderList[index].status)
@@ -357,7 +354,9 @@ export default class OrderList extends wepy.page {
             var orderID = this.orderList[index].orderId;
             wx.navigateTo({
                 url:
-                    '/pages/orderList/order/order?orderID=' + orderID + '&comment=1'
+                    '/pages/orderList/order/order?orderID=' +
+                    orderID +
+                    '&comment=1'
             });
         },
 
@@ -369,7 +368,7 @@ export default class OrderList extends wepy.page {
                 success: function(res) {
                     if (res.confirm) {
                         console.log('delete success');
-                        console.log(self.orderList[index].orderId)
+                        console.log(self.orderList[index].orderId);
                         var jwt = wx.getStorageSync('jwt');
                         if (jwt.data.access_token != null) {
                             console.log(jwt.data.account_id);
@@ -377,16 +376,16 @@ export default class OrderList extends wepy.page {
                                 query: {
                                     access_token: jwt.data.access_token,
                                     account_id: jwt.data.account_id,
-                                    orderId: self.orderList[index].orderId,
+                                    orderId: self.orderList[index].orderId
                                 },
                                 method: 'POST',
                                 header: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
+                                    'Content-Type':
+                                        'application/x-www-form-urlencoded'
                                 }
-
                             });
-                            console.log(res)
-            
+                            console.log(res);
+
                             self.$apply();
                         }
                         self.orderList.splice(index, 1);
@@ -402,17 +401,21 @@ export default class OrderList extends wepy.page {
     async onShow(options) {
         var jwt = wx.getStorageSync('jwt');
         let self = this;
-        if (jwt.data.access_token != null) {
-            console.log(jwt.data.account_id);
-            let res = await api.getOrders({
-                query: {
-                    access_token: jwt.data.access_token,
-                    account_id: jwt.data.account_id
-                }
-            });
-            console.log(res);
-            this.orderList = res.data;
-            self.$apply();
+        try {
+            if (jwt.data.access_token != null) {
+                console.log(jwt.data.account_id);
+                let res = await api.getOrders({
+                    query: {
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id
+                    }
+                });
+                console.log(res);
+                this.orderList = res.data;
+                self.$apply();
+            }
+        } catch (error) {
+            console.log("jwt is null")
         }
     }
 }

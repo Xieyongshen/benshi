@@ -774,20 +774,24 @@ export default class Person extends wepy.page {
         console.log(this.userid);
         var jwt = wx.getStorageSync('jwt');
         let self = this;
-        if (jwt.data.access_token != null) {
-            let res = await api.getPerson({
-                query: {
-                    userId: self.userid,
-                    access_token: jwt.data.access_token,
-                    account_id: jwt.data.account_id
-                }
-            });
-            console.log('-------------');
-            console.log(res);
-            this.labels = res.data.labels;
-            this.userName = res.data.userName;
-            this.userUrl = res.data.userAvatar;
-            this.userDesc = res.data.userDesc;
+        try {
+            if (jwt.data.access_token != null) {
+                let res = await api.getPerson({
+                    query: {
+                        userId: self.userid,
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id
+                    }
+                });
+                console.log('-------------');
+                console.log(res);
+                this.labels = res.data.labels;
+                this.userName = res.data.userName;
+                this.userUrl = res.data.userAvatar;
+                this.userDesc = res.data.userDesc;
+            }
+        } catch (error) {
+            console.log("jwt is null")
         }
 
         this.labels.forEach(element => {

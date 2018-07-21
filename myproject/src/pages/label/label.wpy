@@ -307,11 +307,7 @@ export default class Label extends wepy.page {
         navToUser(uid, label, event) {
             console.log(uid);
             wx.navigateTo({
-                url:
-                    '/pages/person/person?id=' +
-                    uid +
-                    '&label=' +
-                    label
+                url: '/pages/person/person?id=' + uid + '&label=' + label
             });
         }
     };
@@ -323,29 +319,34 @@ export default class Label extends wepy.page {
         var jwt = wx.getStorageSync('jwt');
         let self = this;
         console.log(this.label);
-        if (jwt.data.access_token != null) {
-            console.log(jwt.data.account_id);
-            let res = await api.getFollowStatus({
-                query: {
-                    access_token: jwt.data.access_token,
-                    account_id: jwt.data.account_id,
-                    tagName: this.label
-                }
-            });
-            console.log('-------------');
-            console.log(res);
-            self.isFollow = res.data.isFollow;
-            self.$apply();
+        try {
+            if (jwt.data.access_token != null) {
+                console.log(jwt.data.account_id);
+                let res = await api.getFollowStatus({
+                    query: {
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id,
+                        tagName: this.label
+                    }
+                });
+                console.log('-------------');
+                console.log(res);
+                self.isFollow = res.data.isFollow;
+                self.$apply();
 
-            let res2 = await api.getLabelOfTag({
-                query: {
-                    tagName: this.label
-                }
-            });
-            console.log(res2);
-            self.tags = res2.data;
-            self.$apply();
+                let res2 = await api.getLabelOfTag({
+                    query: {
+                        tagName: this.label
+                    }
+                });
+                console.log(res2);
+                self.tags = res2.data;
+                self.$apply();
+            }
+        } catch (error) {
+            console.log("jwt is null")
         }
+
         this.$apply();
     }
 }

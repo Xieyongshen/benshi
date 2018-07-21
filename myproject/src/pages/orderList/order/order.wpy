@@ -328,7 +328,7 @@ export default class Success extends wepy.page {
             if (jwt.data.access_token != null) {
                 self.orderContent.order.orderStatus = 3;
                 self.orderContent.comment.desc = e.detail.value.comment;
-                console.log()
+                console.log();
                 let res = api.submitComment({
                     query: {
                         access_token: jwt.data.access_token,
@@ -348,8 +348,7 @@ export default class Success extends wepy.page {
                     var time = value.data.commentTime;
                     com.comment.time = time;
                 });
-                
-                
+
                 self.showComment = false;
                 // self.orderChange(2);
                 self.$apply();
@@ -518,26 +517,30 @@ export default class Success extends wepy.page {
 
         var jwt = wx.getStorageSync('jwt');
         let self = this;
-        if (jwt.data.access_token != null) {
-            console.log(jwt.data.account_id);
-            let res = await api.getOrderDetail({
-                query: {
-                    access_token: jwt.data.access_token,
-                    account_id: jwt.data.account_id,
-                    orderId: this.orderID
+        try {
+            if (jwt.data.access_token != null) {
+                console.log(jwt.data.account_id);
+                let res = await api.getOrderDetail({
+                    query: {
+                        access_token: jwt.data.access_token,
+                        account_id: jwt.data.account_id,
+                        orderId: this.orderID
+                    }
+                });
+                console.log(res);
+                self.orderContent = res.data;
+                if (self.orderContent.comment == null) {
+                    self.orderContent.comment = {
+                        type: -1,
+                        desc: '',
+                        time: ''
+                    };
                 }
-            });
-            console.log(res);
-            self.orderContent = res.data;
-            if (self.orderContent.comment == null) {
-                self.orderContent.comment = {
-                    type: -1,
-                    desc: '',
-                    time: ''
-                };
+                console.log(self.orderContent.comment);
+                self.$apply();
             }
-            console.log(self.orderContent.comment);
-            self.$apply();
+        } catch (e) {
+            console.log("jwt is null")
         }
     }
 }
