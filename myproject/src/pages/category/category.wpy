@@ -158,23 +158,13 @@ export default class Category extends wepy.page {
         navBar: NavBar
     };
 
-    data = {
-        categories: [],
-        hot: []
-    }
-
     async onLoad() {
         let self = this;
         let res = await api.getCategory();
-        console.log('-------------');
-        console.log(res.data);
-        console.log('-------------');
         self.categories = res.data;
         self.$apply();
 
         let result = await api.getHotSearch();
-        console.log('-------------');
-        console.log(result.data);
         self.categories[0].labels = result.data;
         self.$apply();
 
@@ -184,7 +174,6 @@ export default class Category extends wepy.page {
             .select('.products')
             .boundingClientRect(rect => {
                 top = rect.top;
-                console.log(top);
             })
             .exec();
         self.productsTop = [];
@@ -197,7 +186,6 @@ export default class Category extends wepy.page {
                 });
             })
             .exec();
-        console.log(self.productsTop);
         self.$apply();
     }
 
@@ -212,7 +200,8 @@ export default class Category extends wepy.page {
         moveStartPos: 0,
         // 点击分类的名称, 用于点击跳转
         cScrollInTo: '',
-        scrollInTo: ''
+        scrollInTo: '',
+        hot: []
     };
 
     computed = {};

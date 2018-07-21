@@ -127,8 +127,8 @@ export default class Success extends wepy.page {
     };
 
     data = {
-        serviceName: '单人约拍写真',
-        servicePic: '/icons/assets/pic3_3.jpg'
+        serviceName: '',
+        servicePic: ''
     };
 
     computed = {};

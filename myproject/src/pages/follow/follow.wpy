@@ -59,7 +59,7 @@ export default class Follow extends wepy.page {
     };
 
     data = {
-        tags: ['TOEFL', 'IELTS', '日语', '德语', '茶艺', '收纳'],
+        tags: [],
         selectIdx: -1
     };
 

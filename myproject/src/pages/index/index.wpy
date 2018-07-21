@@ -152,9 +152,6 @@
 </style>
 <template>
     <view class="container">
-        <!-- <view class="navBar">
-            <view class="nav-title">本事</view>
-        </view> -->
         <navBar navTitle="本事"></navBar>
         <navigator class="search_content" url="/pages/search">
             <icon type="search" size="15" class="search-icon" />

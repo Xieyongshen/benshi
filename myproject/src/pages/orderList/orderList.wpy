@@ -204,31 +204,6 @@ export default class OrderList extends wepy.page {
 
     computed = {};
 
-    // async changeOrderStatusFun:(function(id,status){
-    //         let self = this
-    //         var jwt = wx.getStorageSync('jwt');
-    //         if (jwt.data.access_token != null) {
-    //             console.log(jwt.data.account_id);
-    //             let res = await api.changeOrderStatus({
-    //                 query: {
-    //                     access_token: jwt.data.access_token,
-    //                     account_id: jwt.data.account_id,
-    //                     orderId: id,
-    //                     orderStatus: status
-    //                 },
-    //                 method: 'POST',
-    //                 header: {
-    //                     'Content-Type': 'application/x-www-form-urlencoded'
-    //                 }
-
-    //             });
-    //             console.log(res)
-
-    //             self.$apply();
-    //         }
-
-    // });
-
     methods = {
         chooseType(type, e) {
             this.currentType = type;
