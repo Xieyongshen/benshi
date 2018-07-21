@@ -603,6 +603,11 @@ def getSearchResult(request):
 	res_dict = list()
 	match_labels = list(Label.objects.filter(labelName__icontains=searchValue))
 	match_services = list(Service.objects.filter(serviceName__icontains=searchValue))
+	match_tags = list(Tag.objects.filter(tagName__icontains=searchValue))
+	for tags in match_tags:
+		tags_labels = list(Label.objects.filter(tag__tagName=tags.tagName))
+		for labels in tags_labels:
+			match_labels.append(labels)
 	for services in match_services:
 		match_labels.append(services.label)
 	print(match_labels)
@@ -617,18 +622,17 @@ def getSearchResult(request):
 				imgDict = dict(imageUrl=pics.url)
 				if(len(imageList)<=3):
 					imageList.append(imgDict)
-		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList,userId=labels.user.id,labelId=labels.labelName)
+		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList,userId=labels.user.id,labelId=labels.labelNum)
 		res_dict.append(eve_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
 
 def getHotSearch(request):
-	res_dict = list()
+	res_list = list()
 	sortedTags = list(Tag.objects.order_by("tagSearchNum"))
 	hotTags = sortedTags[:20]
 	returnTags = random.sample(hotTags, 7)
 	for tags in returnTags:
-		eve_dict = dict(tagId=tags.tagNum,tagName=tags.tagName)
-		res_dict.append(eve_dict)
-	res_json = json.dumps(res_dict)
+		res_list.append(tags.tagName)
+	res_json = json.dumps(res_list)
 	return HttpResponse(res_json)
