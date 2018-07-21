@@ -160,140 +160,38 @@ export default class Category extends wepy.page {
 
     async onLoad() {
         let self = this;
-        let res = await api.getCategory({});
+        let res = await api.getCategory();
         console.log('-------------');
-        console.log(res);
+        console.log(res.data);
         console.log('-------------');
         self.categories = res.data;
-        console.log(res.data);
-        console.log(self.categories);
-        // self.categories = res.data
         self.$apply();
 
         var query = wx.createSelectorQuery();
-        this.productsTop = [];
+        var top = 0;
+        query
+            .select('.products')
+            .boundingClientRect(rect => {
+                top = rect.top;
+                console.log(top);
+            })
+            .exec();
+        self.productsTop = [];
         query
             .selectAll('.product')
             .boundingClientRect(rect => {
                 rect.forEach((item, index) => {
                     console.log(item.top);
-                    this.productsTop.push({ top: item.top - 108 });
+                    self.productsTop.push({ top: item.top - top });
                 });
-                this.$apply();
             })
             .exec();
-        console.log(this.productsTop);
+        console.log(self.productsTop);
+        self.$apply();
     }
 
     data = {
-        categories: [
-            // {
-            //     id: 'hot',
-            //     name: '热门分类',
-            //     labels: [
-            //         'TOEFL',
-            //         'IELTS',
-            //         '围棋',
-            //         '3DMax',
-            //         '留学经验',
-            //         '拍照摄影',
-            //         '茶艺',
-            //         '收纳'
-            //     ]
-            // },
-            // {
-            //     id: 'language',
-            //     name: '外语类',
-            //     labels: ['TOEFL', 'IELTS', '日语', '德语', '法语']
-            // },
-            // {
-            //     id: 'talent',
-            //     name: '才艺类',
-            //     labels: [
-            //         '象棋',
-            //         '书法',
-            //         '围棋',
-            //         '国画',
-            //         '素描',
-            //         '街舞',
-            //         '茶艺',
-            //         '插花',
-            //         '游泳',
-            //         '潜水'
-            //     ]
-            // },
-            // {
-            //     id: 'skill',
-            //     name: '生活技能',
-            //     labels: ['烹调方法', '整理', '缝纫', '盥洗', '具体菜系']
-            // },
-            // {
-            //     id: 'experience1',
-            //     name: '经验分享1',
-            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            // },
-            // {
-            //     id: 'experience2',
-            //     name: '经验分享2',
-            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            // },
-            // {
-            //     id: 'experience3',
-            //     name: '经验分享3',
-            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            // },
-            // {
-            //     id: 'experience4',
-            //     name: '经验分享4',
-            //     labels: ['留学经验', '考研经验', '创业经验', '面试经验']
-            // },
-            // {
-            //     id: 'knowledge',
-            //     name: '专业知识',
-            //     labels: [
-            //         '法学',
-            //         '哲学',
-            //         '文学',
-            //         '数学',
-            //         '物理',
-            //         '计算机',
-            //         '土木工程',
-            //         '临床医学',
-            //         '法学',
-            //         '哲学',
-            //         '文学',
-            //         '数学',
-            //         '物理',
-            //         '计算机',
-            //         '土木工程',
-            //         '临床医学',
-            //         '法学',
-            //         '哲学',
-            //         '文学',
-            //         '数学',
-            //         '物理',
-            //         '计算机',
-            //         '土木工程',
-            //         '临床医学',
-            //         '法学',
-            //         '哲学',
-            //         '文学',
-            //         '数学',
-            //         '物理',
-            //         '计算机',
-            //         '土木工程',
-            //         '临床医学',
-            //         '法学',
-            //         '哲学',
-            //         '文学',
-            //         '数学',
-            //         '物理',
-            //         '计算机',
-            //         '土木工程',
-            //         '临床医学'
-            //     ]
-            // }
-        ],
+        categories: [],
         // 当前分类的索引
         currentCategory: 0,
         // 每个分类距离顶部的高度的数组
@@ -366,8 +264,6 @@ export default class Category extends wepy.page {
         }
     };
 
-    onReady() {
-        // 页面准备完成之后获取每个分类距离顶部的高度, 存储在数组productsTop中
-    }
+    onReady() {}
 }
 </script>

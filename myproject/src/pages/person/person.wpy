@@ -766,8 +766,6 @@ export default class Person extends wepy.page {
 
     async onLoad(options) {
         this.userid = options.id;
-        this.userName = options.name;
-        this.userUrl = options.url;
         this.chooseLabel = options.label;
         this.scrollInTo = 'list';
         this.$apply();
@@ -786,7 +784,10 @@ export default class Person extends wepy.page {
             });
             console.log('-------------');
             console.log(res);
-            this.labels = res.data;
+            this.labels = res.data.labels;
+            this.userName = res.data.userName;
+            this.userUrl = res.data.userAvatar;
+            this.userDesc = res.data.userDesc;
         }
 
         this.labels.forEach(element => {

@@ -166,7 +166,7 @@
         <view class="index-recommand">
             <view class="recommand-title">标签推荐</view>
             <repeat for="{{recommandUsers}}" key="recommandUsers">
-                <navigator wx:if="{{index < maxItems}}" class="recommand-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.tag}})">
+                <navigator wx:if="{{index < maxItems}}" class="recommand-items" @tap="navToUser({{item.userId}}, {{item.tag}})">
                     <image src="{{item.imgUrl}}" class="userItem-img">
                         <view class="userItem-details">
                             <view class="userItem-tag">{{item.tag}}</view>
@@ -256,16 +256,12 @@ export default class Index extends wepy.page {
         showMore() {
             this.maxItems += 10;
         },
-        navToUser(uid, name, url, label, event) {
+        navToUser(uid, label, event) {
             console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
                     uid +
-                    '&name=' +
-                    name +
-                    '&url=' +
-                    url +
                     '&label=' +
                     label
             });

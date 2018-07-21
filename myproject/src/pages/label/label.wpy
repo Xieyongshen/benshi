@@ -162,6 +162,14 @@
     margin-right: 20rpx;
     z-index: 10;
 }
+
+.label-null {
+    width: 750rpx;
+    text-align: center;
+    color: #d2d2d2;
+    font-size: 36rpx;
+    line-height: 200rpx;
+}
 </style>
 <template>
     <view class="container">
@@ -178,8 +186,9 @@
             <view wx:else class="follow-btn follow-yes" @tap="followTag">已关注</view>
         </view>
         <view class="label-content">
+            <view wx:if="{{tags.length == 0}}" class="label-null">暂无相关标签</view>
             <repeat for="{{tags}}" key="label">
-                <navigator class="label-items" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.label}})">
+                <navigator class="label-items" @tap="navToUser({{item.userId}}, {{item.label}})">
                     <image class="item-avatar" src="{{item.imgUrl}}">
                         <view class="item-content">
                             <view class="item-label">{{item.label}}</view>
@@ -200,7 +209,7 @@
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Label extends wepy.page {
     config = {
@@ -219,7 +228,8 @@ export default class Label extends wepy.page {
                 label: '摄影',
                 imgUrl: '/icons/assets/user_1.jpg',
                 userdesc: '爱生活，爱摄影，爱美食',
-                desc: '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+                desc:
+                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
                 imageList: [
                     {
                         imageUrl: '/icons/assets/label1_pic_1.png'
@@ -294,16 +304,12 @@ export default class Label extends wepy.page {
                 urls: this.preImgList
             });
         },
-        navToUser(uid, name, url, label, event) {
+        navToUser(uid, label, event) {
             console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
                     uid +
-                    '&name=' +
-                    name +
-                    '&url=' +
-                    url +
                     '&label=' +
                     label
             });
@@ -336,9 +342,9 @@ export default class Label extends wepy.page {
                     tagName: this.label
                 }
             });
-            console.log(res2)
-            self.tags = res2.data
-            self.$apply()
+            console.log(res2);
+            self.tags = res2.data;
+            self.$apply();
         }
         this.$apply();
     }
