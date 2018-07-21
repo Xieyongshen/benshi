@@ -31,6 +31,7 @@ class Tag(models.Model):
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
 	tagNum = models.AutoField(primary_key=True)
 	tagName = models.TextField()
+	tagSearchNum = models.IntegerField()
 
 	def __str__(self):
 		return self.tagName

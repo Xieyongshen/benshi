@@ -424,7 +424,8 @@ export default class Search extends wepy.page {
 
     events = {};
 
-    onLoad() {
+    async onLoad() {
+
         var self = this;
         wx.getStorage({
             key: 'history',
@@ -437,9 +438,14 @@ export default class Search extends wepy.page {
             fail: function(res) {
                 console.log(res.errMsg);
                 self.history = [];
-                self.$apply();
             }
         });
+        
+        let result = await api.getHotSearch({});
+        console.log('-------------');
+        console.log(result.data);
+        self.hot = result.data;
+                self.$apply();
     }
 }
 </script>

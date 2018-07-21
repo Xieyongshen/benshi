@@ -24,6 +24,7 @@ from django.core import serializers
 from datetime import datetime
 import time
 import uuid
+import random
 
 APP_ID = '1'
 APP_SECRET = '2'
@@ -600,12 +601,19 @@ def getSearchResult(request):
 	searchValue = request.GET['searchValue']
 	searchType = request.GET['searchType']
 	res_dict = list()
-	match_labels = list(Label.objects.filter(labelName__icontains=searchValue))
-	match_services = list(Service.objects.filter(serviceName__icontains=searchValue))
+	match_labels = set(Label.objects.filter(labelName__icontains=searchValue))
+	match_services = set(Service.objects.filter(serviceName__icontains=searchValue))
+	match_tags = set(Tag.objects.filter(tagName__icontains=searchValue))
+	for tags in match_tags:
+		tags_labels = set(Label.objects.filter(tag__tagName=tags.tagName))
+		for labels in tags_labels:
+			match_labels.add(labels)
 	for services in match_services:
-		match_labels.append(services.label)
+		match_labels.add(services.label)
 	print(match_labels)
 	for labels in match_labels:
+		labels.tag.tagSearchNum = labels.tag.tagSearchNum + 1
+		labels.tag.save()
 		label_all_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
 		imageList = list()
 		for posts in label_all_posts:
@@ -614,7 +622,17 @@ def getSearchResult(request):
 				imgDict = dict(imageUrl=pics.url)
 				if(len(imageList)<=3):
 					imageList.append(imgDict)
-		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList,userId=labels.user.id,labelId=labels.labelName)
+		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList,userId=labels.user.id,labelId=labels.labelNum)
 		res_dict.append(eve_dict)
 	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+def getHotSearch(request):
+	res_list = list()
+	sortedTags = list(Tag.objects.order_by("tagSearchNum"))
+	hotTags = sortedTags[:20]
+	returnTags = random.sample(hotTags, 7)
+	for tags in returnTags:
+		res_list.append(tags.tagName)
+	res_json = json.dumps(res_list)
 	return HttpResponse(res_json)
