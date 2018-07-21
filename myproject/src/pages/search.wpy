@@ -482,6 +482,10 @@ export default class Search extends wepy.page {
 
     events = {};
 
-    onLoad() {}
+    async onLoad() {
+        let res = await api.getHotSearch({});
+        console.log('-------------');
+        console.log(res.data);
+    }
 }
 </script>

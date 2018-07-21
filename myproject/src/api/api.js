@@ -9,7 +9,9 @@ const apiBenshi = 'http://192.168.137.241:8000'
 const testCode = (params) => wxRequest(params, apiBenshi + "/new_add");
 //进入me页面后自动检测登录态并获取头像昵称以登录
 const login = (params) => wxRequest(params, apiBenshi + "/login");
-
+//获取热门关键词
+const getHotSearch = (params) => wxRequest(params, apiBenshi + "/api/getHotSearch");
+//获取搜索结果
 const getSearchResult = (params) => wxRequest(params, apiBenshi + "/api/getSearchResult");
 
 //获取分类页面的大分类和小分类标签
@@ -77,5 +79,6 @@ export default {
     deleteTheOrder,
     submitComment,
     getComment,
-    getSearchResult
+    getSearchResult,
+    getHotSearch
 }

@@ -24,6 +24,7 @@ from django.core import serializers
 from datetime import datetime
 import time
 import uuid
+import random
 
 APP_ID = '1'
 APP_SECRET = '2'
@@ -606,6 +607,8 @@ def getSearchResult(request):
 		match_labels.append(services.label)
 	print(match_labels)
 	for labels in match_labels:
+		labels.tag.tagSearchNum = labels.tag.tagSearchNum + 1
+		labels.tag.save()
 		label_all_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
 		imageList = list()
 		for posts in label_all_posts:
@@ -615,6 +618,17 @@ def getSearchResult(request):
 				if(len(imageList)<=3):
 					imageList.append(imgDict)
 		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList,userId=labels.user.id,labelId=labels.labelName)
+		res_dict.append(eve_dict)
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+def getHotSearch(request):
+	res_dict = list()
+	sortedTags = list(Tag.objects.order_by("tagSearchNum"))
+	hotTags = sortedTags[:20]
+	returnTags = random.sample(hotTags, 7)
+	for tags in returnTags:
+		eve_dict = dict(tagId=tags.tagNum,tagName=tags.tagName)
 		res_dict.append(eve_dict)
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
