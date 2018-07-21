@@ -155,58 +155,7 @@ export default class ServiceList extends wepy.page {
         labelList: [],
         isChoosing: false,
         userId: '',
-        serviceList: [
-            // {
-            //     label: '摄影',
-            //     service: [
-            //         {
-            //             name: '单人约拍写真',
-            //             price: 388,
-            //             description:
-            //                 '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
-            //             imageList: [
-            //                 {
-            //                     imageUrl: '/icons/assets/pic3_1.jpg'
-            //                 },
-            //                 {
-            //                     imageUrl: '/icons/assets/pic3_2.jpg'
-            //                 },
-            //                 {
-            //                     imageUrl: '/icons/assets/pic3_3.jpg'
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             name: '毕业照定制',
-            //             price: 688,
-            //             description:
-            //                 '熟悉的食堂、图书馆、自习室、宿舍、操场......学校好多个角落都留下过你和他们的故事。可以拍一组外拍，跟别的同学不一样，选择松江有代表性的景点，拍一组有温度有故事的毕业照，势在必行',
-            //             imageList: [
-            //                 {
-            //                     imageUrl: '/icons/assets/pic4_1.jpg'
-            //                 },
-            //                 {
-            //                     imageUrl: '/icons/assets/pic4_2.jpg'
-            //                 },
-            //                 {
-            //                     imageUrl: '/icons/assets/pic4_3.jpg'
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             name: '情侣约拍写真',
-            //             price: 488,
-            //             description:
-            //                 '擅长各种风格，可数码，可胶片 我们每次拍摄都会根据个人气质、性格、样貌跟爱好定制，最符合被摄者的拍摄方案，所以约拍都需要提前预约，摄影师好给大家提前进行准备哦',
-            //             imageList: []
-            //         }
-            //     ]
-            // },
-            // {
-            //     label: '烹饪',
-            //     service: []
-            // }
-        ]
+        serviceList: []
     };
 
     computed = {};

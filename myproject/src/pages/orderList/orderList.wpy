@@ -199,40 +199,7 @@ export default class OrderList extends wepy.page {
         currentType: 0,
         type: ['全部', '待服务', '待确认', '待评价', '已完成'],
         status: ['等待服务', '等待确认', '等待评价', '交易成功', '交易取消'],
-        orderList: [
-            // {
-            //     user: 'wooAini',
-            //     userAvatar: '/icons/assets/user_3.jpg',
-            //     status: 1,
-            //     serviceName: '单人约拍写真',
-            //     servicePrice: 388,
-            //     servicePic: '/icons/assets/pic3_3.jpg'
-            // },
-            // {
-            //     user: '闲花花',
-            //     userAvatar: '/icons/assets/user_5.jpg',
-            //     status: 3,
-            //     serviceName: '单人约拍写真',
-            //     servicePrice: 388,
-            //     servicePic: '/icons/assets/pic3_3.jpg'
-            // },
-            // {
-            //     user: '嘤嘤嘤',
-            //     userAvatar: '/icons/assets/user_2.jpg',
-            //     status: 2,
-            //     serviceName: '单人约拍写真',
-            //     servicePrice: 388,
-            //     servicePic: '/icons/assets/pic3_3.jpg'
-            // },
-            // {
-            //     user: 'Clarenceyang',
-            //     userAvatar: '/icons/assets/user_1.jpg',
-            //     status: 4,
-            //     serviceName: '单人约拍写真',
-            //     servicePrice: 388,
-            //     servicePic: '/icons/assets/pic3_3.jpg'
-            // }
-        ]
+        orderList: []
     };
 
     computed = {};

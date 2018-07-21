@@ -155,19 +155,6 @@
                 </block>
             </view>
             <view class="user-items">
-                <navigator class="userItem-content">
-                    <view class="userItem-details">
-                        <text>我的订单</text>
-                        <text class="fa fa-angle-right user-navto"></text>
-                    </view>
-                </navigator>
-                <navigator class="userItem-content">
-                    <view class="userItem-details">
-                        <text>我的钱包</text>
-                        <text class="userItem-balance">余额：0</text>
-                        <text class="fa fa-angle-right user-navto"></text>
-                    </view>
-                </navigator>
                 <navigator class="userItem-content" url="/pages/follow/follow">
                     <view class="userItem-details">
                         <text>我的关注</text>
