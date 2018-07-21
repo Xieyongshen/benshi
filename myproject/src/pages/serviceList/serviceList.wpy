@@ -122,7 +122,7 @@
                                 <view class="service-content">
                                     <view class="service-desc">{{service.description}}</view>
                                     <repeat for="{{service.imageList}}" item="imgList" key="imageUrl">
-                                        <image src="{{imgList.imageUrl}}" mode="aspectFill" class="service-listImg" data-list="{{service.imageList}}" @tap.stop="picPreview({{imgList.imageUrl}})">
+                                        <image src="{{imgList.imageUrl}}" mode="aspectFill" class="service-listImg">
                                     </repeat>
                                 </view>
                             </navigator>
@@ -221,19 +221,6 @@ export default class ServiceList extends wepy.page {
             this.currentIndex = index;
             this.isChoosing = !this.isChoosing;
             this.$apply();
-        },
-
-        picPreview(url, e) {
-            var imageList = e.currentTarget.dataset.list;
-
-            imageList.forEach((item, index) => {
-                this.preImgList.push(item.imageUrl);
-            });
-            this.$apply();
-            wx.previewImage({
-                current: url,
-                urls: this.preImgList
-            });
         },
 
         navToService(listIndex, serviceIndex, event) {

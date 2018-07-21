@@ -681,24 +681,38 @@ export default class Person extends wepy.page {
             this.$apply();
         },
         nextPage(e) {
-            if (this.isScrolling == false) {
-                this.isScrolling = true;
+            var self = this;
+            if (self.isScrolling == false) {
+                self.isScrolling = true;
                 var scrollX = e.detail.deltaX;
                 var sWidth = wx.getSystemInfoSync().windowWidth;
-                if (scrollX < 0 && scrollX > -sWidth) {
-                    this.currentLabel++;
-                    this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                } else if (scrollX > 0 && scrollX < sWidth) {
-                    this.currentLabel--;
-                    this.scrollInTo = this.labelIDList[this.currentLabel].id;
+                console.log(sWidth);
+                console.log(scrollX);
+                if (
+                    scrollX < 0 &&
+                    scrollX > -sWidth + 5 &&
+                    self.currentLabel < self.labelIDList.length - 1
+                ) {
+                    self.currentLabel++;
+                    self.scrollInTo = self.labelIDList[self.currentLabel].id;
+                    console.log(self.scrollInTo);
+                } else if (
+                    scrollX > 0 &&
+                    scrollX < sWidth - 5 &&
+                    self.currentLabel > 0
+                ) {
+                    self.currentLabel--;
+                    self.scrollInTo = self.labelIDList[self.currentLabel].id;
+                    console.log(self.scrollInTo);
                 }
-                if (scrollX != 0) {
-                    this.lScrollInTo = 'list-' + this.scrollInTo;
+                if (scrollX != 0 && self.scrollInTo != 'list') {
+                    self.lScrollInTo = 'list-' + self.scrollInTo;
+                    console.log(self.lScrollInTo);
                 }
-                this.$apply();
+                self.$apply();
                 setTimeout(() => {
-                    this.isScrolling = false;
-                }, 1000);
+                    self.isScrolling = false;
+                }, 500);
             }
         },
         toLabel(idx, id, e) {
@@ -708,17 +722,21 @@ export default class Person extends wepy.page {
         },
         navToService(index, userId, e) {
             wx.navigateTo({
-                url: '/pages/serviceList/serviceList?index=' + index + '&userId=' + userId
+                url:
+                    '/pages/serviceList/serviceList?index=' +
+                    index +
+                    '&userId=' +
+                    userId
             });
         },
         async starLabel(index, e) {
             // this.isStar = !this.isStar;
             this.labels[index].isStared = !this.labels[index].isStared;
-            console.log(e)
+            console.log(e);
             var jwt = wx.getStorageSync('jwt');
             let self = this;
-            var idStr = e.currentTarget.id.substring(6)
-            var labelID = parseInt(idStr)
+            var idStr = e.currentTarget.id.substring(6);
+            var labelID = parseInt(idStr);
             if (jwt.data.access_token != null) {
                 console.log(jwt.data.account_id);
                 let res = await api.changeStarStatus({
@@ -754,8 +772,8 @@ export default class Person extends wepy.page {
         this.scrollInTo = 'list';
         this.$apply();
         this.currentLabel = 0;
-        console.log('userID::')
-        console.log(this.userid)
+        console.log('userID::');
+        console.log(this.userid);
         var jwt = wx.getStorageSync('jwt');
         let self = this;
         if (jwt.data.access_token != null) {
@@ -777,6 +795,10 @@ export default class Person extends wepy.page {
         console.log('-------------');
         self.$apply();
 
+        this.labels.forEach((item, index) => {
+            this.labelIDList.push({ id: item.id });
+        });
+
         this.labelIDList = [];
         this.labelIDList.push({ id: 'list' });
         this.labels.forEach((item, index) => {
@@ -785,6 +807,16 @@ export default class Person extends wepy.page {
         if (this.labels.length <= 4) {
             this.noRight = true;
         }
+        console.log(this.labelIDList);
+
+        this.labels.forEach((item, index) => {
+            if (this.chooseLabel == item.name) {
+                this.currentLabel = index + 1;
+                this.scrollInTo = this.labelIDList[this.currentLabel].id;
+                console.log(this.scrollInTo);
+            }
+        });
+
         this.$apply();
     }
 }

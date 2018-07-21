@@ -291,7 +291,7 @@ export default class Success extends wepy.page {
             comment: {
                 type: -1,
                 desc: '',
-                time: '2018.07.20 19:35:55'
+                time: ''
             }
         }
     };
@@ -319,8 +319,6 @@ export default class Success extends wepy.page {
                 });
                 return;
             }
-            // console.log(e.detail.value);
-            this.orderContent.comment.desc = e.detail.value.comment;
             let self = this;
             var jwt = wx.getStorageSync('jwt');
             console.log(self.orderContent.comment.type);
@@ -340,13 +338,19 @@ export default class Success extends wepy.page {
                     }
                 });
                 console.log(res);
+                res.then(function(value) {
+                    console.log(value);
+                    console.log(value.data.commentTime);
+                    self.orderContent.comment.time = value.data.commentTime;
+                    console.log(self.orderContent.comment.time);
+                });
+                self.orderContent.comment.desc = e.detail.value.comment;
                 self.orderContent.order.orderStatus = 3;
-                this.showComment = false;
+                self.showComment = false;
+                // self.orderChange(2);
                 self.$apply();
             }
-
-            // console.log(this.orderContent.comment);
-            this.$apply();
+            self.$apply();
         },
 
         cancelOrder() {
@@ -376,7 +380,7 @@ export default class Success extends wepy.page {
                                 }
                             });
                             console.log(res);
-
+                            // self.orderChange(0);
                             self.$apply();
                         }
                         self.$apply();
@@ -414,7 +418,7 @@ export default class Success extends wepy.page {
                                 }
                             });
                             console.log(res);
-
+                            // self.orderChange(1);
                             self.$apply();
                         }
                         self.$apply();
@@ -448,7 +452,7 @@ export default class Success extends wepy.page {
                                 }
                             });
                             console.log(res);
-
+                            // self.orderDelete();
                             self.$apply();
                         }
                         wx.navigateBack({
@@ -462,6 +466,44 @@ export default class Success extends wepy.page {
             });
         }
     };
+
+    // orderChange(status) {
+    //     var pages = getCurrentPages();
+    //     var listPage = pages[pages.length - 2];
+    //     var list = listPage.data.orderList;
+    //     var tarStatus = 0;
+    //     if (status == 1 || status == 2) {
+    //         tarStatus = status + 1;
+    //     } else if (status == 0) {
+    //         tarStatus = 4;
+    //     }
+    //     list.every((item, index) => {
+    //         if (item.orderId == this.orderID) {
+    //             list[index].status = tarStatus;
+    //             listPage.setData({
+    //                 orderList: list
+    //             });
+    //             return false;
+    //         }
+    //         return true;
+    //     });
+    // };
+
+    // orderDelete() {
+    //     var pages = getCurrentPages();
+    //     var listPage = pages[pages.length - 2];
+    //     var list = listPage.data.orderList;
+    //     list.every((item, index) => {
+    //         if (item.orderId == this.orderID) {
+    //             list.splice(index, 1);
+    //             listPage.setData({
+    //                 orderList: list
+    //             });
+    //             return false;
+    //         }
+    //         return true;
+    //     });
+    // }
 
     async onLoad(options) {
         this.orderID = options.orderID;

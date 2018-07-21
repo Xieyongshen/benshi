@@ -140,6 +140,14 @@
     color: #ffffff;
     background: #cfa972;
 }
+
+.order-null{
+    width: 750rpx;
+    text-align: center;
+    color: #d2d2d2;
+    font-size: 36rpx;
+    line-height: 200rpx;
+}
 </style>
 <template>
     <view class="container">
@@ -150,6 +158,7 @@
             </repeat>
         </view>
         <view class="order-content">
+            <view wx:if="{{orderList.length == 0}}" class="order-null">暂无订单</view>
             <repeat for="{{orderList}}" key="index">
                 <navigator wx:if="{{currentType == 0 || item.status == currentType - 1 || (currentType == 4 && item.status == 4)}}" class="order-items" @tap="navToOrder({{item.orderId}})">
                     <view class="item-header">
@@ -390,7 +399,7 @@ export default class OrderList extends wepy.page {
         }
     };
 
-    async onLoad(options) {
+    async onShow(options) {
         var jwt = wx.getStorageSync('jwt');
         let self = this;
         if (jwt.data.access_token != null) {
