@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/get_category', calc_views.get_category, name='getCategory'),
     path('api/get_index/recommand', calc_views.get_index_recommand),
     path('api/get_person', calc_views.get_person),
+    path('api/get_personWithoutLogin', calc_views.get_personWithoutLogin),
     path('login', calc_views.login),
     path('api/get_follow', calc_views.get_follow),
     path('api/get_star', calc_views.get_star),

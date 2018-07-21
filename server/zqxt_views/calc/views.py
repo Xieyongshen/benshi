@@ -236,6 +236,41 @@ def get_person(request):
 	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
 
+def get_personWithoutLogin(request):
+	request_user_id = request.GET['userId']
+	the_user = User.objects.get(id=request_user_id)
+	user_all_labels = list(Label.objects.filter(user__id=request_user_id))
+	print(user_all_labels)
+	res_dict = dict()
+	labels_all_dict = list()
+	for labels in user_all_labels:
+		# 获取service
+		eve_label_services = list(Service.objects.filter(label__labelNum=labels.labelNum))
+		serviceNames = list()
+		for services in eve_label_services:
+			serviceNames_dict = dict(name=services.serviceName)
+			serviceNames.append(serviceNames_dict)
+		# 获取post
+		eve_label_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
+		postObjects = list()
+		for posts in eve_label_posts:
+			pictures = list(PostPicture.objects.filter(post__postNum=posts.postNum))
+			imgUrls = list()
+			for pic in pictures:
+				picUrls_dict = dict(imageUrl=pic.url)
+				imgUrls.append(picUrls_dict)
+			str_date = posts.date.strftime("%Y-%m-%d")
+			postObjects_dict = dict(postID=posts.postNum,time=str_date,desc=posts.postDes,imgList=imgUrls)
+			postObjects.append(postObjects_dict)
+		eve_dict = dict(id=labels.labelNum,isStarted=0,name=labels.labelName,desc=labels.labelDes,service=serviceNames,post=postObjects)
+		labels_all_dict.append(eve_dict)
+	res_dict = dict(userName=the_user.nickname,userAvatar=the_user.avatar,userDesc=the_user.user_des,labels=labels_all_dict)
+	
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+
+
 def getLabelServices(request):
 	userId = request.GET['userId']
 	res_dict = list()

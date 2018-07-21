@@ -790,7 +790,19 @@ export default class Person extends wepy.page {
                 this.userDesc = res.data.userDesc;
             }
         } catch (error) {
-            console.log("jwt is null")
+            console.log('jwt is null');
+
+            let res = await api.get_personWithoutLogin({
+                query: {
+                    userId: self.userid
+                }
+            });
+            console.log('-------------');
+            console.log(res);
+            this.labels = res.data.labels;
+            this.userName = res.data.userName;
+            this.userUrl = res.data.userAvatar;
+            this.userDesc = res.data.userDesc;
         }
 
         this.labels.forEach(element => {

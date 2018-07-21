@@ -305,7 +305,15 @@ export default class Label extends wepy.page {
                 self.$apply();
             }
         } catch (error) {
-            console.log("jwt is null")
+            console.log('jwt is null');
+            let res2 = await api.getLabelOfTag({
+                query: {
+                    tagName: this.label
+                }
+            });
+            console.log(res2);
+            self.tags = res2.data;
+            self.$apply();
         }
 
         this.$apply();

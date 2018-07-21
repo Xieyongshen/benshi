@@ -20,6 +20,8 @@ const getCategory = (params) => wxRequest(params, apiBenshi + "/api/get_category
 const getIndex = (params) => wxRequest(params, apiBenshi + "/api/get_index/recommand");
 //获取卖家用户详情
 const getPerson = (params) => wxRequest(params, apiBenshi + "/api/get_person");
+const get_personWithoutLogin = (params) => wxRequest(params, apiBenshi + "/api/get_personWithoutLogin");
+
 //获取卖家label下service详情
 const getLabelServices = (params) => wxRequest(params, apiBenshi + "/api/get_labelServices");
 //获取服务详情
@@ -80,5 +82,6 @@ export default {
     submitComment,
     getComment,
     getSearchResult,
-    getHotSearch
+    getHotSearch,
+    get_personWithoutLogin
 }
