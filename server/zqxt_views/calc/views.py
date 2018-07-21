@@ -601,15 +601,15 @@ def getSearchResult(request):
 	searchValue = request.GET['searchValue']
 	searchType = request.GET['searchType']
 	res_dict = list()
-	match_labels = list(Label.objects.filter(labelName__icontains=searchValue))
-	match_services = list(Service.objects.filter(serviceName__icontains=searchValue))
-	match_tags = list(Tag.objects.filter(tagName__icontains=searchValue))
+	match_labels = set(Label.objects.filter(labelName__icontains=searchValue))
+	match_services = set(Service.objects.filter(serviceName__icontains=searchValue))
+	match_tags = set(Tag.objects.filter(tagName__icontains=searchValue))
 	for tags in match_tags:
-		tags_labels = list(Label.objects.filter(tag__tagName=tags.tagName))
+		tags_labels = set(Label.objects.filter(tag__tagName=tags.tagName))
 		for labels in tags_labels:
-			match_labels.append(labels)
+			match_labels.add(labels)
 	for services in match_services:
-		match_labels.append(services.label)
+		match_labels.add(services.label)
 	print(match_labels)
 	for labels in match_labels:
 		labels.tag.tagSearchNum = labels.tag.tagSearchNum + 1

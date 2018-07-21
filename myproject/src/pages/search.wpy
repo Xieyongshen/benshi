@@ -458,26 +458,7 @@ export default class Search extends wepy.page {
                     desc
             });
         }
-        // searchInput(e) {
-        //     this.search_input_value = e.detail.value;
-        //     this.$apply();
-        // },
-        // goBack() {
-        //     wepy.navigateBack({
-        //         delta: 1 // 回退前 delta(默认为1) 页面
-        //     });
-        // },
-        // search() {
-        //     this.$emit('searchValue', this.search_input_value);
-        // },
-        // delText() {
-        //     this.search_input_value = '';
-        //     this.$apply();
-        // },
-        // show(param) {
-        //     this.show = param;
-        //     this.$apply();
-        // }
+
     };
 
     events = {};
