@@ -30,7 +30,6 @@ page {
     line-height: 70rpx;
     margin: 0 auto;
     padding: 0 30rpx 0 80rpx;
-    color: #8c877e;
     background: #e5e5e5;
     opacity: 0.5;
     border-radius: 52rpx;
@@ -85,6 +84,11 @@ page {
     position: absolute;
     top: 20rpx;
     right: 30rpx;
+}
+
+.history-clear:hover,
+.hot-clear:hover {
+    opacity: 0.5;
 }
 
 .recommand-keyword {
@@ -200,6 +204,22 @@ page {
     margin-right: 20rpx;
     z-index: 10;
 }
+
+.search-null {
+    width: 750rpx;
+    text-align: center;
+    color: #d2d2d2;
+    font-size: 36rpx;
+    line-height: 200rpx;
+}
+
+.history-null {
+    width: 750rpx;
+    text-align: center;
+    color: #d2d2d2;
+    font-size: 32rpx;
+    line-height: 80rpx;
+}
 </style>
 <template>
     <view class="container">
@@ -214,31 +234,33 @@ page {
             <view wx:if="{{searchValue == ''}}" class="search-recommand">
                 <view class="search-history">
                     <view class="history-title">历史搜索</view>
-                    <view class="history-clear">清除</view>
-                    <repeat for="{{history}}" key="name">
-                        <view class="recommand-keyword" @tap="selectSearch({{item.name}})">{{item.name}}</view>
+                    <view class="history-clear" @tap="historyClear">清除</view>
+                    <view wx:if="{{history.length == 0}}" class="history-null">暂无搜索记录</view>
+                    <repeat for="{{history}}" key="index">
+                        <view class="recommand-keyword" @tap="selectSearch({{item}})">{{item}}</view>
                     </repeat>
                 </view>
                 <view class="search-hot">
                     <view class="hot-title">热门搜索</view>
                     <view class="hot-clear">换一换</view>
-                    <repeat for="{{hot}}" key="name">
-                        <view class="recommand-keyword" @tap="selectSearch({{item.name}})">{{item.name}}</view>
+                    <repeat for="{{hot}}" key="index">
+                        <view class="recommand-keyword" @tap="selectSearch({{item}})">{{item}}</view>
                     </repeat>
                 </view>
             </view>
             <view wx:if="{{searchValue != ''}}" class="search-keyword">
-                <repeat for="{{searchKeywords}}" key="name">
-                    <navigator class="search-items" @tap="selectSearch({{item.name}})">
-                        <view class="keyword-content">{{item.name}}</view>
+                <repeat for="{{searchKeywords}}" key="index">
+                    <navigator class="search-items" @tap="selectSearch({{item}})">
+                        <view class="keyword-content">{{item}}</view>
                     </navigator>
                 </repeat>
             </view>
         </block>
         <block wx:if="{{showResult == true}}">
+            <view wx:if="{{searchResult.length == 0}}" class="search-null">暂无搜索结果</view>
             <view class="search-result">
                 <repeat for="{{searchResult}}" key="tag">
-                    <navigator class="search-resItems" @tap="navToUser({{item.name}}, {{item.imgUrl}}, {{item.tag}}, {{item.userdesc}})">
+                    <navigator class="search-resItems" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.label}})">
                         <image class="item-avatar" src="{{item.imgUrl}}">
                             <view class="item-content">
                                 <view class="item-tag">{{item.tag}}</view>
@@ -260,7 +282,7 @@ page {
 <script>
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
-import api from '@/api/api'
+import api from '@/api/api';
 
 export default class Search extends wepy.page {
     config = {
@@ -275,113 +297,39 @@ export default class Search extends wepy.page {
         keywordDone: '',
         searchDone: false,
         showResult: false,
-        history: [
-            {
-                name: 'TOEFL'
-            },
-            {
-                name: 'IELTS'
-            }
-        ],
-        hot: [
-            {
-                name: 'TOEFL'
-            },
-            {
-                name: '拍照摄影'
-            },
-            {
-                name: '茶艺'
-            },
-            {
-                name: '收纳'
-            },
-            {
-                name: 'Javascript'
-            },
-            {
-                name: 'Objective-C'
-            },
-            {
-                name: 'Java'
-            }
-        ],
+        history: [],
+        hot: [],
         searchKeywords: [
-            {
-                name: 'TOEFL'
-            },
-            {
-                name: '拍照摄影'
-            },
-            {
-                name: '茶艺'
-            },
-            {
-                name: '收纳'
-            },
-            {
-                name: 'Javascript'
-            },
-            {
-                name: 'Objective-C'
-            },
-            {
-                name: 'Java'
-            }
+            'TOEFL',
+            '拍照摄影',
+            '茶艺',
+            '收纳',
+            'Javascript',
+            'Objective-C',
+            'Java'
         ],
         searchResult: [
-            {
-                name: 'Clarenceyang',
-                tag: '摄影',
-                imgUrl: '/icons/assets/user_1.jpg',
-                userdesc: '爱生活，爱摄影，爱美食',
-                desc:
-                    '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
-                imageList: [
-                    {
-                        imageUrl: '/icons/assets/label1_pic_1.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label1_pic_2.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label1_pic_3.png'
-                    }
-                ]
-            },
-            {
-                name: '雪白的狐狸',
-                tag: '美食摄影',
-                imgUrl: '/icons/assets/user_2.jpg',
-                userdesc: '拍照片儿的，一本正经的卖萌',
-                desc:
-                    '职业美食摄影师，生长工作于北京 美食摄影是通过摄影师拍的照片这个载体，展现食物本身提供的信息，很多信息是普通大众不会去注意的，同样一种美食，从不同的角度去拍，展现的效果也是不同的',
-                imageList: [
-                    {
-                        imageUrl: '/icons/assets/label2_pic_1.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label2_pic_2.png'
-                    },
-                    {
-                        imageUrl: '/icons/assets/label2_pic_3.png'
-                    }
-                ]
-            }
+            // {
+            //     name: 'Clarenceyang',
+            //     tag: '摄影',
+            //     imgUrl: '/icons/assets/user_1.jpg',
+            //     userdesc: '爱生活，爱摄影，爱美食',
+            //     desc:
+            //         '从初中开始接触摄影的非专业风景取景爱好者，准确快门专家 装备：佳能70D，佳能定焦、变焦镜头若干',
+            //     imageList: [
+            //         {
+            //             imageUrl: '/icons/assets/label1_pic_1.png'
+            //         },
+            //         {
+            //             imageUrl: '/icons/assets/label1_pic_2.png'
+            //         },
+            //         {
+            //             imageUrl: '/icons/assets/label1_pic_3.png'
+            //         }
+            //     ]
+            // }
         ],
         preImgList: []
-        // search_input_value: '',
-        // show: 1,
-        // shows: true,
-        // keyword: '',
-        // keywordhisList: [
-        //     {
-        //         sel: 1,
-        //         keyword: 'lalal',
-        //         id: '1'
-        //     },
-        //     {}
-        // ]
     };
 
     computed = {
@@ -391,6 +339,15 @@ export default class Search extends wepy.page {
     };
 
     methods = {
+        historyClear() {
+            this.history = [];
+            wx.setStorage({
+                key: 'history',
+                data: history
+            });
+            this.$apply();
+        },
+
         searchClear(e) {
             if (this.showResult) {
                 this.searchDone = false;
@@ -405,31 +362,12 @@ export default class Search extends wepy.page {
             this.$apply();
         },
 
-        async searchResult(e) {
-
-            console.log(this.searchValue)
-            let res = await api.getSearchResult({
-                query: {
-                    searchValue: this.searchValue,
-                    searchType: 1
-                },
-                        
-            });
-            console.log('-------------');
-            console.log(res.data);
-
-            this.showResult = true;
-            this.keywordDone = this.searchValue;
-            this.searchDone = true;
-            this.$apply();
+        searchResult(e) {
+            this.doSearch(this.searchValue);
         },
 
         selectSearch(name, e) {
-            this.searchValue = '';
-            this.keywordDone = name;
-            this.searchDone = true;
-            this.showResult = true;
-            this.$apply();
+            this.doSearch(name);
         },
 
         picPreview(url, e) {
@@ -445,43 +383,63 @@ export default class Search extends wepy.page {
             });
         },
 
-        navToUser(name, url, tag, desc, event) {
+        navToUser(uid, name, url, label, event) {
+            console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
+                    uid +
+                    '&name=' +
                     name +
                     '&url=' +
                     url +
-                    '&tag=' +
-                    tag +
-                    '&desc=' +
-                    desc
+                    '&label=' +
+                    label
             });
         }
-        // searchInput(e) {
-        //     this.search_input_value = e.detail.value;
-        //     this.$apply();
-        // },
-        // goBack() {
-        //     wepy.navigateBack({
-        //         delta: 1 // 回退前 delta(默认为1) 页面
-        //     });
-        // },
-        // search() {
-        //     this.$emit('searchValue', this.search_input_value);
-        // },
-        // delText() {
-        //     this.search_input_value = '';
-        //     this.$apply();
-        // },
-        // show(param) {
-        //     this.show = param;
-        //     this.$apply();
-        // }
     };
+
+    async doSearch(keyword) {
+        console.log(keyword);
+        var self = this;
+        let res = await api.getSearchResult({
+            query: {
+                searchValue: keyword,
+                searchType: 1
+            }
+        });
+        console.log('-------------');
+        console.log(res.data);
+        self.searchResult = res.data;
+        self.keywordDone = keyword;
+        self.showResult = true;
+        self.searchDone = true;
+        self.history.push(keyword);
+        self.$apply();
+        wx.setStorage({
+            key: 'history',
+            data: history
+        });
+    }
 
     events = {};
 
-    onLoad() {}
+    onLoad() {
+        var self = this;
+        wx.getStorage({
+            key: 'history',
+            success: function(res) {
+                console.log(res.data);
+                self.history = res.data == null ? [] : res.data;
+                console.log(self.history);
+                self.$apply();
+            },
+            fail: function(res) {
+                console.log(res.errMsg);
+                self.history = [];
+                self.$apply();
+            }
+        });
+    }
 }
 </script>
