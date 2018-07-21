@@ -490,7 +490,6 @@ def getLabelOfTag(request):
 	res_dict = list()
 	tagName = request.GET['tagName']
 	tag_all_labels = list(Label.objects.filter(tag__tagName=tagName))
-	print(tag_all_labels)
 	for labels in tag_all_labels:
 		label_all_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
 		imageList = list()
@@ -594,5 +593,28 @@ def submitComment(request):
 		new_comment = Comment.objects.create(order=the_order,user=the_user,commentType=commentType,time=datetime.now(),desc=commentDes)
 		res_dict = dict(commentTime=new_comment.time.strftime("%Y-%m-%d %H:%M:%S"))
 		new_comment.save()
-	res_json = json.dumps(res_dict) 	
+	res_json = json.dumps(res_dict)
+	return HttpResponse(res_json)
+
+def getSearchResult(request):
+	searchValue = request.GET['searchValue']
+	searchType = request.GET['searchType']
+	res_dict = list()
+	match_labels = list(Label.objects.filter(labelName__icontains=searchValue))
+	match_services = list(Service.objects.filter(serviceName__icontains=searchValue))
+	for services in match_services:
+		match_labels.append(services.label)
+	print(match_labels)
+	for labels in match_labels:
+		label_all_posts = list(Post.objects.filter(label__labelNum=labels.labelNum))
+		imageList = list()
+		for posts in label_all_posts:
+			post_pictures = list(PostPicture.objects.filter(post__postNum=posts.postNum))
+			for pics in post_pictures:
+				imgDict = dict(imageUrl=pics.url)
+				if(len(imageList)<=3):
+					imageList.append(imgDict)
+		eve_dict = dict(name=labels.user.nickname,tag=labels.labelName,imgUrl=labels.user.avatar,userdesc=labels.user.user_des,desc=labels.labelDes,imageList=imageList,userId=labels.user.id,labelId=labels.labelName)
+		res_dict.append(eve_dict)
+	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
