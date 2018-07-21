@@ -365,7 +365,6 @@ export default class Search extends wepy.page {
         },
 
         navToUser(uid, label, event) {
-            console.log(uid);
             wx.navigateTo({
                 url: '/pages/person/person?id=' + uid + '&label=' + label
             });
@@ -381,19 +380,16 @@ export default class Search extends wepy.page {
             }
         });
         var data = res.data;
-        console.log(data);
         if (data.length > 0) {
             self.searchKeywords = [];
             data.forEach(element => {
                 self.searchKeywords.push(element.tag);
             });
         }
-        console.log(self.searchKeywords);
         self.$apply();
     }
 
     async doSearch(keyword) {
-        console.log(keyword);
         var self = this;
         let res = await api.getSearchResult({
             query: {
@@ -401,8 +397,6 @@ export default class Search extends wepy.page {
                 searchType: 1
             }
         });
-        console.log('-------------');
-        console.log(res.data);
         self.searchResult = res.data;
         self.keywordDone = keyword;
         self.showResult = true;
@@ -417,8 +411,6 @@ export default class Search extends wepy.page {
 
     async getHotSearch() {
         let result = await api.getHotSearch({});
-        console.log('-------------');
-        console.log(result.data);
         this.hot = result.data;
         this.$apply();
     }
@@ -430,9 +422,7 @@ export default class Search extends wepy.page {
         wx.getStorage({
             key: 'history',
             success: function(res) {
-                console.log(res.data);
                 self.history = res.data == null ? [] : res.data;
-                console.log(self.history);
                 self.$apply();
             },
             fail: function(res) {

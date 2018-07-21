@@ -229,7 +229,6 @@ export default class Index extends wepy.page {
             this.maxItems += 10;
         },
         navToUser(uid, label, event) {
-            console.log(uid);
             wx.navigateTo({
                 url: '/pages/person/person?id=' + uid + '&label=' + label
             });
@@ -247,19 +246,13 @@ export default class Index extends wepy.page {
         var recommand = this.recommandUsers;
         var i = Math.round(Math.random() * recommand.length);
         this.currentUpdate = recommand[i];
-        console.log(this.currentUpdate);
         this.$apply();
     }
 
     async onLoad() {
         let self = this;
         let res = await api.getIndex();
-        console.log('-------------');
-        console.log(res);
-        console.log('-------------');
         self.recommandUsers = res.data;
-        console.log(res.data);
-        // self.categories = res.data
         self.currentUpdate = self.recommandUsers[0];
         self.$apply();
         setInterval(function() {

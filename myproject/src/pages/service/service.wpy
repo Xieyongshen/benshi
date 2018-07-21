@@ -239,15 +239,12 @@ export default class Service extends wepy.page {
 
     async onLoad(options) {
         this.serviceID = options.serviceID;
-        console.log(options.serviceID);
 
         let res = await api.getServiceDetail({
             query: {
                 serviceId: this.serviceID
             }
         });
-        console.log('-------------');
-        console.log(res);
         this.service = res.data;
         this.name = this.service.serviceName;
         this.$apply();

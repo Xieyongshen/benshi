@@ -227,7 +227,6 @@ export default class OrderList extends wepy.page {
                         self.orderList[index].status = 4;
                         var jwt = wx.getStorageSync('jwt');
                         if (jwt.data.access_token != null) {
-                            console.log(jwt.data.account_id);
                             let res = api.changeOrderStatus({
                                 query: {
                                     access_token: jwt.data.access_token,
@@ -241,7 +240,6 @@ export default class OrderList extends wepy.page {
                                         'application/x-www-form-urlencoded'
                                 }
                             });
-                            console.log(res);
 
                             self.$apply();
                         }
@@ -265,7 +263,6 @@ export default class OrderList extends wepy.page {
                         self.orderList[index].status = 3;
                         var jwt = wx.getStorageSync('jwt');
                         if (jwt.data.access_token != null) {
-                            console.log(jwt.data.account_id);
                             let res = api.changeOrderStatus({
                                 query: {
                                     access_token: jwt.data.access_token,
@@ -279,7 +276,6 @@ export default class OrderList extends wepy.page {
                                         'application/x-www-form-urlencoded'
                                 }
                             });
-                            console.log(res);
 
                             self.$apply();
                         }
@@ -310,10 +306,8 @@ export default class OrderList extends wepy.page {
                 success: function(res) {
                     if (res.confirm) {
                         console.log('delete success');
-                        console.log(self.orderList[index].orderId);
                         var jwt = wx.getStorageSync('jwt');
                         if (jwt.data.access_token != null) {
-                            console.log(jwt.data.account_id);
                             let res = api.deleteTheOrder({
                                 query: {
                                     access_token: jwt.data.access_token,
@@ -326,8 +320,6 @@ export default class OrderList extends wepy.page {
                                         'application/x-www-form-urlencoded'
                                 }
                             });
-                            console.log(res);
-
                             self.$apply();
                         }
                         self.orderList.splice(index, 1);
@@ -345,14 +337,12 @@ export default class OrderList extends wepy.page {
         let self = this;
         try {
             if (jwt.data.access_token != null) {
-                console.log(jwt.data.account_id);
                 let res = await api.getOrders({
                     query: {
                         access_token: jwt.data.access_token,
                         account_id: jwt.data.account_id
                     }
                 });
-                console.log(res);
                 this.orderList = res.data;
                 self.$apply();
             }

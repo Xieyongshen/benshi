@@ -174,7 +174,6 @@ export default class ServiceList extends wepy.page {
 
         navToService(listIndex, serviceIndex, event) {
             var curService = this.serviceList[listIndex].service[serviceIndex];
-            console.log(curService);
             wx.navigateTo({
                 url:
                     '/pages/service/service?serviceID=' + curService.serviceId
@@ -187,15 +186,11 @@ export default class ServiceList extends wepy.page {
     async onLoad(options) {
         this.currentIndex = options.index;
         this.userId = options.userId;
-        console.log(options);
-        
         let res = await api.getLabelServices({
             query: {
                 userId: this.userId
             }
         });
-        console.log('-------------');
-        console.log(res);
         this.serviceList = res.data;
         this.serviceList.forEach((item, index) => {
             if(item.service.length > 0){

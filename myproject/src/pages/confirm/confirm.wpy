@@ -153,7 +153,6 @@ export default class Confirm extends wepy.page {
 
     methods = {
         async submitOrder() {
-            console.log(this.serviceID);
             var sID = this.serviceID;
             var service = this.service;
             wx.showModal({
@@ -196,14 +195,11 @@ export default class Confirm extends wepy.page {
 
     async onLoad(options) {
         this.serviceID = options.serviceID;
-        console.log(options.serviceID);
         let res = await api.getServiceDetail({
             query: {
                 serviceId: this.serviceID
             }
         });
-        console.log('-------------');
-        console.log(res);
         this.service = res.data;
         this.$apply();
     }

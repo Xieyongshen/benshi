@@ -2,7 +2,6 @@ import wepy from 'wepy';
 
 const login = async (params) => {
     let login_res = await wepy.login();
-    console.log(login_res.code)
     let code = login_res.code
     let get_res = await wepy.getUserInfo()
     let encryptedData = get_res.encryptedData || 'encry';
@@ -29,7 +28,6 @@ const login = async (params) => {
         icon: 'success'
     });
     wx.setStorageSync('jwt',jwt);
-    console.log(jwt)
     return jwt
 }
 

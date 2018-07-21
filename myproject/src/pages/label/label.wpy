@@ -235,7 +235,6 @@ export default class Label extends wepy.page {
             let self = this;
             try {
                 if (jwt.data.access_token != null) {
-                    console.log(jwt.data.account_id);
                     let res = await api.changeFollowStatus({
                         query: {
                             access_token: jwt.data.access_token,
@@ -243,8 +242,6 @@ export default class Label extends wepy.page {
                             tagName: this.label
                         }
                     });
-                    console.log('-------------');
-                    console.log(res);
                     self.isFollow = res.data.isFollow;
                     self.$apply();
                 }
@@ -267,7 +264,6 @@ export default class Label extends wepy.page {
             });
         },
         navToUser(uid, label, event) {
-            console.log(uid);
             wx.navigateTo({
                 url: '/pages/person/person?id=' + uid + '&label=' + label
             });
@@ -280,10 +276,8 @@ export default class Label extends wepy.page {
         this.label = options.id;
         var jwt = wx.getStorageSync('jwt');
         let self = this;
-        console.log(this.label);
         try {
             if (jwt.data.access_token != null) {
-                console.log(jwt.data.account_id);
                 let res = await api.getFollowStatus({
                     query: {
                         access_token: jwt.data.access_token,
@@ -291,8 +285,6 @@ export default class Label extends wepy.page {
                         tagName: this.label
                     }
                 });
-                console.log('-------------');
-                console.log(res);
                 self.isFollow = res.data.isFollow;
                 self.$apply();
 
@@ -301,7 +293,6 @@ export default class Label extends wepy.page {
                         tagName: this.label
                     }
                 });
-                console.log(res2);
                 self.tags = res2.data;
                 self.$apply();
             }
@@ -312,7 +303,6 @@ export default class Label extends wepy.page {
                     tagName: this.label
                 }
             });
-            console.log(res2);
             self.tags = res2.data;
             self.$apply();
         }

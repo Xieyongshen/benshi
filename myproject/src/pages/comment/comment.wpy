@@ -144,8 +144,6 @@ export default class Comment extends wepy.page {
                 serviceId: this.serviceID
             }
         });
-        console.log('-------------');
-        console.log(res);
         this.comment = res.data;
         this.comment.forEach(element => {
             if(element.type === true){

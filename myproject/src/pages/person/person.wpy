@@ -426,8 +426,6 @@ export default class Person extends wepy.page {
                 self.isScrolling = true;
                 var scrollX = e.detail.deltaX;
                 var sWidth = wx.getSystemInfoSync().windowWidth;
-                console.log(sWidth);
-                console.log(scrollX);
                 if (
                     scrollX < 0 &&
                     scrollX > -sWidth + 5 &&
@@ -435,7 +433,6 @@ export default class Person extends wepy.page {
                 ) {
                     self.currentLabel++;
                     self.scrollInTo = self.labelIDList[self.currentLabel].id;
-                    console.log(self.scrollInTo);
                 } else if (
                     scrollX > 0 &&
                     scrollX < sWidth - 5 &&
@@ -443,11 +440,9 @@ export default class Person extends wepy.page {
                 ) {
                     self.currentLabel--;
                     self.scrollInTo = self.labelIDList[self.currentLabel].id;
-                    console.log(self.scrollInTo);
                 }
                 if (scrollX != 0 && self.scrollInTo != 'list') {
                     self.lScrollInTo = 'list-' + self.scrollInTo;
-                    console.log(self.lScrollInTo);
                 }
                 self.$apply();
                 setTimeout(() => {
@@ -478,7 +473,6 @@ export default class Person extends wepy.page {
                     this.labels[index].isStared = !this.labels[index].isStared;
                     var idStr = e.currentTarget.id.substring(6);
                     var labelID = parseInt(idStr);
-                    console.log(jwt.data.account_id);
                     let res = await api.changeStarStatus({
                         query: {
                             access_token: jwt.data.access_token,
@@ -486,8 +480,6 @@ export default class Person extends wepy.page {
                             labelId: labelID
                         }
                     });
-                    console.log('-------------');
-                    console.log(res);
                     self.$apply();
                 }
             } catch (error) {
@@ -513,8 +505,6 @@ export default class Person extends wepy.page {
         this.scrollInTo = 'list';
         this.$apply();
         this.currentLabel = 0;
-        console.log('userID::');
-        console.log(this.userid);
         var jwt = wx.getStorageSync('jwt');
         let self = this;
         try {
@@ -526,8 +516,6 @@ export default class Person extends wepy.page {
                         account_id: jwt.data.account_id
                     }
                 });
-                console.log('-------------');
-                console.log(res);
                 this.labels = res.data.labels;
                 this.userName = res.data.userName;
                 this.userUrl = res.data.userAvatar;
@@ -541,8 +529,6 @@ export default class Person extends wepy.page {
                     userId: self.userid
                 }
             });
-            console.log('-------------');
-            console.log(res);
             this.labels = res.data.labels;
             this.userName = res.data.userName;
             this.userUrl = res.data.userAvatar;
@@ -552,7 +538,6 @@ export default class Person extends wepy.page {
         this.labels.forEach(element => {
             element.id = 'labels' + element.id;
         });
-        console.log('-------------');
         self.$apply();
 
         this.labels.forEach((item, index) => {
@@ -567,13 +552,11 @@ export default class Person extends wepy.page {
         if (this.labels.length <= 4) {
             this.noRight = true;
         }
-        console.log(this.labelIDList);
 
         this.labels.forEach((item, index) => {
             if (this.chooseLabel == item.name) {
                 this.currentLabel = index + 1;
                 this.scrollInTo = this.labelIDList[this.currentLabel].id;
-                console.log(this.scrollInTo);
             }
         });
 
