@@ -323,6 +323,9 @@ export default class Success extends wepy.page {
             var jwt = wx.getStorageSync('jwt');
             console.log(self.orderContent.comment.type);
             if (jwt.data.access_token != null) {
+                self.orderContent.order.orderStatus = 3;
+                self.orderContent.comment.desc = e.detail.value.comment;
+                console.log()
                 let res = api.submitComment({
                     query: {
                         access_token: jwt.data.access_token,
@@ -344,8 +347,8 @@ export default class Success extends wepy.page {
                     self.orderContent.comment.time = value.data.commentTime;
                     console.log(self.orderContent.comment.time);
                 });
-                self.orderContent.comment.desc = e.detail.value.comment;
-                self.orderContent.order.orderStatus = 3;
+                
+                
                 self.showComment = false;
                 // self.orderChange(2);
                 self.$apply();

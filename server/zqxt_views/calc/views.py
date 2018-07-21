@@ -192,8 +192,10 @@ def get_person(request):
 	request_user_id = request.GET['userId']
 	client_access_token = request.GET['access_token']
 	client_account_id = request.GET['account_id']
+	the_user = User.objects.get(id=request_user_id)
 	user_all_labels = list(Label.objects.filter(user__id=request_user_id))
 	print(user_all_labels)
+	res_dict = dict()
 	labels_all_dict = list()
 	if(verify_token(client_access_token)):
 		for labels in user_all_labels:
@@ -229,9 +231,9 @@ def get_person(request):
 				postObjects.append(postObjects_dict)
 			eve_dict = dict(id=labels.labelNum,isStared=isStarted,name=labels.labelName,desc=labels.labelDes,service=serviceNames,post=postObjects)
 			labels_all_dict.append(eve_dict)
+	res_dict = dict(userName=the_user.nickname,userAvatar=the_user.avatar,userDesc=the_user.user_des,labels=labels_all_dict)
 	
-	
-	res_json = json.dumps(labels_all_dict)
+	res_json = json.dumps(res_dict)
 	return HttpResponse(res_json)
 
 def getLabelServices(request):
