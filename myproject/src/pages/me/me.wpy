@@ -179,6 +179,7 @@
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 import api from '@/api/api';
+import login from '@/api/login'
 import { SYSTEM_INFO, USER_SPECICAL_INFO, USER_INFO } from '@/utils/constant';
 
 export default class Me extends wepy.page {
@@ -200,70 +201,28 @@ export default class Me extends wepy.page {
     };
 
     async getUserInfoFun2(e) {
-        let self = this;
-        console.log('1111');
-        const APP_ID = 'wx73bdc6a0b793aa42';
-        const APP_SECRET = 'd18f4ce06504cc4d7c2dbb0e06e03929';
-        var OPEN_ID = '';
-        var SESSION_KEY = '';
-        var CODE = '';
-        wx.login({
-            success: function(login_res) {
-                console.log(login_res.code);
-                let code = login_res.code;
-                wx.getUserInfo({
-                    //调用getUserInfo获取encryptedData和iv
-                    success: function(get_res) {
-                        self.globalData.globalUserInfo = get_res.userInfo;
-                        let encryptedData = get_res.encryptedData || 'encry';
-                        console.log(get_res);
-                        console.log(get_res.encryptedData);
-                        console.log('encry and iv');
-                        console.log(get_res.iv);
-                        let iv = get_res.iv || 'iv';
-                        console.log('code' + code);
-                        wx.request({
-                            url:
-                                'http://134.175.18.136:8000' +
-                                '/auth/token?code=' +
-                                code,
-                            data: {
-                                username: encryptedData,
-                                password: iv,
-                                grant_type: 'password',
-                                auth_approach: 'wxapp'
-                            },
-                            method: 'POST',
-                            header: {
-                                'Content-Type':
-                                    'application/x-www-form-urlencoded'
-                            },
-                            success: function(token_res) {
-                                wx.showToast({
-                                    title: '登陆成功',
-                                    icon: 'success'
-                                });
-                                // console.log('token res:======'+token_res.data.access_token)
-                                console.log(token_res);
-                                wx.setStorageSync('jwt', token_res);
-                                self.globalData.access_token =
-                                    token_res.data.access_token;
-                                self.globalData.account_id =
-                                    token_res.data.account_id;
-                                self.$apply();
-                                console.log(self.globalData);
-                                self.hasUserInfo = true;
-                                self.$apply();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-
+        let self = this
+        let jwt = await login.login()
+        if (jwt.data.access_token != null) {
+            //检查 jwt 是否存在 如果不存在调用登录
+            // that.login();
+            console.log(jwt.data.account_id);
+            let res = await api.login({
+                query: {
+                    access_token: jwt.data.access_token,
+                    account_id: jwt.data.account_id
+                }
+            });
+            console.log('-------------');
+            console.log(res.data.nickname);
+            self.globalData.globalUserInfo = res.data;
+            console.log(self.globalData.globalUserInfo);
+            self.hasUserInfo = true;
+            self.$apply();
+        }
         
-
-        self.$apply();
+        self.$apply()
+        
     }
 
     methods = {
@@ -306,8 +265,6 @@ export default class Me extends wepy.page {
 
     async onLoad() {
         var jwt = wx.getStorageSync('jwt');
-        console.log('jwt:');
-        console.log(jwt);
         let self = this;
 
         if (jwt.data.access_token != null) {
