@@ -176,6 +176,14 @@ checkbox .wx-checkbox-input {
     border-radius: 10rpx;
     float: right;
 }
+
+.star-null {
+    width: 750rpx;
+    text-align: center;
+    color: #d2d2d2;
+    font-size: 36rpx;
+    line-height: 200rpx;
+}
 </style>
 <template>
     <view class="container">
@@ -188,6 +196,7 @@ checkbox .wx-checkbox-input {
         </view>
         <view class="star-content">
             <view wx:if="{{isChoosing == false}}" class="star-labelList">
+                <view wx:if="{{star.length == 0}}" class="star-null">暂无收藏</view>
                 <checkbox-group bindchange="changeSelect">
                     <repeat for="{{star}}" key="type" index="idx">
                         <block wx:if="{{currentIndex == 0 || idx == currentIndex - 1}}">
@@ -368,7 +377,7 @@ export default class Star extends wepy.page {
 
     events = {};
 
-    async onLoad() {
+    async onShow() {
         var jwt = wx.getStorageSync('jwt');
         let self = this;
         if (jwt.data.access_token != null) {
@@ -388,6 +397,8 @@ export default class Star extends wepy.page {
             self.$apply();
         }
 
+        this.typeList = [];
+        this.typeList.push('全部分类');
         this.star.forEach((item, index) => {
             this.typeList.push(item.type);
         });

@@ -26,11 +26,20 @@
     color: #b28850;
     border: 1rpx solid #d1c0a5;
 }
+
+.follow-null{
+    width: 750rpx;
+    text-align: center;
+    color: #d2d2d2;
+    font-size: 36rpx;
+    line-height: 200rpx;
+}
 </style>
 <template>
     <view class="container">
         <navBar navTitle="我的关注" isChildPage="y"></navBar>
         <view class="follow-tagList">
+                <view wx:if="{{tags.length == 0}}" class="follow-null">暂无关注</view>
             <repeat for="{{tags}}" key="index" index="idx">
                 <view class="tagList-items" @tap="selectTag({{idx}})">{{item}}</view>
             </repeat>
@@ -67,7 +76,7 @@ export default class Follow extends wepy.page {
 
     events = {};
 
-    async onLoad() {
+    async onShow() {
         var jwt = wx.getStorageSync('jwt');
         let self = this
         if (jwt.data.access_token != null) {
