@@ -9,7 +9,7 @@ const login = async (params) => {
     let iv = get_res.iv || 'iv';
     let jwt = await wepy.request({
         url:
-            'http://134.175.18.136:8000' +
+            'http://192.168.137.241:8000' +
             '/auth/token?code=' +
             code,
         data: {

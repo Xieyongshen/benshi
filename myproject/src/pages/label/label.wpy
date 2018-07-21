@@ -181,9 +181,9 @@
             </navigator>
         </view>
         <view class="label-follow">
-            <view wx:if="{{!isFollow}}" class="follow-btn follow-no" @tap="followTag">
-                <text class="fa fa-plus"></text> 关注</view>
-            <view wx:else class="follow-btn follow-yes" @tap="followTag">已关注</view>
+            <button wx:if="{{!isFollow}}" open-type="getUserInfo" class="follow-btn follow-no" @tap="followTag">
+                <text class="fa fa-plus"></text> 关注</button>
+            <button wx:else open-type="getUserInfo" class="follow-btn follow-yes" @tap="followTag">已关注</button>
         </view>
         <view class="label-content">
             <view wx:if="{{tags.length == 0}}" class="label-null">暂无相关标签</view>
@@ -210,6 +210,7 @@
 import wepy from 'wepy';
 import NavBar from '@/components/navBar';
 import api from '@/api/api';
+import login from '@/api/login';
 
 export default class Label extends wepy.page {
     config = {
@@ -230,27 +231,27 @@ export default class Label extends wepy.page {
 
     methods = {
         async followTag() {
-            // this.isFollow = !this.isFollow;
-
             var jwt = wx.getStorageSync('jwt');
             let self = this;
-            if (jwt.data.access_token != null) {
-                console.log(jwt.data.account_id);
-                let res = await api.changeFollowStatus({
-                    query: {
-                        access_token: jwt.data.access_token,
-                        account_id: jwt.data.account_id,
-                        tagName: this.label
-                    }
-                });
-                console.log('-------------');
-                console.log(res);
-                self.isFollow = res.data.isFollow;
-                self.$apply();
+            try {
+                if (jwt.data.access_token != null) {
+                    console.log(jwt.data.account_id);
+                    let res = await api.changeFollowStatus({
+                        query: {
+                            access_token: jwt.data.access_token,
+                            account_id: jwt.data.account_id,
+                            tagName: this.label
+                        }
+                    });
+                    console.log('-------------');
+                    console.log(res);
+                    self.isFollow = res.data.isFollow;
+                    self.$apply();
+                }
+            } catch (error) {
+                console.log(error);
+                jwt = await login.login();
             }
-            self.$apply();
-
-            this.$apply();
         },
 
         picPreview(url, e) {
