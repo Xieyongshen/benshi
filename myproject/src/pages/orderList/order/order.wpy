@@ -320,17 +320,20 @@ export default class Success extends wepy.page {
                 return;
             }
             let self = this;
+            var com = self.orderContent;
             var jwt = wx.getStorageSync('jwt');
-            console.log(self.orderContent.comment.type);
+            console.log(com);
+            com.order.orderStatus = 3;
+            com.comment.desc = e.detail.value.comment;
             if (jwt.data.access_token != null) {
                 let res = api.submitComment({
                     query: {
                         access_token: jwt.data.access_token,
                         account_id: jwt.data.account_id,
                         orderId: self.orderID,
-                        commentDes: self.orderContent.comment.desc,
-                        commentType: self.orderContent.comment.type,
-                        orderStatus: self.orderContent.order.orderStatus
+                        commentDes: com.comment.desc,
+                        commentType: com.comment.type,
+                        orderStatus: com.order.orderStatus
                     },
                     method: 'POST',
                     header: {
@@ -339,13 +342,9 @@ export default class Success extends wepy.page {
                 });
                 console.log(res);
                 res.then(function(value) {
-                    console.log(value);
-                    console.log(value.data.commentTime);
-                    self.orderContent.comment.time = value.data.commentTime;
-                    console.log(self.orderContent.comment.time);
+                    var time = value.data.commentTime;
+                    com.comment.time = time;
                 });
-                self.orderContent.comment.desc = e.detail.value.comment;
-                self.orderContent.order.orderStatus = 3;
                 self.showComment = false;
                 // self.orderChange(2);
                 self.$apply();
@@ -399,7 +398,7 @@ export default class Success extends wepy.page {
                 success: function(res) {
                     if (res.confirm) {
                         console.log('confirm success');
-                        self.orderContent.order.orderStatus = 3;
+                        self.orderContent.order.orderStatus = 2;
                         var jwt = wx.getStorageSync('jwt');
                         if (jwt.data.access_token != null) {
                             console.log(jwt.data.account_id);
@@ -525,6 +524,14 @@ export default class Success extends wepy.page {
             });
             console.log(res);
             self.orderContent = res.data;
+            if (self.orderContent.comment == null) {
+                self.orderContent.comment = {
+                    type: -1,
+                    desc: '',
+                    time: ''
+                };
+            }
+            console.log(self.orderContent.comment);
             self.$apply();
         }
     }

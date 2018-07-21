@@ -242,7 +242,7 @@ page {
                 </view>
                 <view class="search-hot">
                     <view class="hot-title">热门搜索</view>
-                    <view class="hot-clear">换一换</view>
+                    <view class="hot-clear" @tap="hotChange">换一换</view>
                     <repeat for="{{hot}}" key="index">
                         <view class="recommand-keyword" @tap="selectSearch({{item}})">{{item}}</view>
                     </repeat>
@@ -260,7 +260,7 @@ page {
             <view wx:if="{{searchResult.length == 0}}" class="search-null">暂无搜索结果</view>
             <view class="search-result">
                 <repeat for="{{searchResult}}" key="tag">
-                    <navigator class="search-resItems" @tap="navToUser({{item.userId}}, {{item.name}}, {{item.imgUrl}}, {{item.label}})">
+                    <navigator class="search-resItems" @tap="navToUser({{item.userId}}, {{item.label}})">
                         <image class="item-avatar" src="{{item.imgUrl}}">
                             <view class="item-content">
                                 <view class="item-tag">{{item.tag}}</view>
@@ -357,6 +357,10 @@ export default class Search extends wepy.page {
             }
         },
 
+        hotChange(){
+            this.getHotSearch();
+        },
+
         searchInput(e) {
             this.searchValue = e.detail.value;
             this.$apply();
@@ -383,16 +387,12 @@ export default class Search extends wepy.page {
             });
         },
 
-        navToUser(uid, name, url, label, event) {
+        navToUser(uid, label, event) {
             console.log(uid);
             wx.navigateTo({
                 url:
                     '/pages/person/person?id=' +
                     uid +
-                    '&name=' +
-                    name +
-                    '&url=' +
-                    url +
                     '&label=' +
                     label
             });
@@ -422,10 +422,17 @@ export default class Search extends wepy.page {
         });
     }
 
+    async getHotSearch() {
+        let result = await api.getHotSearch({});
+        console.log('-------------');
+        console.log(result.data);
+        this.hot = result.data;
+        this.$apply();
+    }
+
     events = {};
 
     async onLoad() {
-
         var self = this;
         wx.getStorage({
             key: 'history',
@@ -440,12 +447,8 @@ export default class Search extends wepy.page {
                 self.history = [];
             }
         });
-        
-        let result = await api.getHotSearch({});
-        console.log('-------------');
-        console.log(result.data);
-        self.hot = result.data;
-                self.$apply();
+
+        this.getHotSearch();
     }
 }
 </script>
