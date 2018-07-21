@@ -34,9 +34,9 @@
 }
 
 .success-status {
-    width: auto;
+    width: 360rpx;
     height: 120rpx;
-    margin: 20rpx 180rpx;
+    margin: 20rpx 165rpx;
     display: inline-block;
 }
 
@@ -46,6 +46,7 @@
 }
 
 .status-title {
+    width: 200rpx;
     color: #d0b287;
     font-size: 36rpx;
     line-height: 120rpx;
@@ -55,16 +56,18 @@
 }
 
 .handle-btn {
-    margin: 20rpx 135rpx;
+    width: 440rpx;
+    margin: 20rpx 125rpx;
     display: inline-block;
 }
 
 .handle-order {
+    width: 200rpx;
     height: 70rpx;
     color: #b28850;
     font-size: 34rpx;
     line-height: 68rpx;
-    padding: 0 30rpx;
+    text-align: center;
     border: 1rpx solid #cfa972;
     border-radius: 10rpx;
     box-sizing: border-box;
@@ -77,12 +80,13 @@
 }
 
 .handle-return {
+    width: 200rpx;
     height: 70rpx;
     color: #535353;
     font-size: 34rpx;
     line-height: 68rpx;
     margin-left: 40rpx;
-    padding: 0 30rpx;
+    text-align: center;
     border: 1rpx solid #535353;
     border-radius: 10rpx;
     box-sizing: border-box;
