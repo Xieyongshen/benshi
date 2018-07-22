@@ -254,6 +254,9 @@ export default class Index extends wepy.page {
         let res = await api.getIndex();
         self.recommandUsers = res.data;
         self.currentUpdate = self.recommandUsers[0];
+        self.scroll.forEach(element => {
+            element.url = '/pages/person/person?id=' + self.recommandUsers[0].userId + '&label=' + self.recommandUsers[0].tag
+        });
         self.$apply();
         setInterval(function() {
             var recommand = self.recommandUsers;
